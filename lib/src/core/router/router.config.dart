@@ -1,4 +1,5 @@
 import 'package:chat_app/src/features/auth/presentation/pages/auth/index.dart';
+import 'package:chat_app/src/features/auth/presentation/pages/login/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/splash/index.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,6 +20,10 @@ class TRouterConfig {
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(path: authRoute, builder: (context, state) => const AthScreen()),
+      GoRoute(
+        path: loginRoute,
+        builder: (context, state) => const LoginScreen(),
+      ),
     ],
   );
 }

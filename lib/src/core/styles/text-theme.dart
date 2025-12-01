@@ -7,17 +7,17 @@ class TTextTheme {
     bodySmall: TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: 12.5,
-      color: scheme.onSurfaceVariant, // text trên surfaceVariant (card, sheet…)
+      color: scheme.onSurfaceVariant,
     ),
     bodyMedium: TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: 14,
-      color: scheme.onSurface, // text trên nền chính (scaffold)
+      color: scheme.onSurface,
     ),
     labelSmall: TextStyle(
       fontWeight: FontWeight.w600,
       fontSize: 12.5,
-      color: scheme.primary, // nhấn mạnh, label, button
+      color: scheme.primary,
     ),
     labelMedium: TextStyle(
       fontWeight: FontWeight.w600,

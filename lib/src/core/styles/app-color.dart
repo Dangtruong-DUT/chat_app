@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const AppColorPalette appLight = AppColorPalette(
-  primary: Color(0xFF2563EB),
+  primary: Color.fromARGB(255, 54, 110, 233),
   primaryForeground: Colors.white,
   secondary: Color(0xFF7C3AED),
   secondaryForeground: Colors.white,
@@ -11,7 +11,7 @@ const AppColorPalette appLight = AppColorPalette(
   mutedForeground: Color(0xFF6B7280),
   accent: Color(0xFF059669),
   accentForeground: Colors.white,
-  border: Color(0xFFE5E7EB),
+  border: Color.fromARGB(255, 177, 177, 179),
   input: Color(0xFFF8FAFC),
   ring: Color(0xFFBFDBFE),
   background: Color(0xFFFFFFFF),
@@ -22,7 +22,7 @@ const AppColorPalette appLight = AppColorPalette(
 );
 
 const AppColorPalette appDark = AppColorPalette(
-  primary: Color(0xFF93C5FD),
+  primary: Color.fromARGB(255, 139, 187, 241),
   primaryForeground: Color(0xFF0B1220),
   secondary: Color(0xFFD6BCFA),
   secondaryForeground: Color(0xFF0B1220),
