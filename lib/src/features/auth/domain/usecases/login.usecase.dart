@@ -9,7 +9,6 @@ class LoginUseCase extends UseCase<void, LoginBodyDto> {
 
   @override
   Future<User> call({required LoginBodyDto params}) async {
-    throw Exception('Not implemented');
     return repository.login(params);
   }
 }

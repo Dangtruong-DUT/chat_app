@@ -22,21 +22,16 @@ class Logger {
     return 'unknown';
   }
 
-  static void debug(String message) {
-    if (kDebugMode) {
-      print('\x1B[36m[${_timestamp()}][DEBUG][${_caller()}] $message\x1B[0m');
+  static void _log(String level, String message, String color) {
+    if (!kDebugMode) return;
+
+    final lines = message.split('\n');
+    for (var line in lines) {
+      print('$color[${_timestamp()}][$level][${_caller()}] $line\x1B[0m');
     }
   }
 
-  static void warn(String message) {
-    if (kDebugMode) {
-      print('\x1B[33m[${_timestamp()}][WARNING][${_caller()}] $message\x1B[0m');
-    }
-  }
-
-  static void error(String message) {
-    if (kDebugMode) {
-      print('\x1B[31m[${_timestamp()}][ERROR][${_caller()}] $message\x1B[0m');
-    }
-  }
+  static void debug(String message) => _log('DEBUG', message, '\x1B[36m');
+  static void warn(String message) => _log('WARNING', message, '\x1B[33m');
+  static void error(String message) => _log('ERROR', message, '\x1B[31m');
 }

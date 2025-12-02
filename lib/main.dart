@@ -1,9 +1,12 @@
 import 'package:chat_app/src/core/router/router.config.dart';
-import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
+import 'package:chat_app/src/shared/domain/usecases/clear_current_user.usecase.dart';
+import 'package:chat_app/src/shared/domain/usecases/get_current_user.usecase.dart';
+import 'package:chat_app/src/shared/domain/usecases/save_current_user.usecase.dart';
+import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
+import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/core/theme/app_theme.dart';
-import 'package:chat_app/src/app_injection.dart';
+import 'package:chat_app/src/shared/app_injection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
@@ -15,8 +18,12 @@ void main() async {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<LoginBloc>(
-          create: (context) => (LoginBloc(loginUseCase: getIt<LoginUseCase>())),
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
+            clearCurrentUserUseCase: getIt<ClearCurrentUserUseCase>(),
+            saveCurrentUserUseCase: getIt<SaveCurrentUserUseCase>(),
+          )..add(AuthCheckRequested()),
         ),
       ],
       child: const MyApp(),

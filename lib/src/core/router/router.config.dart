@@ -1,12 +1,13 @@
 import 'package:chat_app/src/features/auth/presentation/pages/auth/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/login/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/splash/index.dart';
+import 'package:chat_app/src/features/chats/presentation/pages/chats/index.dart';
 import 'package:go_router/go_router.dart';
 
 class TRouterConfig {
   TRouterConfig._();
 
-  static const String homeRoute = "/";
+  static const String chatsRoute = "/chats";
   static const String loginRoute = "/login";
   static const String registerRoute = "/register";
   static const String authRoute = "/auth";
@@ -23,6 +24,10 @@ class TRouterConfig {
       GoRoute(
         path: loginRoute,
         builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: chatsRoute,
+        builder: (context, state) => const ChatListScreen(),
       ),
     ],
   );

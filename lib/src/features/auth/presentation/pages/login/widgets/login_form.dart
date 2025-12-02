@@ -1,11 +1,14 @@
-import 'package:chat_app/src/core/utils/log/logger.dart';
+import 'package:chat_app/src/core/router/router.config.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
+import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
+import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
 import 'package:chat_app/src/core/utils/validation/login.validation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -112,7 +115,8 @@ class _LoginFormState extends State<LoginForm> {
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
         if (state is LoginSuccess) {
-          Logger.debug("Login successful: ${state.user.toString()}");
+          context.read<AuthBloc>().add(AuthLoginRequested(user: state.user));
+          GoRouter.of(context).go(TRouterConfig.chatsRoute);
         }
       },
       child: child,

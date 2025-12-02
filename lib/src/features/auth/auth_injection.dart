@@ -5,9 +5,9 @@ import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories
 
 final getIt = GetIt.instance;
 
-Future<void> configureAuthDependencies() async {
+Future<void> configureAuthFutureDependencies() async {
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
-  getIt.registerSingleton<LoginUseCase>(
-    LoginUseCase(repository: getIt<AuthRepository>()),
+  getIt.registerLazySingleton<LoginUseCase>(
+    () => LoginUseCase(repository: getIt<AuthRepository>()),
   );
 }
