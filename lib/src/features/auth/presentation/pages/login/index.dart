@@ -1,8 +1,24 @@
-import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
+import 'package:chat_app/main.dart';
+import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/pages/login/widgets/login_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => (LoginBloc(loginUseCase: getIt<LoginUseCase>())),
+      child: const _LoginContent(),
+    );
+  }
+}
+
+class _LoginContent extends StatelessWidget {
+  const _LoginContent();
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +27,9 @@ class LoginScreen extends StatelessWidget {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            const SizedBox(height: 100),
             Text(
               'Login',
               style: Theme.of(
@@ -20,33 +37,7 @@ class LoginScreen extends StatelessWidget {
               ).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 32),
-            TTextField(),
-            const SizedBox(height: 16),
-            TTextField(textInputType: TextInputType.visiblePassword),
-            const SizedBox(height: 16),
-            GestureDetector(
-              onTap: () {
-                print("Login pressed");
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                constraints: BoxConstraints(minHeight: 50),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            Expanded(child: LoginForm()),
           ],
         ),
       ),

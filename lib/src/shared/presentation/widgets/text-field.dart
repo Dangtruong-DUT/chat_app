@@ -4,21 +4,24 @@ class TTextField extends StatelessWidget {
   final String? hintText;
   final TextInputType? textInputType;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   const TTextField({
     super.key,
     this.hintText = 'Enter value',
     this.textInputType = TextInputType.text,
     this.controller,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
-      obscureText: isPasswordField(),
+      obscureText: _isPasswordField(),
       keyboardType: textInputType,
+      validator: validator,
       onChanged: (value) {
-        if (!isNumberField()) return;
+        if (!_isNumberField()) return;
 
         final sanitizedValue = value.replaceAll(RegExp('[^0-9]'), '');
         if (sanitizedValue == value) return;
@@ -47,11 +50,11 @@ class TTextField extends StatelessWidget {
     );
   }
 
-  bool isPasswordField() {
+  bool _isPasswordField() {
     return textInputType == TextInputType.visiblePassword;
   }
 
-  bool isNumberField() {
+  bool _isNumberField() {
     return textInputType == TextInputType.number;
   }
 }

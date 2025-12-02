@@ -1,5 +1,5 @@
-import 'package:chat_app/src/core/styles/app-color.dart';
-import 'package:chat_app/src/core/styles/text-theme.dart';
+import 'package:chat_app/src/core/theme/app_color.dart';
+import 'package:chat_app/src/core/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 final lightColorScheme = AppColorPalette.createColorScheme(
