@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/router/router.config.dart';
+import 'package:chat_app/src/core/router/root.route.dart';
 import 'package:chat_app/src/shared/domain/usecases/clear_current_user.usecase.dart';
 import 'package:chat_app/src/shared/domain/usecases/get_current_user.usecase.dart';
 import 'package:chat_app/src/shared/domain/usecases/save_current_user.usecase.dart';
@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Chat App',
       theme: TAppTheme.lightTheme,
-      routerConfig: TRouterConfig.router,
+      routerConfig: AppRouter.router,
       debugShowCheckedModeBanner: false,
     );
   }

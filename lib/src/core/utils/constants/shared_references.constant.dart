@@ -1,2 +1,6 @@
-const String userDataKey = 'user_data';
-const String loginHistoryKey = 'login_history';
+class SharedReferenceConfig {
+  SharedReferenceConfig._();
+
+  static const String userDataKey = 'user_data';
+  static const String loginHistoryKey = 'login_history';
+}

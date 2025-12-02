@@ -1,0 +1,15 @@
+import 'package:chat_app/src/features/auth/presentation/login/index.dart';
+import 'package:chat_app/src/features/auth/presentation/pages/auth/index.dart';
+import 'package:go_router/go_router.dart';
+import '../routes.config.dart';
+
+class AuthRouter {
+  AuthRouter._();
+  static List<GoRoute> routes = [
+    GoRoute(path: AppRoutesConfig.auth, builder: (_, __) => const AuthScreen()),
+    GoRoute(
+      path: AppRoutesConfig.login,
+      builder: (_, __) => const LoginScreen(),
+    ),
+  ];
+}

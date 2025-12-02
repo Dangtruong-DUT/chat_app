@@ -1,5 +1,5 @@
 import 'package:chat_app/main.dart';
-import 'package:chat_app/src/core/router/router.config.dart';
+import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth/widgets/_mock/index.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AthScreen extends StatelessWidget {
-  const AthScreen({super.key});
+class AuthScreen extends StatelessWidget {
+  const AuthScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +72,6 @@ class _AuthScreenContent extends StatelessWidget {
   }
 
   void _onAddAccountTap(BuildContext context) {
-    GoRouter.of(context).push(TRouterConfig.loginRoute);
+    GoRouter.of(context).push(AppRoutesConfig.login);
   }
 }

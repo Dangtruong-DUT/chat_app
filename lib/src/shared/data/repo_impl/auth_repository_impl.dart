@@ -10,7 +10,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<User?> getLoginData() async {
     final data = await SharedPreferences.getInstance();
-    final String? userString = data.getString(userDataKey);
+    final String? userString = data.getString(
+      SharedReferenceConfig.userDataKey,
+    );
     if (userString != null) {
       final Json userJson = jsonDecode(userString);
       return User.fromJson(userJson);
@@ -22,12 +24,12 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> saveLoginData(User user) async {
     final data = await SharedPreferences.getInstance();
     final String userString = jsonEncode(user.toJson());
-    await data.setString(userDataKey, userString);
+    await data.setString(SharedReferenceConfig.userDataKey, userString);
   }
 
   @override
   Future<void> clearLoginData() async {
     final data = await SharedPreferences.getInstance();
-    await data.remove(userDataKey);
+    await data.remove(SharedReferenceConfig.userDataKey);
   }
 }

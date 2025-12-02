@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/router/router.config.dart';
+import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
@@ -36,9 +36,9 @@ class SplashScreen extends StatelessWidget {
 
   void _handleAuthState(BuildContext context, AuthState state) {
     if (state is Authenticated) {
-      GoRouter.of(context).go(TRouterConfig.chatsRoute);
+      GoRouter.of(context).go(AppRoutesConfig.home);
     } else if (state is Unauthenticated) {
-      GoRouter.of(context).go(TRouterConfig.authRoute);
+      GoRouter.of(context).go(AppRoutesConfig.auth);
     } else {
       Logger.debug('SplashScreen - Auth State: ${state.runtimeType}');
     }

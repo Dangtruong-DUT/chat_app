@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/router/router.config.dart';
+import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
@@ -116,7 +116,7 @@ class _LoginFormState extends State<LoginForm> {
         }
         if (state is LoginSuccess) {
           context.read<AuthBloc>().add(AuthLoginRequested(user: state.user));
-          GoRouter.of(context).go(TRouterConfig.chatsRoute);
+          GoRouter.of(context).go(AppRoutesConfig.home);
         }
       },
       child: child,
