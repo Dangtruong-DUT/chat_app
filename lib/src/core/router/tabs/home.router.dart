@@ -1,7 +1,7 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/features/home/presentation/pages/chats/index.dart';
-import 'package:chat_app/src/features/home/presentation/pages/search/index.dart';
-import 'package:chat_app/src/features/home/presentation/pages/settings/index.dart';
+import 'package:chat_app/src/features/chats/presentation/pages/chats/index.dart';
+import 'package:chat_app/src/features/search/presentation/pages/search/index.dart';
+import 'package:chat_app/src/features/setting/presentation/pages/settings/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import './tab.model.dart';

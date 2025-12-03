@@ -1,5 +1,5 @@
 import 'package:chat_app/_mock/index.dart';
-import 'package:chat_app/src/features/home/presentation/pages/chats/widgets/chat_Item.dart';
+import 'package:chat_app/src/features/chats/presentation/pages/chats/widgets/chat_Item.dart';
 import 'package:flutter/material.dart';
 
 class ChatList extends StatelessWidget {
@@ -8,7 +8,7 @@ class ChatList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: usersMockData.length,
+      itemCount: 1,
       itemBuilder: (context, index) {
         final chat = usersMockData[index];
         return ChatListItem(chat: chat);

@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/features/home/presentation/pages/settings/widgets/logout_button.dart';
+import 'package:chat_app/src/features/setting/presentation/pages/settings/widgets/logout_button.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
 import 'package:flutter/material.dart';
