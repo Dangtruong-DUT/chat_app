@@ -26,6 +26,7 @@ class ChatInputBar extends StatelessWidget {
           ),
           SizedBox(width: 8),
           Icon(Icons.send, color: Colors.grey),
+          SizedBox(width: 12),
         ],
       ),
     );
