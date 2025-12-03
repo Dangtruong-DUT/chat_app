@@ -17,6 +17,41 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _buildBlocProvider(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SafeArea(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100),
+                Text(
+                  'Login',
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 32),
+                Expanded(child: LoginForm(prefilledEmail: prefilledEmail)),
+                const SizedBox(height: 12),
+                TextButton(
+                  onPressed: () => _onRegisterTap(context),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  child: const Text('Don\'t have an account? Register'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
       create: (context) => (LoginBloc(loginUseCase: getIt<LoginUseCase>())),
       child: MultiBlocListener(
@@ -44,34 +79,7 @@ class LoginScreen extends StatelessWidget {
             },
           ),
         ],
-        child: Scaffold(
-          appBar: AppBar(),
-          body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 100),
-                Text(
-                  'Login',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Expanded(child: LoginForm(prefilledEmail: prefilledEmail)),
-                const SizedBox(height: 12),
-                TextButton(
-                  onPressed: () => _onRegisterTap(context),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.primary,
-                  ),
-                  child: const Text('Don\'t have an account? Register'),
-                ),
-              ],
-            ),
-          ),
-        ),
+        child: child,
       ),
     );
   }

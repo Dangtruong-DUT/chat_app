@@ -18,13 +18,19 @@ class AccountInfo extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 32,
-          backgroundImage: user.avatar != null && user.avatar!.isNotEmpty
-              ? NetworkImage(user.avatar!)
-              : const AssetImage('assets/images/common/avatar_placeholder.gif')
-                    as ImageProvider,
+        SizedBox(
+          width: 60,
+          height: 60,
+          child: CircleAvatar(
+            backgroundImage: user.avatar != null && user.avatar!.isNotEmpty
+                ? NetworkImage(user.avatar!)
+                : const AssetImage(
+                        'assets/images/common/avatar_placeholder.gif',
+                      )
+                      as ImageProvider,
+          ),
         ),
+
         const SizedBox(width: 16),
 
         Expanded(
