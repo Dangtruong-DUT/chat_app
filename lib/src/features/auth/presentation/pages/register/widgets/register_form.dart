@@ -1,6 +1,9 @@
 import 'package:chat_app/src/core/utils/validation/register.validation.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register-event.dart';
 
 class RegisterForm extends StatefulWidget {
   final String? prefilledEmail;
@@ -98,12 +101,20 @@ class _RegisterFormState extends State<RegisterForm> {
     final name = _nameController.text;
     final password = _passwordController.text;
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Register tapped: $email / $name / ${'*' * password.length}',
+    // Dispatch register event to RegisterBloc
+    try {
+      context.read<RegisterBloc>().add(
+        RegisterSubmitted(email: email, name: name, password: password),
+      );
+    } catch (_) {
+      // If no bloc is provided, fallback to a snackbar for developer feedback
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Register tapped: $email / $name / ${'*' * password.length}',
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 }
