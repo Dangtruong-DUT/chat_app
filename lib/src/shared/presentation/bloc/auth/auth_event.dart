@@ -12,3 +12,8 @@ class AuthLoginRequested extends AuthEvent {
   final User user;
   AuthLoginRequested({required this.user});
 }
+
+class AuthDeleteLoginHistoryRequested extends AuthEvent {
+  final String id;
+  AuthDeleteLoginHistoryRequested({required this.id});
+}

@@ -25,4 +25,7 @@ class User {
   };
 
   Json toJson() => {'id': id, 'name': name, 'avatar': avatar, 'email': email};
+
+  static List<User> fromJsonList(JsonList jsonList) =>
+      jsonList.map((json) => User.fromJson(json)).toList();
 }

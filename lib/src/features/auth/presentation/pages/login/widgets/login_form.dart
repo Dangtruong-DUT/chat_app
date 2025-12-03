@@ -9,7 +9,8 @@ import 'package:chat_app/src/core/utils/validation/login.validation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final String? prefilledEmail;
+  const LoginForm({super.key, this.prefilledEmail});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -19,6 +20,14 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.prefilledEmail != null) {
+      _emailController.text = widget.prefilledEmail!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

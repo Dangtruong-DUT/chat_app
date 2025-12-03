@@ -16,7 +16,7 @@ class SplashScreen extends StatelessWidget {
         if (state is Authenticated) {
           GoRouter.of(context).go(AppRoutesConfig.chats);
         } else if (state is Unauthenticated) {
-          GoRouter.of(context).go(AppRoutesConfig.login);
+          GoRouter.of(context).go(AppRoutesConfig.auth);
         }
       },
       child: Scaffold(

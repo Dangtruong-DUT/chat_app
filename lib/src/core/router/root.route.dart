@@ -33,10 +33,14 @@ class AppRouter {
     if (currentAuthState is AuthLoading) return AppRoutesConfig.splash;
 
     final isAuthenticated = currentAuthState is Authenticated;
-    final isProtectedPath = AppRoutesConfig.protected.contains(state.fullPath);
+    final isProtectedPath = AppRoutesConfig.protected.any(
+      (path) => state.fullPath!.startsWith(path),
+    );
     if (!isAuthenticated && isProtectedPath) return AppRoutesConfig.auth;
 
-    final isAuthPage = AppRoutesConfig.authPages.contains(state.fullPath);
+    final isAuthPage = AppRoutesConfig.authPages.any(
+      (path) => state.fullPath!.startsWith(path),
+    );
     if (isAuthenticated && isAuthPage) return AppRoutesConfig.chats;
 
     return null;

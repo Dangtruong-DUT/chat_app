@@ -27,6 +27,7 @@ class ChatListItem extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.bodySmall,
       ),
+      trailing: const Icon(Icons.chevron_right, color: Colors.grey),
       onTap: () {
         GoRouter.of(context).push('/chats/${chat.id}');
       },

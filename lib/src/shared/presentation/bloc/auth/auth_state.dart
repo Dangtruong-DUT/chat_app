@@ -10,7 +10,8 @@ class Authenticated extends AuthState {
 }
 
 class Unauthenticated extends AuthState {
-  const Unauthenticated();
+  final List<User> loginHistory;
+  const Unauthenticated({this.loginHistory = const []});
 }
 
 class AuthLoading extends AuthState {

@@ -2,6 +2,9 @@ import 'package:chat_app/src/core/router/root.route.dart';
 import 'package:chat_app/src/shared/domain/usecases/clear_current_user.usecase.dart';
 import 'package:chat_app/src/shared/domain/usecases/get_current_user.usecase.dart';
 import 'package:chat_app/src/shared/domain/usecases/save_current_user.usecase.dart';
+import 'package:chat_app/src/shared/domain/usecases/get_login_history.usecase.dart';
+import 'package:chat_app/src/shared/domain/usecases/add_login_history.usecase.dart';
+import 'package:chat_app/src/shared/domain/usecases/delete_login_history.usecase.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +26,9 @@ void main() async {
             getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
             clearCurrentUserUseCase: getIt<ClearCurrentUserUseCase>(),
             saveCurrentUserUseCase: getIt<SaveCurrentUserUseCase>(),
+            getLoginHistoryUseCase: getIt<GetLoginHistoryUseCase>(),
+            addLoginHistoryUseCase: getIt<AddLoginHistoryUseCase>(),
+            deleteLoginHistoryUseCase: getIt<DeleteLoginHistoryUseCase>(),
           )..add(AuthCheckRequested()),
         ),
       ],

@@ -1,3 +1,4 @@
+import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/usecases/usecase.dart';
 import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';
 
@@ -8,6 +9,10 @@ class ClearCurrentUserUseCase implements UseCase<void, void> {
 
   @override
   Future<void> call({required void params}) async {
-    await repository.clearLoginData();
+    try {
+      await repository.clearLoginData();
+    } catch (e) {
+      Logger.error('ClearCurrentUserUseCase - error: ${e.toString()}');
+    }
   }
 }

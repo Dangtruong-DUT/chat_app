@@ -69,7 +69,7 @@ class HomeRouter {
 
   static int _getTabIndexByRoute(String location) {
     for (int i = 0; i < _homeTabs.length; i++) {
-      if (location == _homeTabs[i].route) return i;
+      if (location.startsWith(_homeTabs[i].route)) return i;
     }
     return 0;
   }
