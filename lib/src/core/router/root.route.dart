@@ -1,4 +1,4 @@
-import 'package:chat_app/src/features/auth/presentation/pages/splash/index.dart';
+import 'package:chat_app/src/features/home/presentation/pages/chat_detail/index.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +12,15 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: AppRoutesConfig.splash,
+    initialLocation: AppRoutesConfig.chats,
     routes: [
-      GoRoute(
-        path: AppRoutesConfig.splash,
-        builder: (_, __) => const SplashScreen(),
-      ),
       ...AuthRouter.routes,
       HomeRouter.routes,
+      GoRoute(
+        path: AppRoutesConfig.chatDetail,
+        builder: (_, state) =>
+            ChatDetailScreen(chatId: state.pathParameters['chatId']!),
+      ),
     ],
     redirect: _redirectLogic,
   );
@@ -29,14 +30,14 @@ class AppRouter {
       context,
       listen: false,
     ).state;
-    if (currentAuthState is AuthLoading) return null;
-    final isAuthenticated = currentAuthState is Authenticated;
+    if (currentAuthState is AuthLoading) return AppRoutesConfig.splash;
 
+    final isAuthenticated = currentAuthState is Authenticated;
     final isProtectedPath = AppRoutesConfig.protected.contains(state.fullPath);
-    if (!isAuthenticated && isProtectedPath) return AppRoutesConfig.login;
+    if (!isAuthenticated && isProtectedPath) return AppRoutesConfig.auth;
 
     final isAuthPage = AppRoutesConfig.authPages.contains(state.fullPath);
-    if (isAuthenticated && isAuthPage) return AppRoutesConfig.home;
+    if (isAuthenticated && isAuthPage) return AppRoutesConfig.chats;
 
     return null;
   }

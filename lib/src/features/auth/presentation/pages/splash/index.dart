@@ -1,5 +1,4 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +11,15 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _handleAuthState(context, context.read<AuthBloc>().state);
-    return _buildBlocListener(
-      Scaffold(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is Authenticated) {
+          GoRouter.of(context).go(AppRoutesConfig.chats);
+        } else if (state is Unauthenticated) {
+          GoRouter.of(context).go(AppRoutesConfig.login);
+        }
+      },
+      child: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -23,24 +28,5 @@ class SplashScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Widget _buildBlocListener(Widget child) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        _handleAuthState(context, state);
-      },
-      child: child,
-    );
-  }
-
-  void _handleAuthState(BuildContext context, AuthState state) {
-    if (state is Authenticated) {
-      GoRouter.of(context).go(AppRoutesConfig.home);
-    } else if (state is Unauthenticated) {
-      GoRouter.of(context).go(AppRoutesConfig.auth);
-    } else {
-      Logger.debug('SplashScreen - Auth State: ${state.runtimeType}');
-    }
   }
 }

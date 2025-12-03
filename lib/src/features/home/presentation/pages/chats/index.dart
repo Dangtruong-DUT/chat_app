@@ -1,6 +1,5 @@
-import 'package:chat_app/src/core/router/root.route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'widgets/chat_list.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
@@ -9,7 +8,10 @@ class ChatListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Chats')),
-      body: Column(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [Expanded(child: ChatList())],
+      ),
     );
   }
 }

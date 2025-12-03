@@ -2,7 +2,7 @@ import 'package:chat_app/main.dart';
 import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/pages/auth/widgets/_mock/index.dart';
+import 'package:chat_app/_mock/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth/widgets/accountItem.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -37,8 +37,7 @@ class _AuthScreenContent extends StatelessWidget {
             children: [
               ...usersMockData
                   .sublist(0, 3)
-                  .map((user) => AccountItem(user: user))
-                  .toList(),
+                  .map((user) => AccountItem(user: user)),
 
               Column(
                 children: [

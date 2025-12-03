@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/home/presentation/pages/chats/index.dart';
-import 'package:chat_app/src/features/home/presentation/pages/home/index.dart';
+import 'package:chat_app/src/features/home/presentation/pages/search/index.dart';
 import 'package:chat_app/src/features/home/presentation/pages/settings/index.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -10,8 +10,12 @@ class HomeRouter {
   HomeRouter._();
 
   static const List<TabModel> _homeTabs = [
-    TabModel(label: 'Home', icon: Icons.home, route: AppRoutesConfig.home),
     TabModel(label: 'Chats', icon: Icons.chat, route: AppRoutesConfig.chats),
+    TabModel(
+      label: 'Search',
+      icon: Icons.search,
+      route: AppRoutesConfig.search,
+    ),
     TabModel(
       label: 'Settings',
       icon: Icons.settings,
@@ -23,12 +27,16 @@ class HomeRouter {
     builder: _buildShell,
     routes: [
       GoRoute(
-        path: AppRoutesConfig.home,
-        builder: (_, __) => const HomeScreen(),
+        path: AppRoutesConfig.chats,
+        builder: (_, __) => const ChatListScreen(),
       ),
       GoRoute(
         path: AppRoutesConfig.chats,
         builder: (_, __) => const ChatListScreen(),
+      ),
+      GoRoute(
+        path: AppRoutesConfig.search,
+        builder: (_, __) => const SearchScreen(),
       ),
       GoRoute(
         path: AppRoutesConfig.settings,
@@ -60,8 +68,8 @@ class HomeRouter {
   }
 
   static int _getTabIndexByRoute(String location) {
-    for (var i = 0; i < _homeTabs.length; i++) {
-      if (location.startsWith(_homeTabs[i].route)) return i;
+    for (int i = 0; i < _homeTabs.length; i++) {
+      if (location == _homeTabs[i].route) return i;
     }
     return 0;
   }

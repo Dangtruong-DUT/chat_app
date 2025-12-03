@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.getCurrentUserUseCase,
     required this.clearCurrentUserUseCase,
     required this.saveCurrentUserUseCase,
-  }) : super(Unauthenticated()) {
+  }) : super(AuthLoading()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
     on<AuthLoginRequested>(_onLoginRequested);
@@ -49,9 +49,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onLoginRequested(AuthLoginRequested event, Emitter<AuthState> emit) {
+  void _onLoginRequested(
+    AuthLoginRequested event,
+    Emitter<AuthState> emit,
+  ) async {
     try {
-      saveCurrentUserUseCase.call(params: event.user);
+      await saveCurrentUserUseCase.call(params: event.user);
       emit(Authenticated(event.user));
     } catch (e) {
       Logger.error('AuthBloc - Login Error: ${e.toString()}');
