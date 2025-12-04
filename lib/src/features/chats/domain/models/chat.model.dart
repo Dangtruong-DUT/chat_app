@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/json.type.dart';
-import 'package:chat_app/src/shared/domain/models/message.model.dart';
+import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
 
 class Chat {
   final String id;

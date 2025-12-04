@@ -1,6 +1,5 @@
 import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/features/auth/domain/dtos/register.dto.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/register.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-state.dart';
@@ -20,7 +19,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async {
     emit(const RegisterLoading());
     try {
-      final body = RegisterBodyDto(
+      final body = RegisterParams(
         email: event.email,
         name: event.name,
         password: event.password,

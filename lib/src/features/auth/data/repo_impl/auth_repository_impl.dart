@@ -3,8 +3,6 @@ import 'package:chat_app/src/core/utils/constants/shared_references.constant.dar
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/json.type.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/features/auth/domain/dtos/login.dto.dart';
-import 'package:chat_app/src/features/auth/domain/dtos/register.dto.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,12 +10,10 @@ import 'package:collection/collection.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
-  Future<User> login(LoginBodyDto body) async {
+  Future<User> login({required String email, required String password}) async {
     try {
       final regiteredUsers = await getUserRegister();
-      final user = regiteredUsers.firstWhereOrNull(
-        (u) => u.email == body.email,
-      );
+      final user = regiteredUsers.firstWhereOrNull((u) => u.email == email);
       if (user == null) {
         throw Exception('User not found');
       }
@@ -29,11 +25,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<User> register(RegisterBodyDto body) async {
+  Future<User> register({
+    required String email,
+    required String password,
+    required String name,
+  }) async {
     try {
-      final user = User(id: idGenerator(), name: body.name, email: body.email);
+      final user = User(id: idGenerator(), name: name, email: email);
       final existingUsers = await getUserRegister();
-      final isExiting = existingUsers.any((u) => u.email == body.email);
+      final isExiting = existingUsers.any((u) => u.email == email);
       if (isExiting) {
         throw Exception('Email already registered');
       }

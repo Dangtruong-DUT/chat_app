@@ -5,4 +5,5 @@ class SharedReferenceConfig {
   static const String loginHistoryKey = 'login_history';
   //temp
   static const String accountListKey = 'account_list';
+  static const String chatConversationsKey = 'chat_conversations';
 }
