@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/json.type.dart';
+import 'package:chat_app/src/core/utils/type.dart';
 
 class User {
   final String id;

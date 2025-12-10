@@ -1,12 +1,17 @@
-import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/features/chats/domain/models/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
 
 class UpdateMessageStatusParams {
   final String messageId;
-  final String status;
+  final MessageStatus status;
+  final String chatId;
 
-  UpdateMessageStatusParams({required this.messageId, required this.status});
+  UpdateMessageStatusParams({
+    required this.messageId,
+    required this.status,
+    required this.chatId,
+  });
 }
 
 class UpdateMessageStatusUseCase
@@ -16,10 +21,8 @@ class UpdateMessageStatusUseCase
 
   @override
   Future<void> call({required UpdateMessageStatusParams params}) async {
-    Logger.debug(
-      'UpdateMessageStatusUseCase - updating ${params.messageId} to ${params.status}',
-    );
     await repository.updateMessageStatus(
+      chatId: params.chatId,
       messageId: params.messageId,
       status: params.status,
     );

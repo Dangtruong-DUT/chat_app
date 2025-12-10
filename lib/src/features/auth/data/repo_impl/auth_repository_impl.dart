@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
 import 'package:chat_app/src/core/utils/id_generator.dart';
-import 'package:chat_app/src/core/utils/json.type.dart';
+import 'package:chat_app/src/core/utils/type.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
@@ -31,7 +31,7 @@ class AuthRepositoryImpl implements AuthRepository {
     required String name,
   }) async {
     try {
-      final user = User(id: idGenerator(), name: name, email: email);
+      final user = User(id: IDGenerator.generator(), name: name, email: email);
       final existingUsers = await getUserRegister();
       final isExiting = existingUsers.any((u) => u.email == email);
       if (isExiting) {

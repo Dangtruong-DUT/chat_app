@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
+import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
 import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
@@ -10,130 +10,133 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   @override
-  Chat getConversations() {
+  Future<Chat> getConversations({required String chatId}) async {
     try {
-      // synchronous API - but SharedPreferences is async. To keep
-      // compatibility with the repository interface we return a
-      // default empty Chat when prefs are not yet available.
-      // Prefer caller to use the usecase which can be async if needed.
-      // Try to read stored conversations synchronously via
-      // SharedPreferences.getInstance() would be async, so return
-      // an empty chat here and consumer can load from prefs separately.
-      // However, to provide meaningful data we'll attempt a quick
-      // synchronous fallback to an empty chat.
-      return Chat(id: '', userId: '', messages: []);
+      final chats = await _loadAllChats();
+
+      if (chats[chatId] != null) {
+        return chats[chatId]!;
+      }
+
+      throw Exception("Chat not found");
     } catch (e) {
-      Logger.error(
-        'ChatRepositoryImpl - getConversations error: ${e.toString()}',
+      Logger.error("getConversations error: $e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Chat> createConversation({
+    required String userId,
+    required String receiverId,
+  }) async {
+    try {
+      final chats = await _loadAllChats();
+
+      final chatId = IDGenerator.generator();
+
+      final newChat = Chat(
+        id: chatId,
+        addedUserIds: [userId, receiverId],
+        messages: [],
       );
-      return Chat(id: '', userId: '', messages: []);
+
+      chats[chatId] = newChat;
+
+      await _saveAllChats(chats);
+
+      return newChat;
+    } catch (e) {
+      Logger.error("createConversation error: $e");
+      rethrow;
     }
   }
 
   @override
   Future<Message> sendMessage({
+    required String chatId,
     required String userId,
     required String receiverId,
     required String content,
-  }) {
-    return Future(() async {
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        final String? chatString = prefs.getString(
-          SharedReferenceConfig.chatConversationsKey,
-        );
+  }) async {
+    try {
+      final chats = await _loadAllChats();
 
-        Chat chat;
-        if (chatString != null) {
-          final Map<String, dynamic> chatJson =
-              jsonDecode(chatString) as Map<String, dynamic>;
-          chat = Chat.fromJson(chatJson.cast<String, dynamic>());
-        } else {
-          chat = Chat(
-            id: DateTime.now().millisecondsSinceEpoch.toString(),
-            userId: userId,
-            messages: [],
-          );
-        }
+      final chat =
+          chats[chatId] ??
+          Chat(id: chatId, addedUserIds: [userId, receiverId], messages: []);
 
-        final message = Message(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          senderId: userId,
-          receiverId: receiverId,
-          content: content,
-          timestamp: DateTime.now(),
-          status: MessageStatus.sent,
-        );
+      final message = Message(
+        id: IDGenerator.generator(),
+        senderId: userId,
+        receiverId: receiverId,
+        content: content,
+        timestamp: DateTime.now(),
+        status: MessageStatus.sent,
+      );
 
-        final updatedMessages = List<Message>.from(chat.messages)..add(message);
-        final updatedChat = Chat(
-          id: chat.id,
-          userId: chat.userId,
-          messages: updatedMessages,
-        );
+      final updatedChat = chat.copyWith(messages: [...chat.messages, message]);
 
-        await prefs.setString(
-          SharedReferenceConfig.chatConversationsKey,
-          jsonEncode(updatedChat.toJson()),
-        );
+      chats[chatId] = updatedChat;
 
-        return message;
-      } catch (e) {
-        Logger.error('ChatRepositoryImpl - sendMessage error: ${e.toString()}');
-        rethrow;
-      }
-    });
+      await _saveAllChats(chats);
+
+      return message;
+    } catch (e) {
+      Logger.error("sendMessage error: $e");
+      rethrow;
+    }
   }
 
   @override
   Future<void> updateMessageStatus({
+    required String chatId,
     required String messageId,
-    required String status,
-  }) {
-    return Future(() async {
-      try {
-        final prefs = await SharedPreferences.getInstance();
-        final String? chatString = prefs.getString(
-          SharedReferenceConfig.chatConversationsKey,
-        );
-        if (chatString == null) return;
+    required MessageStatus status,
+  }) async {
+    try {
+      final chats = await _loadAllChats();
+      if (!chats.containsKey(chatId)) return;
 
-        final Map<String, dynamic> chatJson =
-            jsonDecode(chatString) as Map<String, dynamic>;
-        final chat = Chat.fromJson(chatJson.cast<String, dynamic>());
+      final chat = chats[chatId]!;
 
-        final updatedMessages = chat.messages.map((m) {
-          if (m.id == messageId) {
-            final newStatus = MessageStatus.values.firstWhere(
-              (e) => e.name == status,
-              orElse: () => MessageStatus.sent,
-            );
-            return Message(
-              id: m.id,
-              senderId: m.senderId,
-              receiverId: m.receiverId,
-              content: m.content,
-              timestamp: m.timestamp,
-              status: newStatus,
-            );
-          }
-          return m;
-        }).toList();
+      final updatedMessages = chat.messages.map((m) {
+        if (m.id == messageId) {
+          return m.copyWith(status: status);
+        }
+        return m;
+      }).toList();
 
-        final updatedChat = Chat(
-          id: chat.id,
-          userId: chat.userId,
-          messages: updatedMessages,
-        );
-        await prefs.setString(
-          SharedReferenceConfig.chatConversationsKey,
-          jsonEncode(updatedChat.toJson()),
-        );
-      } catch (e) {
-        Logger.error(
-          'ChatRepositoryImpl - updateMessageStatus error: ${e.toString()}',
-        );
-      }
-    });
+      chats[chatId] = chat.copyWith(messages: updatedMessages);
+
+      await _saveAllChats(chats);
+    } catch (e) {
+      Logger.error("updateMessageStatus error: $e");
+    }
+  }
+
+  Future<Map<String, Chat>> _loadAllChats() async {
+    final store = await SharedPreferences.getInstance();
+    final raw = store.getString(SharedReferenceConfig.chatConversationsKey);
+
+    if (raw == null) return {};
+
+    final map = jsonDecode(raw) as Map<String, dynamic>;
+
+    return map.map(
+      (key, value) =>
+          MapEntry(key, Chat.fromJson(value as Map<String, dynamic>)),
+    );
+  }
+
+  Future<void> _saveAllChats(Map<String, Chat> chats) async {
+    final store = await SharedPreferences.getInstance();
+
+    final jsonMap = chats.map((key, chat) => MapEntry(key, chat.toJson()));
+
+    await store.setString(
+      SharedReferenceConfig.chatConversationsKey,
+      jsonEncode(jsonMap),
+    );
   }
 }

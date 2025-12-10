@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
-import 'package:chat_app/src/core/utils/json.type.dart';
+import 'package:chat_app/src/core/utils/type.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';

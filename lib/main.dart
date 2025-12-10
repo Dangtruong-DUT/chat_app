@@ -12,11 +12,13 @@ import 'package:chat_app/src/core/theme/app_theme.dart';
 import 'package:chat_app/src/shared/app_injection.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 
 final getIt = GetIt.instance;
 
 void main() async {
   getIt.debugEventsEnabled = true;
+  initCustomTimeMessages();
   await configureAppDependencies();
   runApp(
     MultiBlocProvider(

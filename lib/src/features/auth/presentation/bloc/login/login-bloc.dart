@@ -18,7 +18,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async {
     emit(const LoginLoading());
     try {
-      final user = LoginParams(email: event.email, password: event.password);
+      final user = LoginUseCaseParams(
+        email: event.email,
+        password: event.password,
+      );
       final loggedInUser = await loginUseCase(params: user);
       emit(LoginSuccess(loggedInUser));
     } on ErrorException catch (e) {

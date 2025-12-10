@@ -1,12 +1,10 @@
+import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 
 class IncomingTextMessageBubble extends StatelessWidget {
-  final String text, time;
-  const IncomingTextMessageBubble({
-    required this.text,
-    required this.time,
-    super.key,
-  });
+  final Message message;
+  const IncomingTextMessageBubble({required this.message, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +20,12 @@ class IncomingTextMessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(text),
+            Text(message.content),
             SizedBox(height: 2),
-            Text(time, style: TextStyle(fontSize: 10, color: Colors.black54)),
+            Text(
+              formatTimeAgo(dateTime: message.timestamp),
+              style: TextStyle(fontSize: 10, color: Colors.black54),
+            ),
           ],
         ),
       ),

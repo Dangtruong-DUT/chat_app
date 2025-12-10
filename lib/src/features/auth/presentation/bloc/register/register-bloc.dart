@@ -19,7 +19,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   ) async {
     emit(const RegisterLoading());
     try {
-      final body = RegisterParams(
+      final body = RegisterUseCaseParams(
         email: event.email,
         name: event.name,
         password: event.password,
