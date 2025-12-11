@@ -3,14 +3,63 @@ import 'package:chat_app/src/core/utils/constants/shared_references.constant.dar
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
+import 'package:chat_app/src/features/chats/domain/models/chat_summary.model.dart';
 import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
 import 'package:chat_app/src/features/chats/domain/models/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
+import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
+  Map<String, Chat>? _chatCache;
+  Map<String, User>? _userCache;
+
   @override
-  Future<Chat> getConversations({required String chatId}) async {
+  Future<List<ChatSummary>> getAllConversations({
+    required String userId,
+  }) async {
+    try {
+      final chats = await _loadAllChats();
+      if (chats.isEmpty) return [];
+
+      final users = await _loadAllUsers();
+
+      final summaries = chats.values
+          .where((chat) => chat.addedUserIds.contains(userId))
+          .map((chat) {
+            final partnerId = chat.addedUserIds.firstWhere(
+              (id) => id != userId,
+              orElse: () => userId,
+            );
+
+            final partner = users[partnerId] ?? _fallbackUser(partnerId);
+            final lastMessage = chat.messages.isNotEmpty
+                ? chat.messages.last.content
+                : '';
+            final lastUpdated = chat.messages.isNotEmpty
+                ? chat.messages.last.timestamp
+                : DateTime.fromMillisecondsSinceEpoch(0);
+
+            return ChatSummary(
+              id: chat.id,
+              user: partner,
+              lastMessage: lastMessage,
+              lastUpdated: lastUpdated,
+            );
+          })
+          .toList();
+
+      summaries.sort((a, b) => b.lastUpdated.compareTo(a.lastUpdated));
+
+      return summaries;
+    } catch (e) {
+      Logger.error("getAllConversations error: $e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Chat> getConversationById({required String chatId}) async {
     try {
       final chats = await _loadAllChats();
 
@@ -115,18 +164,29 @@ class ChatRepositoryImpl implements ChatRepository {
     }
   }
 
-  Future<Map<String, Chat>> _loadAllChats() async {
+  Future<Map<String, Chat>> _loadAllChats({bool forceRefresh = false}) async {
+    if (!forceRefresh && _chatCache != null) {
+      return Map<String, Chat>.from(_chatCache!);
+    }
+
     final store = await SharedPreferences.getInstance();
     final raw = store.getString(SharedReferenceConfig.chatConversationsKey);
 
-    if (raw == null) return {};
+    if (raw == null) {
+      _chatCache = {};
+      return {};
+    }
 
     final map = jsonDecode(raw) as Map<String, dynamic>;
 
-    return map.map(
+    final parsed = map.map(
       (key, value) =>
           MapEntry(key, Chat.fromJson(value as Map<String, dynamic>)),
     );
+
+    _chatCache = Map<String, Chat>.from(parsed);
+
+    return Map<String, Chat>.from(_chatCache!);
   }
 
   Future<void> _saveAllChats(Map<String, Chat> chats) async {
@@ -137,6 +197,46 @@ class ChatRepositoryImpl implements ChatRepository {
     await store.setString(
       SharedReferenceConfig.chatConversationsKey,
       jsonEncode(jsonMap),
+    );
+
+    _chatCache = Map<String, Chat>.from(chats);
+  }
+
+  Future<Map<String, User>> _loadAllUsers({bool forceRefresh = false}) async {
+    if (!forceRefresh && _userCache != null) {
+      return Map<String, User>.from(_userCache!);
+    }
+
+    try {
+      final store = await SharedPreferences.getInstance();
+      final raw = store.getString(SharedReferenceConfig.accountListKey);
+
+      if (raw == null) {
+        _userCache = {};
+        return {};
+      }
+
+      final decoded = jsonDecode(raw) as List<dynamic>;
+      final users = decoded
+          .map((json) => User.fromJson(json as Map<String, dynamic>))
+          .toList();
+
+      _userCache = {for (final user in users) user.id: user};
+
+      return Map<String, User>.from(_userCache!);
+    } catch (e) {
+      Logger.error('Load users error: $e');
+      _userCache = {};
+      return {};
+    }
+  }
+
+  User _fallbackUser(String userId) {
+    // Provide a lightweight placeholder when no stored profile exists.
+    return User(
+      id: userId,
+      name: 'Unknown User',
+      email: 'unknown_$userId@chat.app',
     );
   }
 }

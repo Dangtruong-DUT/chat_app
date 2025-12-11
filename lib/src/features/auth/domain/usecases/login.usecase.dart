@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 
@@ -9,7 +9,7 @@ class LoginUseCaseParams {
   LoginUseCaseParams({required this.email, required this.password});
 }
 
-class LoginUseCase extends UseCase<void, LoginUseCaseParams> {
+class LoginUseCase extends BaseUseCase<void, LoginUseCaseParams> {
   final AuthRepository repository;
   LoginUseCase({required this.repository});
 

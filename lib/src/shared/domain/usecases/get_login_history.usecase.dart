@@ -1,8 +1,8 @@
-import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';
 
-class GetLoginHistoryUseCase implements UseCase<List<User>, void> {
+class GetLoginHistoryUseCase implements BaseUseCase<List<User>, void> {
   final AuthRepository repository;
 
   GetLoginHistoryUseCase({required this.repository});

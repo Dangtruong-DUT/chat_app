@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
 
@@ -16,7 +16,7 @@ class SendMessageParams {
   });
 }
 
-class SendMessageUseCase implements UseCase<Message, SendMessageParams> {
+class SendMessageUseCase implements BaseUseCase<Message, SendMessageParams> {
   final ChatRepository repository;
   SendMessageUseCase({required this.repository});
 

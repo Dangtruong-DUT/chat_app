@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 
@@ -14,7 +14,7 @@ class RegisterUseCaseParams {
   });
 }
 
-class RegisterUseCase extends UseCase<void, RegisterUseCaseParams> {
+class RegisterUseCase extends BaseUseCase<void, RegisterUseCaseParams> {
   final AuthRepository repository;
   RegisterUseCase({required this.repository});
 

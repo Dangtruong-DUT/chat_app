@@ -1,9 +1,9 @@
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/core/utils/usecases/usecase.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';
 
-class AddLoginHistoryUseCase implements UseCase<List<User>, User> {
+class AddLoginHistoryUseCase implements BaseUseCase<List<User>, User> {
   final AuthRepository repository;
   final int maxItems;
 

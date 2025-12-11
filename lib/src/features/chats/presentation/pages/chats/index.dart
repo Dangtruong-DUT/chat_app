@@ -10,7 +10,7 @@ class ChatListScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Chats')),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Expanded(child: ChatList())],
+        children: [Expanded(child: ChatHistoryList(chats: []))],
       ),
     );
   }
