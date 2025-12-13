@@ -10,7 +10,7 @@ import 'package:chat_app/src/shared/domain/usecases/save_current_user.usecase.da
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
+final _getIt = GetIt.instance;
 
 class SharedInjectionModule implements BaseInjectionModule {
   @override
@@ -21,40 +21,40 @@ class SharedInjectionModule implements BaseInjectionModule {
   }
 
   Future<void> _configureRepositoryDependencies() async {
-    getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+    _getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   }
 
   Future<void> _configureUseCaseDependencies() async {
-    getIt
+    _getIt
       ..registerSingleton<GetCurrentUserUseCase>(
-        GetCurrentUserUseCase(repository: getIt<AuthRepository>()),
+        GetCurrentUserUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<ClearCurrentUserUseCase>(
-        ClearCurrentUserUseCase(repository: getIt<AuthRepository>()),
+        ClearCurrentUserUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<SaveCurrentUserUseCase>(
-        SaveCurrentUserUseCase(repository: getIt<AuthRepository>()),
+        SaveCurrentUserUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<GetLoginHistoryUseCase>(
-        GetLoginHistoryUseCase(repository: getIt<AuthRepository>()),
+        GetLoginHistoryUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<AddLoginHistoryUseCase>(
-        AddLoginHistoryUseCase(repository: getIt<AuthRepository>()),
+        AddLoginHistoryUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<DeleteLoginHistoryUseCase>(
-        DeleteLoginHistoryUseCase(repository: getIt<AuthRepository>()),
+        DeleteLoginHistoryUseCase(repository: _getIt<AuthRepository>()),
       );
   }
 
   Future<void> _configureBlocDependencies() async {
-    getIt.registerFactory<AuthBloc>(
+    _getIt.registerFactory<AuthBloc>(
       () => AuthBloc(
-        getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
-        clearCurrentUserUseCase: getIt<ClearCurrentUserUseCase>(),
-        saveCurrentUserUseCase: getIt<SaveCurrentUserUseCase>(),
-        getLoginHistoryUseCase: getIt<GetLoginHistoryUseCase>(),
-        addLoginHistoryUseCase: getIt<AddLoginHistoryUseCase>(),
-        deleteLoginHistoryUseCase: getIt<DeleteLoginHistoryUseCase>(),
+        getCurrentUserUseCase: _getIt<GetCurrentUserUseCase>(),
+        clearCurrentUserUseCase: _getIt<ClearCurrentUserUseCase>(),
+        saveCurrentUserUseCase: _getIt<SaveCurrentUserUseCase>(),
+        getLoginHistoryUseCase: _getIt<GetLoginHistoryUseCase>(),
+        addLoginHistoryUseCase: _getIt<AddLoginHistoryUseCase>(),
+        deleteLoginHistoryUseCase: _getIt<DeleteLoginHistoryUseCase>(),
       ),
     );
   }

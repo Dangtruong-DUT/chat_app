@@ -8,17 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
-
 void main() async {
-  getIt.debugEventsEnabled = true;
+  GetIt.instance.debugEventsEnabled = true;
   initCustomTimeMessages();
   await AppInjectionModule().register();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (_) => getIt<AuthBloc>()..add(AuthCheckRequested()),
+          create: (_) => GetIt.instance<AuthBloc>()..add(AuthCheckRequested()),
         ),
       ],
       child: const MyApp(),

@@ -10,7 +10,7 @@ import 'package:chat_app/src/features/chats/presentation/bloc/chatDetail/chat_de
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
+final _getIt = GetIt.instance;
 
 class ChatsInjectionModule implements BaseInjectionModule {
   @override
@@ -21,41 +21,41 @@ class ChatsInjectionModule implements BaseInjectionModule {
   }
 
   Future<void> _configureRepositoryDependencies() async {
-    getIt.registerSingleton<ChatRepository>(ChatRepositoryImpl());
+    _getIt.registerSingleton<ChatRepository>(ChatRepositoryImpl());
   }
 
   Future<void> _configureUseCaseDependencies() async {
-    getIt
+    _getIt
       ..registerSingleton<GetAllConversationUseCase>(
-        GetAllConversationUseCase(repository: getIt<ChatRepository>()),
+        GetAllConversationUseCase(repository: _getIt<ChatRepository>()),
       )
       ..registerSingleton<GetConversationUseCase>(
-        GetConversationUseCase(repository: getIt<ChatRepository>()),
+        GetConversationUseCase(repository: _getIt<ChatRepository>()),
       )
       ..registerSingleton<SendMessageUseCase>(
-        SendMessageUseCase(repository: getIt<ChatRepository>()),
+        SendMessageUseCase(repository: _getIt<ChatRepository>()),
       )
       ..registerSingleton<UpdateMessageStatusUseCase>(
-        UpdateMessageStatusUseCase(repository: getIt<ChatRepository>()),
+        UpdateMessageStatusUseCase(repository: _getIt<ChatRepository>()),
       )
       ..registerSingleton<CreateConversationUseCase>(
-        CreateConversationUseCase(chatRepository: getIt<ChatRepository>()),
+        CreateConversationUseCase(chatRepository: _getIt<ChatRepository>()),
       );
   }
 
   Future<void> _configureBlocDependencies() async {
-    getIt
+    _getIt
       ..registerFactory<ChatsBloc>(
         () => ChatsBloc(
-          getAllConversationUseCase: getIt<GetAllConversationUseCase>(),
+          getAllConversationUseCase: _getIt<GetAllConversationUseCase>(),
         ),
       )
       ..registerFactory<ChatDetailBloc>(
         () => ChatDetailBloc(
-          getConversationUseCase: getIt<GetConversationUseCase>(),
-          sendMessageUseCase: getIt<SendMessageUseCase>(),
-          updateMessageStatusUseCase: getIt<UpdateMessageStatusUseCase>(),
-          createConversationUseCase: getIt<CreateConversationUseCase>(),
+          getConversationUseCase: _getIt<GetConversationUseCase>(),
+          sendMessageUseCase: _getIt<SendMessageUseCase>(),
+          updateMessageStatusUseCase: _getIt<UpdateMessageStatusUseCase>(),
+          createConversationUseCase: _getIt<CreateConversationUseCase>(),
         ),
       );
   }

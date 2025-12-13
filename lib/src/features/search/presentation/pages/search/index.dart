@@ -1,4 +1,3 @@
-import 'package:chat_app/src/features/search/domain/usecases/search_users.usecase.dart';
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:chat_app/src/features/search/presentation/pages/search/widgets/input_search.dart';
 import 'package:chat_app/src/features/search/presentation/pages/search/widgets/search_results.dart';
@@ -33,8 +32,7 @@ class SearchScreen extends StatelessWidget {
 
   Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
-      create: (_) =>
-          (SearchBloc(searchUserUseCase: GetIt.instance<SearchUserUseCase>())),
+      create: (_) => GetIt.instance<SearchBloc>(),
       child: child,
     );
   }

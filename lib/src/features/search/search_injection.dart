@@ -5,7 +5,7 @@ import 'package:chat_app/src/features/search/domain/usecases/search_users.usecas
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
+final _getIt = GetIt.instance;
 
 class SearchInjectionModule implements BaseInjectionModule {
   @override
@@ -16,18 +16,18 @@ class SearchInjectionModule implements BaseInjectionModule {
   }
 
   Future<void> _configureRepositoryDependencies() async {
-    getIt.registerSingleton<SearchRepository>(SearchRepositoryImpl());
+    _getIt.registerSingleton<SearchRepository>(SearchRepositoryImpl());
   }
 
   Future<void> _configureUseCaseDependencies() async {
-    getIt.registerSingleton<SearchUserUseCase>(
-      SearchUserUseCase(repository: getIt<SearchRepository>()),
+    _getIt.registerSingleton<SearchUserUseCase>(
+      SearchUserUseCase(repository: _getIt<SearchRepository>()),
     );
   }
 
   Future<void> _configureBlocDependencies() async {
-    getIt.registerFactory<SearchBloc>(
-      () => SearchBloc(searchUserUseCase: getIt<SearchUserUseCase>()),
+    _getIt.registerFactory<SearchBloc>(
+      () => SearchBloc(searchUserUseCase: _getIt<SearchUserUseCase>()),
     );
   }
 }

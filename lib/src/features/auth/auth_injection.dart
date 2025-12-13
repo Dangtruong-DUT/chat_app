@@ -7,7 +7,7 @@ import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.da
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final getIt = GetIt.instance;
+final _getIt = GetIt.instance;
 
 class AuthInjectionModule implements BaseInjectionModule {
   @override
@@ -18,26 +18,26 @@ class AuthInjectionModule implements BaseInjectionModule {
   }
 
   Future<void> _configureRepositoryDependencies() async {
-    getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+    _getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   }
 
   Future<void> _configureUseCaseDependencies() async {
-    getIt
+    _getIt
       ..registerSingleton<LoginUseCase>(
-        LoginUseCase(repository: getIt<AuthRepository>()),
+        LoginUseCase(repository: _getIt<AuthRepository>()),
       )
       ..registerSingleton<RegisterUseCase>(
-        RegisterUseCase(repository: getIt<AuthRepository>()),
+        RegisterUseCase(repository: _getIt<AuthRepository>()),
       );
   }
 
   Future<void> _configureBlocDependencies() async {
-    getIt
+    _getIt
       ..registerFactory<LoginBloc>(
-        () => LoginBloc(loginUseCase: getIt<LoginUseCase>()),
+        () => LoginBloc(loginUseCase: _getIt<LoginUseCase>()),
       )
       ..registerFactory<RegisterBloc>(
-        () => RegisterBloc(registerUseCase: getIt<RegisterUseCase>()),
+        () => RegisterBloc(registerUseCase: _getIt<RegisterUseCase>()),
       );
   }
 }
