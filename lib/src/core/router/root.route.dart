@@ -18,8 +18,10 @@ class AppRouter {
       HomeRouter.routes,
       GoRoute(
         path: AppRoutesConfig.chatDetail,
-        builder: (_, state) =>
-            ChatDetailScreen(chatId: state.pathParameters['chatId']!),
+        builder: (_, state) => ChatDetailScreen(
+          chatId: state.uri.queryParameters[ChatDetailRouteQueryKeys.chatId],
+          userId: state.uri.queryParameters[ChatDetailRouteQueryKeys.userId],
+        ),
       ),
     ],
     redirect: _redirectLogic,

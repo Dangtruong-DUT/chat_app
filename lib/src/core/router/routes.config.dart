@@ -8,9 +8,16 @@ class AppRoutesConfig {
 
   static const chats = '/chats';
   static const settings = '/settings';
-  static const chatDetail = '/chats/:chatId';
+  static const chatDetail = '/chat-detail';
   static const search = '/search';
 
   static const protected = <String>[chats, chatDetail];
   static const authPages = <String>[login, register, auth];
+}
+
+class ChatDetailRouteQueryKeys {
+  ChatDetailRouteQueryKeys._();
+
+  static const chatId = 'chatId';
+  static const userId = 'userId';
 }

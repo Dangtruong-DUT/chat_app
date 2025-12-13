@@ -1,3 +1,4 @@
+import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/chats/domain/models/chat_summary.model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -29,9 +30,16 @@ class ChatHistoryListItem extends StatelessWidget {
         style: Theme.of(context).textTheme.bodySmall,
       ),
       trailing: const Icon(Icons.chevron_right, color: Colors.grey),
-      onTap: () {
-        GoRouter.of(context).push('/chats/${chat.id}');
-      },
+      onTap: () => _onTapItem(context),
+    );
+  }
+
+  void _onTapItem(BuildContext context) {
+    GoRouter.of(context).push(
+      Uri(
+        path: AppRoutesConfig.chatDetail,
+        queryParameters: {ChatDetailRouteQueryKeys.chatId: chat.id},
+      ).toString(),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
+import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/type.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
@@ -15,7 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final regiteredUsers = await getUserRegister();
       final user = regiteredUsers.firstWhereOrNull((u) => u.email == email);
       if (user == null) {
-        throw Exception('User not found');
+        throw ErrorException(message: 'User not found!');
       }
       return Future.delayed(const Duration(seconds: 2), () => user);
     } catch (e) {
@@ -35,7 +36,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final existingUsers = await getUserRegister();
       final isExiting = existingUsers.any((u) => u.email == email);
       if (isExiting) {
-        throw Exception('Email already registered');
+        throw ErrorException(message: 'Email already registered');
       }
       final updatedUsers = [...existingUsers, user];
       await saveUserRegister(updatedUsers);
@@ -48,8 +49,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<List<User>> getUserRegister() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final usersString = prefs.getString(SharedReferenceConfig.accountListKey);
+      final store = await SharedPreferences.getInstance();
+      final usersString = store.getString(SharedReferenceConfig.accountListKey);
       if (usersString == null) return [];
       final List<dynamic> usersJson = jsonDecode(usersString);
       final List<Json> jsonList = usersJson.map((e) => e as Json).toList();
@@ -58,15 +59,15 @@ class AuthRepositoryImpl implements AuthRepository {
       Logger.error(
         'AuthRepositoryImpl - Get User Register Error: ${e.toString()}',
       );
+      rethrow;
     }
-    return [];
   }
 
   Future<void> saveUserRegister(List<User> users) async {
     try {
-      final data = await SharedPreferences.getInstance();
+      final store = await SharedPreferences.getInstance();
       final usersJson = users.map((u) => u.toJson()).toList();
-      await data.setString(
+      await store.setString(
         SharedReferenceConfig.accountListKey,
         jsonEncode(usersJson),
       );
@@ -74,6 +75,7 @@ class AuthRepositoryImpl implements AuthRepository {
       Logger.error(
         'AuthRepositoryImpl - Save User Register Error: ${e.toString()}',
       );
+      rethrow;
     }
   }
 }

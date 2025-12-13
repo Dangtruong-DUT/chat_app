@@ -9,7 +9,7 @@ import 'package:chat_app/src/shared/domain/usecases/add_login_history.usecase.da
 import 'package:chat_app/src/shared/domain/usecases/delete_login_history.usecase.dart';
 
 final getIt = GetIt.instance;
-Future<void> configureSharedDependencies() async {
+Future<void> configureSharedFutureDependencies() async {
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl());
   getIt.registerSingleton<GetCurrentUserUseCase>(
     GetCurrentUserUseCase(repository: getIt<AuthRepository>()),
