@@ -9,6 +9,7 @@ import 'package:chat_app/src/features/chats/domain/models/message_status.enum.da
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
 import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:collection/collection.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
   Map<String, Chat>? _chatCache;
@@ -81,6 +82,16 @@ class ChatRepositoryImpl implements ChatRepository {
   }) async {
     try {
       final chats = await _loadAllChats();
+
+      final existingChat = chats.values.firstWhereOrNull(
+        (chat) =>
+            chat.addedUserIds.contains(userId) &&
+            chat.addedUserIds.contains(receiverId),
+      );
+
+      if (existingChat != null) {
+        return existingChat;
+      }
 
       final chatId = IDGenerator.generator();
 
@@ -161,6 +172,7 @@ class ChatRepositoryImpl implements ChatRepository {
       await _saveAllChats(chats);
     } catch (e) {
       Logger.error("updateMessageStatus error: $e");
+      rethrow;
     }
   }
 
@@ -232,7 +244,6 @@ class ChatRepositoryImpl implements ChatRepository {
   }
 
   User _fallbackUser(String userId) {
-    // Provide a lightweight placeholder when no stored profile exists.
     return User(
       id: userId,
       name: 'Unknown User',

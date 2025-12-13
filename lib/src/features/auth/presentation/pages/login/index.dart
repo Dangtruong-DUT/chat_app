@@ -1,11 +1,10 @@
-import 'package:chat_app/main.dart';
-import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/login/widgets/login_form.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
@@ -53,7 +52,7 @@ class LoginScreen extends StatelessWidget {
 
   Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
-      create: (context) => (LoginBloc(loginUseCase: getIt<LoginUseCase>())),
+      create: (_) => GetIt.instance<LoginBloc>(),
       child: MultiBlocListener(
         listeners: [
           BlocListener<LoginBloc, LoginState>(

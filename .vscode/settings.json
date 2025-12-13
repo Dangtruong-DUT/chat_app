@@ -1,5 +1,6 @@
 {
   "dart.flutterHotReloadOnSave": "all",
   "dart.hotReloadOnSave": "all",
-  "files.autoSave": "onWindowChange"
+  "files.autoSave": "onWindowChange",
+  "cSpell.words": ["usecase", "usecases"]
 }

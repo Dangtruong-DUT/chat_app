@@ -6,6 +6,7 @@ import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-state.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
@@ -53,8 +54,7 @@ class RegisterScreen extends StatelessWidget {
 
   Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
-      create: (context) =>
-          (RegisterBloc(registerUseCase: getIt<RegisterUseCase>())),
+      create: (_) => GetIt.instance<RegisterBloc>(),
       child: MultiBlocListener(
         listeners: [
           BlocListener<RegisterBloc, RegisterState>(
