@@ -1,5 +1,3 @@
-import 'package:chat_app/main.dart';
-import 'package:chat_app/src/features/auth/domain/usecases/register.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/register/widgets/register_form.dart';
 import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
