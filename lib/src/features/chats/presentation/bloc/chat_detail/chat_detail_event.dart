@@ -3,8 +3,11 @@ sealed class ChatsEvent {
 }
 
 class ChatsLoad extends ChatsEvent {
-  final String chatId;
-  const ChatsLoad({required this.chatId});
+  final String? chatId;
+  final String userId;
+  final String? receiverId;
+
+  const ChatsLoad({this.chatId, required this.userId, this.receiverId});
 }
 
 class ChatSendMessage extends ChatsEvent {
@@ -25,14 +28,4 @@ class ChatUpdateStatusMessage extends ChatsEvent {
   final String chatId;
 
   const ChatUpdateStatusMessage({required this.chatId});
-}
-
-class ChatCreateConversation extends ChatsEvent {
-  final String userId;
-  final String receiverId;
-
-  const ChatCreateConversation({
-    required this.userId,
-    required this.receiverId,
-  });
 }

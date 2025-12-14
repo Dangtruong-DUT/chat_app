@@ -5,9 +5,11 @@ import 'package:chat_app/src/features/search/presentation/bloc/search_event.dart
 import 'package:chat_app/src/features/search/presentation/bloc/search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final SearchUserUseCase searchUserUseCase;
+  final SearchUserUseCase _searchUserUseCase;
 
-  SearchBloc({required this.searchUserUseCase}) : super(const SearchInitial()) {
+  SearchBloc({required SearchUserUseCase searchUserUseCase})
+    : _searchUserUseCase = searchUserUseCase,
+      super(const SearchInitial()) {
     on<SearchRequested>(
       _onSearchRequested,
       transformer: debounce(const Duration(milliseconds: 300)),
@@ -22,7 +24,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     emit(const SearchLoading());
     try {
       final searchUseCaseParams = SearchUserUseCaseParams(query: event.query);
-      final results = await searchUserUseCase.call(params: searchUseCaseParams);
+      final results = await _searchUserUseCase.call(
+        params: searchUseCaseParams,
+      );
       emit(SearchLoaded(results: results));
     } catch (e) {
       emit(const SearchLoaded(results: []));

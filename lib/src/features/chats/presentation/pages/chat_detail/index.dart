@@ -1,8 +1,11 @@
 import 'package:chat_app/_mock/index.dart';
+import 'package:chat_app/src/features/chats/presentation/bloc/chatDetail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_app_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class ChatDetailScreen extends StatelessWidget {
   final String? chatId;
@@ -41,6 +44,9 @@ class ChatDetailScreen extends StatelessWidget {
   }
 
   Widget _buildBlocProvider({required Widget child}) {
-    return child;
+    return BlocProvider(
+      create: (_) => GetIt.instance<ChatDetailBloc>(),
+      child: child,
+    );
   }
 }

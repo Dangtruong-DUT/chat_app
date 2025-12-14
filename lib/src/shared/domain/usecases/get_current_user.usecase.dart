@@ -4,13 +4,14 @@ import 'package:chat_app/src/shared/domain/models/user.model.dart';
 import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';
 
 class GetCurrentUserUseCase implements BaseUseCase<User?, void> {
-  final AuthRepository repository;
+  final AuthRepository _repository;
 
-  GetCurrentUserUseCase({required this.repository});
+  GetCurrentUserUseCase({required AuthRepository repository})
+    : _repository = repository;
 
   @override
   Future<User?> call({required void params}) async {
     Logger.debug('Getting current user');
-    return await repository.getLoginData();
+    return await _repository.getLoginData();
   }
 }

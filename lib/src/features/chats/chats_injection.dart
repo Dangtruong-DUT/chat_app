@@ -6,7 +6,7 @@ import 'package:chat_app/src/features/chats/domain/usecases/get_all_conversation
 import 'package:chat_app/src/features/chats/domain/usecases/get_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/send_message.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/update_message_status.usecase.dart';
-import 'package:chat_app/src/features/chats/presentation/bloc/chatDetail/chat_detail_bloc.dart';
+import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
 import 'package:get_it/get_it.dart';
 

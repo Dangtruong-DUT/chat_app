@@ -14,13 +14,14 @@ class CreateConversationUseCaseParams {
 
 class CreateConversationUseCase
     extends BaseUseCase<Chat, CreateConversationUseCaseParams> {
-  final ChatRepository chatRepository;
+  final ChatRepository _chatRepository;
 
-  CreateConversationUseCase({required this.chatRepository});
+  CreateConversationUseCase({required ChatRepository chatRepository})
+    : _chatRepository = chatRepository;
 
   @override
   Future<Chat> call({required CreateConversationUseCaseParams params}) async {
-    return await chatRepository.createConversation(
+    return await _chatRepository.createConversation(
       userId: params.userId,
       receiverId: params.receiverId,
     );

@@ -10,13 +10,14 @@ class GetAllConversationUseCaseParams {
 
 class GetAllConversationUseCase
     implements BaseUseCase<List<ChatSummary>, GetAllConversationUseCaseParams> {
-  final ChatRepository repository;
-  GetAllConversationUseCase({required this.repository});
+  final ChatRepository _repository;
+  GetAllConversationUseCase({required ChatRepository repository})
+    : _repository = repository;
 
   @override
   Future<List<ChatSummary>> call({
     required GetAllConversationUseCaseParams params,
   }) async {
-    return repository.getAllConversations(userId: params.userId);
+    return _repository.getAllConversations(userId: params.userId);
   }
 }

@@ -15,12 +15,13 @@ class RegisterUseCaseParams {
 }
 
 class RegisterUseCase extends BaseUseCase<void, RegisterUseCaseParams> {
-  final AuthRepository repository;
-  RegisterUseCase({required this.repository});
+  final AuthRepository _repository;
+  RegisterUseCase({required AuthRepository repository})
+    : _repository = repository;
 
   @override
   Future<User> call({required RegisterUseCaseParams params}) async {
-    return repository.register(
+    return _repository.register(
       email: params.email,
       password: params.password,
       name: params.name,

@@ -17,12 +17,13 @@ class SendMessageParams {
 }
 
 class SendMessageUseCase implements BaseUseCase<Message, SendMessageParams> {
-  final ChatRepository repository;
-  SendMessageUseCase({required this.repository});
+  final ChatRepository _repository;
+  SendMessageUseCase({required ChatRepository repository})
+    : _repository = repository;
 
   @override
   Future<Message> call({required SendMessageParams params}) async {
-    return repository.sendMessage(
+    return _repository.sendMessage(
       chatId: params.chatId,
       userId: params.userId,
       receiverId: params.receiverId,

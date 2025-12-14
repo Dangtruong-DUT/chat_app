@@ -6,10 +6,11 @@ import 'package:chat_app/src/features/auth/presentation/bloc/register/register-s
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final RegisterUseCase registerUseCase;
+  final RegisterUseCase _registerUseCase;
 
-  RegisterBloc({required this.registerUseCase})
-    : super(const RegisterInitial()) {
+  RegisterBloc({required RegisterUseCase registerUseCase})
+    : _registerUseCase = registerUseCase,
+      super(const RegisterInitial()) {
     on<RegisterSubmitted>(_onRegisterStartedHandler);
   }
 
@@ -24,7 +25,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         name: event.name,
         password: event.password,
       );
-      final registeredUser = await registerUseCase(params: body);
+      final registeredUser = await _registerUseCase.call(params: body);
       emit(RegisterSuccess(registeredUser));
     } on ErrorException catch (e) {
       Logger.error('RegisterBloc + ${e.toString()}');

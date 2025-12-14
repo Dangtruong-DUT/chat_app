@@ -10,11 +10,12 @@ class GetConversationUseCaseParams {
 
 class GetConversationUseCase
     implements BaseUseCase<Chat, GetConversationUseCaseParams> {
-  final ChatRepository repository;
-  GetConversationUseCase({required this.repository});
+  final ChatRepository _repository;
+  GetConversationUseCase({required ChatRepository repository})
+    : _repository = repository;
 
   @override
   Future<Chat> call({required GetConversationUseCaseParams params}) async {
-    return repository.getConversationById(chatId: params.chatId);
+    return _repository.getConversationById(chatId: params.chatId);
   }
 }

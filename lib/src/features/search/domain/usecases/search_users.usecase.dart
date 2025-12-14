@@ -9,11 +9,12 @@ class SearchUserUseCaseParams {
 
 class SearchUserUseCase
     implements BaseUseCase<List<User>, SearchUserUseCaseParams> {
-  final SearchRepository repository;
-  SearchUserUseCase({required this.repository});
+  final SearchRepository _repository;
+  SearchUserUseCase({required SearchRepository repository})
+    : _repository = repository;
 
   @override
   Future<List<User>> call({required SearchUserUseCaseParams params}) async {
-    return repository.searchUsers(query: params.query);
+    return _repository.searchUsers(query: params.query);
   }
 }

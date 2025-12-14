@@ -11,21 +11,27 @@ import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final GetCurrentUserUseCase getCurrentUserUseCase;
-  final ClearCurrentUserUseCase clearCurrentUserUseCase;
-  final SaveCurrentUserUseCase saveCurrentUserUseCase;
-  final GetLoginHistoryUseCase getLoginHistoryUseCase;
-  final AddLoginHistoryUseCase addLoginHistoryUseCase;
-  final DeleteLoginHistoryUseCase deleteLoginHistoryUseCase;
+  final GetCurrentUserUseCase _getCurrentUserUseCase;
+  final ClearCurrentUserUseCase _clearCurrentUserUseCase;
+  final SaveCurrentUserUseCase _saveCurrentUserUseCase;
+  final GetLoginHistoryUseCase _getLoginHistoryUseCase;
+  final AddLoginHistoryUseCase _addLoginHistoryUseCase;
+  final DeleteLoginHistoryUseCase _deleteLoginHistoryUseCase;
 
   AuthBloc({
-    required this.getCurrentUserUseCase,
-    required this.clearCurrentUserUseCase,
-    required this.saveCurrentUserUseCase,
-    required this.getLoginHistoryUseCase,
-    required this.addLoginHistoryUseCase,
-    required this.deleteLoginHistoryUseCase,
-  }) : super(const AuthLoading()) {
+    required GetCurrentUserUseCase getCurrentUserUseCase,
+    required ClearCurrentUserUseCase clearCurrentUserUseCase,
+    required SaveCurrentUserUseCase saveCurrentUserUseCase,
+    required GetLoginHistoryUseCase getLoginHistoryUseCase,
+    required AddLoginHistoryUseCase addLoginHistoryUseCase,
+    required DeleteLoginHistoryUseCase deleteLoginHistoryUseCase,
+  }) : _getCurrentUserUseCase = getCurrentUserUseCase,
+       _clearCurrentUserUseCase = clearCurrentUserUseCase,
+       _saveCurrentUserUseCase = saveCurrentUserUseCase,
+       _getLoginHistoryUseCase = getLoginHistoryUseCase,
+       _addLoginHistoryUseCase = addLoginHistoryUseCase,
+       _deleteLoginHistoryUseCase = deleteLoginHistoryUseCase,
+       super(const AuthLoading()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<AuthLogoutRequested>(_onLogoutRequested);
     on<AuthLoginRequested>(_onLoginRequested);
@@ -39,8 +45,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthLoading());
 
       final results = await Future.wait([
-        getLoginHistoryUseCase.call(params: null),
-        getCurrentUserUseCase.call(params: null),
+        _getLoginHistoryUseCase.call(params: null),
+        _getCurrentUserUseCase.call(params: null),
       ]);
 
       Logger.debug(results[0].runtimeType.toString());
@@ -64,8 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     try {
       final results = await Future.wait([
-        getLoginHistoryUseCase.call(params: null),
-        clearCurrentUserUseCase.call(params: null).then((_) => null),
+        _getLoginHistoryUseCase.call(params: null),
+        _clearCurrentUserUseCase.call(params: null).then((_) => null),
       ]);
       emit(Unauthenticated(loginHistory: results[0] as List<User>));
     } catch (e) {
@@ -79,8 +85,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     try {
       await Future.wait([
-        addLoginHistoryUseCase.call(params: event.user),
-        saveCurrentUserUseCase.call(params: event.user),
+        _addLoginHistoryUseCase.call(params: event.user),
+        _saveCurrentUserUseCase.call(params: event.user),
       ]);
       emit(Authenticated(event.user));
     } catch (e) {
@@ -96,7 +102,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final currentState = state;
       if (currentState is! Unauthenticated) return;
 
-      final updatedHistory = await deleteLoginHistoryUseCase.call(
+      final updatedHistory = await _deleteLoginHistoryUseCase.call(
         params: event.id,
       );
       emit(Unauthenticated(loginHistory: updatedHistory));

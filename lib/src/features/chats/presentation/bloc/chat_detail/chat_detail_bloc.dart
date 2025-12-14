@@ -11,21 +11,24 @@ import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_d
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
-  final GetConversationUseCase getConversationUseCase;
-  final SendMessageUseCase sendMessageUseCase;
-  final UpdateMessageStatusUseCase updateMessageStatusUseCase;
-  final CreateConversationUseCase createConversationUseCase;
+  final GetConversationUseCase _getConversationUseCase;
+  final SendMessageUseCase _sendMessageUseCase;
+  final UpdateMessageStatusUseCase _updateMessageStatusUseCase;
+  final CreateConversationUseCase _createConversationUseCase;
 
   ChatDetailBloc({
-    required this.getConversationUseCase,
-    required this.sendMessageUseCase,
-    required this.updateMessageStatusUseCase,
-    required this.createConversationUseCase,
-  }) : super(const ChatDetailInitial()) {
+    required GetConversationUseCase getConversationUseCase,
+    required SendMessageUseCase sendMessageUseCase,
+    required UpdateMessageStatusUseCase updateMessageStatusUseCase,
+    required CreateConversationUseCase createConversationUseCase,
+  }) : _getConversationUseCase = getConversationUseCase,
+       _sendMessageUseCase = sendMessageUseCase,
+       _updateMessageStatusUseCase = updateMessageStatusUseCase,
+       _createConversationUseCase = createConversationUseCase,
+       super(const ChatDetailInitial()) {
     on<ChatsLoad>(_onLoadConversation);
     on<ChatSendMessage>(_onSendMessage);
     on<ChatUpdateStatusMessage>(_onUpdateMessageStatus);
-    on<ChatCreateConversation>(_onCreateConversation);
   }
 
   Future<void> _onLoadConversation(
@@ -34,8 +37,25 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
   ) async {
     emit(const ChatDetailLoading());
     try {
-      final params = GetConversationUseCaseParams(chatId: event.chatId);
-      final chat = await getConversationUseCase(params: params);
+      if (event.chatId == null && event.receiverId == null) {
+        throw ErrorException(
+          message: "Either chatId or receiverId must be provided",
+        );
+      }
+
+      Chat chat;
+
+      if (event.chatId != null) {
+        final params = GetConversationUseCaseParams(chatId: event.chatId!);
+        chat = await _getConversationUseCase.call(params: params);
+      } else {
+        final params = CreateConversationUseCaseParams(
+          userId: event.userId,
+          receiverId: event.receiverId!,
+        );
+        chat = await _createConversationUseCase.call(params: params);
+      }
+
       emit(ChatDetailLoaded(chat));
     } on ErrorException catch (e) {
       Logger.error('ChatDetailBloc._onLoadConversation: ${e.toString()}');
@@ -66,7 +86,7 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
         receiverId: event.receiverId,
         content: event.content,
       );
-      final newMessage = await sendMessageUseCase(params: params);
+      final newMessage = await _sendMessageUseCase.call(params: params);
 
       final updatedMessages = [...currentState.chat.messages, newMessage];
       final updatedChat = currentState.chat.copyWith(messages: updatedMessages);
@@ -94,7 +114,6 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
     if (currentState is! ChatDetailLoaded) return;
 
     try {
-      // Update all unread messages to read status
       final unreadMessages = currentState.chat.messages.where(
         (msg) => msg.status != MessageStatus.read,
       );
@@ -105,10 +124,9 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
           messageId: message.id,
           status: MessageStatus.read,
         );
-        await updateMessageStatusUseCase(params: params);
+        await _updateMessageStatusUseCase.call(params: params);
       }
 
-      // Update local state
       final updatedMessages = currentState.chat.messages.map((msg) {
         if (msg.status != MessageStatus.read) {
           return msg.copyWith(status: MessageStatus.read);
@@ -122,28 +140,6 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
       Logger.error('ChatDetailBloc._onUpdateMessageStatus: ${e.toString()}');
     } catch (e) {
       Logger.error('ChatDetailBloc._onUpdateMessageStatus: ${e.toString()}');
-    }
-  }
-
-  Future<void> _onCreateConversation(
-    ChatCreateConversation event,
-    Emitter<ChatDetailState> emit,
-  ) async {
-    emit(const ChatDetailLoading());
-    try {
-      final newChat = Chat(
-        id: '',
-        addedUserIds: [event.userId, event.receiverId],
-        messages: [],
-      );
-      emit(ChatDetailLoaded(newChat));
-    } catch (e) {
-      Logger.error('ChatDetailBloc._onCreateConversation: ${e.toString()}');
-      emit(
-        ChatDetailLoadFailure(
-          ErrorException(message: "Failed to create conversation"),
-        ),
-      );
     }
   }
 }

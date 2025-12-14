@@ -16,12 +16,13 @@ class UpdateMessageStatusParams {
 
 class UpdateMessageStatusUseCase
     implements BaseUseCase<void, UpdateMessageStatusParams> {
-  final ChatRepository repository;
-  UpdateMessageStatusUseCase({required this.repository});
+  final ChatRepository _repository;
+  UpdateMessageStatusUseCase({required ChatRepository repository})
+    : _repository = repository;
 
   @override
   Future<void> call({required UpdateMessageStatusParams params}) async {
-    await repository.updateMessageStatus(
+    await _repository.updateMessageStatus(
       chatId: params.chatId,
       messageId: params.messageId,
       status: params.status,

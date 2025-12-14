@@ -10,11 +10,11 @@ class LoginUseCaseParams {
 }
 
 class LoginUseCase extends BaseUseCase<void, LoginUseCaseParams> {
-  final AuthRepository repository;
-  LoginUseCase({required this.repository});
+  final AuthRepository _repository;
+  LoginUseCase({required AuthRepository repository}) : _repository = repository;
 
   @override
   Future<User> call({required LoginUseCaseParams params}) async {
-    return repository.login(email: params.email, password: params.password);
+    return _repository.login(email: params.email, password: params.password);
   }
 }

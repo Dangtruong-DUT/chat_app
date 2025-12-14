@@ -6,9 +6,11 @@ import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.d
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final LoginUseCase loginUseCase;
+  final LoginUseCase _loginUseCase;
 
-  LoginBloc({required this.loginUseCase}) : super(const LoginInitial()) {
+  LoginBloc({required LoginUseCase loginUseCase})
+    : _loginUseCase = loginUseCase,
+      super(const LoginInitial()) {
     on<LoginSubmitted>(_onLoginStartedHandler);
   }
 
@@ -22,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         email: event.email,
         password: event.password,
       );
-      final loggedInUser = await loginUseCase(params: user);
+      final loggedInUser = await _loginUseCase.call(params: user);
       emit(LoginSuccess(loggedInUser));
     } on ErrorException catch (e) {
       Logger.error('LoginBloc + ${e.toString()}');
