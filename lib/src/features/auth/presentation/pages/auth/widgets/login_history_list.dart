@@ -1,9 +1,9 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth/widgets/accountItem.dart';
-import 'package:chat_app/src/shared/domain/models/user.model.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,10 +13,10 @@ class LoginHistoryList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
+    return BlocBuilder<AppAuthBloc, AppAuthState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
-        if (state is Unauthenticated) {
+        if (state is AppUnauthenticated) {
           return Wrap(
             spacing: 8,
             runSpacing: 4,
@@ -37,7 +37,9 @@ class LoginHistoryList extends StatelessWidget {
   }
 
   void _onDeleteAccountTap(BuildContext context, String userId) {
-    context.read<AuthBloc>().add(AuthDeleteLoginHistoryRequested(id: userId));
+    context.read<AppAuthBloc>().add(
+      AppAuthDeleteLoginHistoryRequested(id: userId),
+    );
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Deleted account successfully')),
     );

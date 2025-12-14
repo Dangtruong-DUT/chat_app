@@ -1,6 +1,6 @@
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/index.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

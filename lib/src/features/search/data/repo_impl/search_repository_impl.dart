@@ -3,8 +3,9 @@ import 'package:chat_app/src/core/utils/constants/shared_references.constant.dar
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/type.dart';
 import 'package:chat_app/src/features/search/domain/repositories/search_repository.usecase.dart';
-import 'package:chat_app/src/shared/domain/models/user.model.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:chat_app/src/features/user/data/models/user.model.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
   const SearchRepositoryImpl();
@@ -17,7 +18,7 @@ class SearchRepositoryImpl implements SearchRepository {
       if (usersString == null) return [];
       final List<dynamic> usersJson = jsonDecode(usersString);
       final List<Json> jsonList = usersJson.map((e) => e as Json).toList();
-      final List<User> allUsers = User.fromJsonList(jsonList);
+      final List<UserModel> allUsers = UserModel.fromJsonList(jsonList);
       final lowerCaseQuery = query.toLowerCase();
       final filteredUsers = allUsers.where((user) {
         final nameMatch = user.name.toLowerCase().contains(lowerCaseQuery);

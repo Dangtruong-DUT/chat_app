@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
-import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
 
 class SendMessageParams {

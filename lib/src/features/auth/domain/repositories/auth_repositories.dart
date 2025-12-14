@@ -1,4 +1,4 @@
-import 'package:chat_app/src/shared/domain/models/user.model.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
 abstract class AuthRepository {
   Future<User> login({required String email, required String password});
@@ -7,4 +7,11 @@ abstract class AuthRepository {
     required String password,
     required String name,
   });
+
+  Future<User?> getLoginData();
+  Future<void> saveLoginData(User user);
+  Future<void> clearLoginData();
+
+  Future<List<User>> getLoginHistory();
+  Future<void> saveLoginHistory(List<User> users);
 }

@@ -1,7 +1,7 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/shared/domain/models/user.model.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -77,7 +77,7 @@ class AccountInfo extends StatelessWidget {
   }
 
   void _handleLogout(BuildContext context) {
-    BlocProvider.of<AuthBloc>(context).add(AuthLogoutRequested());
+    BlocProvider.of<AppAuthBloc>(context).add(AppAuthLogoutRequested());
     context.go(AppRoutesConfig.auth);
   }
 }

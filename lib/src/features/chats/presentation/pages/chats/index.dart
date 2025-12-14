@@ -1,7 +1,7 @@
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -28,7 +28,8 @@ class ChatListScreen extends StatelessWidget {
       create: (context) {
         return GetIt.instance<ChatsBloc>()..add(
           ChatsLoad(
-            userId: (context.read<AuthBloc>().state as Authenticated).user.id,
+            userId:
+                (context.read<AppAuthBloc>().state as AppAuthenticated).user.id,
           ),
         );
       },

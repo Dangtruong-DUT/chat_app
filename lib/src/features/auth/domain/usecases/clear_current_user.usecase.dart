@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
-import 'package:chat_app/src/shared/domain/repositories/auth_repository.dart';
+import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
 
 class ClearCurrentUserUseCase implements BaseUseCase<void, void> {
   final AuthRepository _repository;

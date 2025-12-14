@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/chat_summary.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/message_status.enum.dart';
+import 'package:chat_app/src/features/chats/data/domain/chat.model.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
-import 'package:chat_app/src/shared/domain/models/user.model.dart';
+import 'package:chat_app/src/features/user/data/models/user.model.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:collection/collection.dart';
 
@@ -193,7 +195,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
     final parsed = map.map(
       (key, value) =>
-          MapEntry(key, Chat.fromJson(value as Map<String, dynamic>)),
+          MapEntry(key, ChatModel.fromJson(value as Map<String, dynamic>)),
     );
 
     _chatCache = Map<String, Chat>.from(parsed);
@@ -204,7 +206,9 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<void> _saveAllChats(Map<String, Chat> chats) async {
     final store = await SharedPreferences.getInstance();
 
-    final jsonMap = chats.map((key, chat) => MapEntry(key, chat.toJson()));
+    final jsonMap = chats.map(
+      (key, chat) => MapEntry(key, (chat as ChatModel).toJson()),
+    );
 
     await store.setString(
       SharedReferenceConfig.chatConversationsKey,
@@ -230,7 +234,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
       final decoded = jsonDecode(raw) as List<dynamic>;
       final users = decoded
-          .map((json) => User.fromJson(json as Map<String, dynamic>))
+          .map((json) => UserModel.fromJson(json as Map<String, dynamic>))
           .toList();
 
       _userCache = {for (final user in users) user.id: user};

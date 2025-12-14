@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,11 +11,11 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AppAuthBloc, AppAuthState>(
       listener: (context, state) {
-        if (state is Authenticated) {
+        if (state is AppAuthenticated) {
           GoRouter.of(context).go(AppRoutesConfig.chats);
-        } else if (state is Unauthenticated) {
+        } else if (state is AppUnauthenticated) {
           GoRouter.of(context).go(AppRoutesConfig.auth);
         }
       },

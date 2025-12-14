@@ -1,13 +1,13 @@
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/register/widgets/register_form.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_bloc.dart';
-import 'package:chat_app/src/shared/presentation/bloc/auth/auth_state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
 import 'package:chat_app/src/core/router/routes.config.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -63,15 +63,15 @@ class RegisterScreen extends StatelessWidget {
                 ).showSnackBar(SnackBar(content: Text(state.error.message)));
               }
               if (state is RegisterSuccess) {
-                context.read<AuthBloc>().add(
-                  AuthLoginRequested(user: state.user),
+                context.read<AppAuthBloc>().add(
+                  AppAuthLoginRequested(user: state.user),
                 );
               }
             },
           ),
-          BlocListener<AuthBloc, AuthState>(
+          BlocListener<AppAuthBloc, AppAuthState>(
             listener: (context, state) {
-              if (state is Authenticated) {
+              if (state is AppAuthenticated) {
                 context.go(AppRoutesConfig.chats);
               }
             },

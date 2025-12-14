@@ -1,7 +1,7 @@
 import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/message_status.enum.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/create_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/get_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/send_message.usecase.dart';

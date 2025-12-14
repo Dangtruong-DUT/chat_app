@@ -1,7 +1,7 @@
-import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/chat_summary.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
-import 'package:chat_app/src/features/chats/domain/models/message_status.enum.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 
 abstract class ChatRepository {
   Future<Chat> getConversationById({required String chatId});

@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
-import 'package:chat_app/src/features/chats/domain/models/chat.model.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 
 sealed class ChatDetailState {
   const ChatDetailState();

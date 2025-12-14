@@ -1,4 +1,4 @@
-import 'package:chat_app/src/features/chats/domain/models/message.model.dart';
+import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 
