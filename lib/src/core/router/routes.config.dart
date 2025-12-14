@@ -21,3 +21,9 @@ class ChatDetailRouteQueryKeys {
   static const chatId = 'chatId';
   static const userId = 'userId';
 }
+
+class LoginRouteQueryKeys {
+  LoginRouteQueryKeys._();
+
+  static const email = 'email';
+}

@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/utils/injection_module/base_injection_module.dart';
 import 'package:chat_app/src/features/search/data/repo_impl/search_repository_impl.dart';
-import 'package:chat_app/src/features/search/domain/repositories/search_repository.usecase.dart';
+import 'package:chat_app/src/features/search/domain/repositories/search_repository.dart';
 import 'package:chat_app/src/features/search/domain/usecases/search_users.usecase.dart';
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:get_it/get_it.dart';

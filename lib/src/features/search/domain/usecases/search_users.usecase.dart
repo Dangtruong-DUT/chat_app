@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
-import 'package:chat_app/src/features/search/domain/repositories/search_repository.usecase.dart';
+import 'package:chat_app/src/features/search/domain/repositories/search_repository.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
 class SearchUserUseCaseParams {

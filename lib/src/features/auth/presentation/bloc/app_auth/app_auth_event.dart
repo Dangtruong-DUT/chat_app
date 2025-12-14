@@ -12,8 +12,3 @@ class AppAuthLoginRequested extends AppAuthEvent {
   final User user;
   AppAuthLoginRequested({required this.user});
 }
-
-class AppAuthDeleteLoginHistoryRequested extends AppAuthEvent {
-  final String id;
-  AppAuthDeleteLoginHistoryRequested({required this.id});
-}

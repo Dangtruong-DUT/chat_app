@@ -10,6 +10,7 @@ import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/register.usecase.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/save_current_user.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -64,14 +65,17 @@ class AuthInjectionModule implements BaseInjectionModule {
       ..registerFactory<RegisterBloc>(
         () => RegisterBloc(registerUseCase: _getIt<RegisterUseCase>()),
       )
+      ..registerFactory<AuthHistoryBloc>(
+        () => AuthHistoryBloc(
+          getLoginHistoryUseCase: _getIt<GetLoginHistoryUseCase>(),
+          deleteLoginHistoryUseCase: _getIt<DeleteLoginHistoryUseCase>(),
+        ),
+      )
       ..registerFactory<AppAuthBloc>(
         () => AppAuthBloc(
           getCurrentUserUseCase: _getIt<GetCurrentUserUseCase>(),
           clearCurrentUserUseCase: _getIt<ClearCurrentUserUseCase>(),
           saveCurrentUserUseCase: _getIt<SaveCurrentUserUseCase>(),
-          getLoginHistoryUseCase: _getIt<GetLoginHistoryUseCase>(),
-          addLoginHistoryUseCase: _getIt<AddLoginHistoryUseCase>(),
-          deleteLoginHistoryUseCase: _getIt<DeleteLoginHistoryUseCase>(),
         ),
       );
   }

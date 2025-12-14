@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/type.dart';
-import 'package:chat_app/src/features/search/domain/repositories/search_repository.usecase.dart';
+import 'package:chat_app/src/features/search/domain/repositories/search_repository.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:chat_app/src/features/user/data/models/user.model.dart';

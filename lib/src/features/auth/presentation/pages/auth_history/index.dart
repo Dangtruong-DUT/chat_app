@@ -1,6 +1,6 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/pages/auth/widgets/login_history_list.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/pages/auth_history/widgets/login_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -86,7 +86,7 @@ class AuthScreen extends StatelessWidget {
 
   Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
-      create: (_) => GetIt.instance<LoginBloc>(),
+      create: (_) => GetIt.instance<AuthHistoryBloc>(),
       child: child,
     );
   }

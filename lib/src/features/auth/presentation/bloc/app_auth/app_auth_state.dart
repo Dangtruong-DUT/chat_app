@@ -10,8 +10,7 @@ class AppAuthenticated extends AppAuthState {
 }
 
 class AppUnauthenticated extends AppAuthState {
-  final List<User> loginHistory;
-  const AppUnauthenticated({this.loginHistory = const []});
+  const AppUnauthenticated();
 }
 
 class AppAuthLoading extends AppAuthState {
