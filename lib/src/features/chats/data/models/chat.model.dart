@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/type.dart';
-import 'package:chat_app/src/features/chats/data/domain/MessageModel.model.dart';
+import 'package:chat_app/src/features/chats/data/models/message.model.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 
 class ChatModel extends Chat {

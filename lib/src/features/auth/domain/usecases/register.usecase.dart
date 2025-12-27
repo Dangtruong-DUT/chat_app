@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
-import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
+import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
 class RegisterUseCaseParams {

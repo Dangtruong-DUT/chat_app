@@ -28,13 +28,13 @@ class AppRouter {
   );
 
   static String? _redirectLogic(BuildContext context, GoRouterState state) {
-    final currentAuthState = BlocProvider.of<AuthBloc>(
+    final currentAuthState = BlocProvider.of<AppAuthBloc>(
       context,
       listen: false,
     ).state;
-    if (currentAuthState is AuthLoading) return AppRoutesConfig.splash;
+    if (currentAuthState is AppAuthLoading) return AppRoutesConfig.splash;
 
-    final isAuthenticated = currentAuthState is Authenticated;
+    final isAuthenticated = currentAuthState is AppAuthenticated;
     final isProtectedPath = AppRoutesConfig.protected.any(
       (path) => state.fullPath!.startsWith(path),
     );

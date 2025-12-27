@@ -2,8 +2,8 @@ import 'package:chat_app/src/core/utils/validation/register.validation.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/register/register-bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/register/register-event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register_event.dart';
 
 class RegisterForm extends StatefulWidget {
   final String? prefilledEmail;

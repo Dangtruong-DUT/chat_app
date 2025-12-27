@@ -1,6 +1,6 @@
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-event.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
 import 'package:chat_app/src/core/utils/validation/login.validation.dart';

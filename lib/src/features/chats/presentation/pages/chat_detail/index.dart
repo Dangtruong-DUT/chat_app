@@ -1,8 +1,8 @@
-import 'package:chat_app/_mock/index.dart';
-import 'package:chat_app/src/features/chats/presentation/bloc/chatDetail/chat_detail_bloc.dart';
+import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_app_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
+import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -16,7 +16,15 @@ class ChatDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return _buildBlocProvider(
       child: Scaffold(
-        appBar: AppBar(title: ChatAppBar(user: usersMockData[0])),
+        appBar: AppBar(
+          title: ChatAppBar(
+            user: User(
+              id: "111",
+              name: "John Doe",
+              email: "john.doe@example.com",
+            ),
+          ),
+        ),
         body: SafeArea(
           child: Column(
             children: [

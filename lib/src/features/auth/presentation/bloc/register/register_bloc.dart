@@ -1,8 +1,8 @@
 import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/register.usecase.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/register/register-event.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/register/register-state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {

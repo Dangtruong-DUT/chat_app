@@ -4,7 +4,7 @@ import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/type.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
-import 'package:chat_app/src/features/auth/domain/repositories/auth_repositories.dart';
+import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/features/user/data/models/user.model.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';

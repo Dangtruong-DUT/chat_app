@@ -44,6 +44,7 @@ dependencies:
   timeago: ^3.7.1
   lottie: ^3.3.2
   stream_transform: ^2.1.1
+  dartz: ^0.10.1
 
 dev_dependencies:
   flutter_test:

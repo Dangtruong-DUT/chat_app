@@ -1,4 +1,4 @@
-import 'package:chat_app/src/features/auth/presentation/pages/auth/index.dart';
+import 'package:chat_app/src/features/auth/presentation/pages/auth_history/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/login/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/register/index.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/splash/index.dart';
@@ -20,7 +20,7 @@ class AuthRouter {
     GoRoute(
       path: AppRoutesConfig.login,
       builder: (_, state) {
-        final email = state.uri.queryParameters['email'];
+        final email = state.uri.queryParameters[LoginRouteQueryKeys.email];
         return LoginScreen(prefilledEmail: email);
       },
     ),

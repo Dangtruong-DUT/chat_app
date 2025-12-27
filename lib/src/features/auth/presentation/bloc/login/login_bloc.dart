@@ -1,8 +1,8 @@
 import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-event.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

@@ -1,9 +1,9 @@
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/login/widgets/login_form.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/login/login-state.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
