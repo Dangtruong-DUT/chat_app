@@ -3,6 +3,7 @@ import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chats/widgets/chat_item/message_status_icon.dart';
 import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -88,13 +89,19 @@ class ChatHistoryListItem extends StatelessWidget {
   }
 
   String _buildSubtitle() {
-    final message = chat.lastMessage ?? 'Hãy bắt đầu cuộc trò chuyện';
+    final message = chat.lastMessage ?? tr('chats.list.noMessages');
     final time = formatTimeAgo(dateTime: chat.lastUpdated);
 
     if (chat.isLastMessageFromCurrentUser) {
-      return 'Bạn: $message · $time';
+      return tr(
+        'chats.list.subtitle.you',
+        namedArgs: {'message': message, 'time': time},
+      );
     }
-    return '$message · $time';
+    return tr(
+      'chats.list.subtitle.other',
+      namedArgs: {'message': message, 'time': time},
+    );
   }
 
   void _onTapItem(BuildContext context) {

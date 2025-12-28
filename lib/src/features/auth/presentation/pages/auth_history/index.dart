@@ -3,6 +3,7 @@ import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_h
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_state.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth_history/widgets/login_history_list.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -74,7 +75,7 @@ class AuthScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
-                                  'Add Account',
+                                  tr('auth.history.addAccount'),
                                   style: Theme.of(context).textTheme.bodySmall
                                       ?.copyWith(
                                         overflow: TextOverflow.ellipsis,
@@ -96,7 +97,7 @@ class AuthScreen extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: Theme.of(context).colorScheme.primary,
                     ),
-                    child: const Text('Create a new account'),
+                    child: Text(tr('auth.history.createAccount')),
                   ),
                 ),
               ],
@@ -117,8 +118,7 @@ class AuthScreen extends StatelessWidget {
             previous.status != current.status &&
             current.status == AuthHistoryStatus.failure,
         listener: (context, state) {
-          final message =
-              state.error?.message ?? 'Đã xảy ra lỗi không xác định';
+          final message = state.error?.message ?? tr('errors.general.unknown');
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -152,10 +152,14 @@ class _LoginHistoryLoadingIndicator extends StatelessWidget {
       height: 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          SizedBox(width: 36, height: 36, child: CircularProgressIndicator()),
-          SizedBox(height: 12),
-          Text('Đang tải...'),
+        children: [
+          const SizedBox(
+            width: 36,
+            height: 36,
+            child: CircularProgressIndicator(),
+          ),
+          const SizedBox(height: 12),
+          Text(tr('common.loading')),
         ],
       ),
     );

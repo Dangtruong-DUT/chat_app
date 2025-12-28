@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
+
 String? validatePassword(String? value) {
   if (value == null || value.isEmpty) {
-    return 'Password is required';
+    return tr('validation.password.required');
   }
   if (value.length < 8) {
-    return 'Password must be at least 8 characters long';
+    return tr('validation.password.min');
   }
   return null;
 }

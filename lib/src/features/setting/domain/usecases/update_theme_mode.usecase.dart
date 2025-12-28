@@ -3,6 +3,7 @@ import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
 import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/setting/domain/repositories/theme_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class UpdateThemeModeParams {
   final AppThemeMode mode;
@@ -26,7 +27,7 @@ class UpdateThemeModeUseCase
       return failure(
         ErrorMapper.mapToError(
           error,
-          fallbackMessage: 'Unable to update theme preferences',
+          fallbackMessage: tr('errors.settings.updateTheme'),
         ),
       );
     }

@@ -1,6 +1,7 @@
 import 'package:chat_app/src/core/utils/validation/register.validation.dart';
-import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_event.dart';
@@ -37,7 +38,7 @@ class _RegisterFormState extends State<RegisterForm> {
         children: [
           TTextField(
             controller: _emailController,
-            hintText: 'Email',
+            hintText: tr('form.email'),
             textInputType: TextInputType.emailAddress,
             validator: registerValidation['email'],
           ),
@@ -46,7 +47,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
           TTextField(
             controller: _nameController,
-            hintText: 'Name',
+            hintText: tr('form.name'),
             textInputType: TextInputType.text,
             validator: registerValidation['name'],
           ),
@@ -56,7 +57,7 @@ class _RegisterFormState extends State<RegisterForm> {
           TTextField(
             controller: _passwordController,
             textInputType: TextInputType.visiblePassword,
-            hintText: 'Password',
+            hintText: tr('form.password'),
             validator: registerValidation['password'],
           ),
 
@@ -93,7 +94,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             ),
                           )
                         : Text(
-                            'Register',
+                            tr('auth.register.submit'),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 16,

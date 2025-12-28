@@ -1,9 +1,10 @@
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
-import 'package:flutter/material.dart';
 import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
 import 'package:chat_app/src/core/utils/validation/login.validation.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginForm extends StatefulWidget {
@@ -36,7 +37,7 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           TTextField(
             controller: _emailController,
-            hintText: 'Email',
+            hintText: tr('form.email'),
             textInputType: TextInputType.emailAddress,
             validator: loginValidation['email'],
           ),
@@ -46,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
           TTextField(
             controller: _passwordController,
             textInputType: TextInputType.visiblePassword,
-            hintText: 'Password',
+            hintText: tr('form.password'),
             validator: loginValidation['password'],
           ),
 
@@ -77,7 +78,7 @@ class _LoginFormState extends State<LoginForm> {
                             ),
                           )
                         : Text(
-                            'Login',
+                            tr('auth.login.submit'),
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onPrimary,
                               fontSize: 16,

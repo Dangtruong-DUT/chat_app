@@ -1,6 +1,7 @@
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:chat_app/src/features/search/presentation/pages/search/widgets/input_search.dart';
 import 'package:chat_app/src/features/search/presentation/pages/search/widgets/search_results.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -12,7 +13,7 @@ class SearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return _buildBlocProvider(
       child: Scaffold(
-        appBar: AppBar(title: const Text("Search")),
+        appBar: AppBar(title: Text(tr('search.title'))),
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),

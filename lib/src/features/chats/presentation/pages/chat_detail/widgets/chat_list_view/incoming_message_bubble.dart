@@ -1,5 +1,6 @@
 import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class IncomingTextMessageBubble extends StatelessWidget {
@@ -21,6 +22,7 @@ class IncomingTextMessageBubble extends StatelessWidget {
     final bubbleColor = isExpanded
         ? colorScheme.surfaceVariant
         : colorScheme.surface;
+    final timestampText = formatTimeAgo(dateTime: message.timestamp);
     final metaStyle = theme.textTheme.bodySmall?.copyWith(
       fontSize: 10,
       color: colorScheme.onSurfaceVariant,
@@ -46,7 +48,7 @@ class IncomingTextMessageBubble extends StatelessWidget {
           children: [
             Text(message.content),
             const SizedBox(height: 2),
-            Text(formatTimeAgo(dateTime: message.timestamp), style: metaStyle),
+            Text(timestampText, style: metaStyle),
           ],
         ),
       ),
@@ -63,7 +65,10 @@ class IncomingTextMessageBubble extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 2, left: 4),
               child: Text(
-                'Đã nhận lúc ${formatTimeAgo(dateTime: message.timestamp)}',
+                tr(
+                  'chats.detail.receivedAt',
+                  namedArgs: {'time': timestampText},
+                ),
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: 11,
                   color: colorScheme.onSurfaceVariant,

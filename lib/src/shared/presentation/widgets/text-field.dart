@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class TTextField extends StatelessWidget {
@@ -7,7 +8,7 @@ class TTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   const TTextField({
     super.key,
-    this.hintText = 'Enter value',
+    this.hintText,
     this.textInputType = TextInputType.text,
     this.controller,
     this.validator,
@@ -29,7 +30,7 @@ class TTextField extends StatelessWidget {
         controller?.text = sanitizedValue;
       },
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: hintText ?? tr('form.enterValue'),
         hintStyle: TextStyle(
           color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
         ),

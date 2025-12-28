@@ -3,6 +3,7 @@ import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_b
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
 import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +64,7 @@ class AccountInfo extends StatelessWidget {
             textStyle: const TextStyle(fontWeight: FontWeight.w600),
           ),
           icon: Icon(Icons.logout, color: primaryColor, size: 16),
-          label: const Text('Logout'),
+          label: Text(tr('common.logout')),
           onPressed: () => _handleLogout(context),
         ),
       ],

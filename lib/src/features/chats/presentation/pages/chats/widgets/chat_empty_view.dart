@@ -1,4 +1,5 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,7 +13,7 @@ class ChatEmptyView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "No chats available, let's start a new conversation!",
+            tr('chats.empty.message'),
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -21,7 +22,7 @@ class ChatEmptyView extends StatelessWidget {
           const SizedBox(height: 12),
           TextButton(
             onPressed: () => _onSearchUsersTap(context),
-            child: const Text("Search users for new chats"),
+            child: Text(tr('chats.empty.cta')),
           ),
         ],
       ),

@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Chat App"
+  },
+  "common": {
+    "retry": "Retry",
+    "logout": "Logout",
+    "loading": "Loading..."
+  },
+  "form": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "enterValue": "Enter value"
+  },
+  "validation": {
+    "email": {
+      "required": "Email is required",
+      "invalid": "Invalid email format"
+    },
+    "password": {
+      "required": "Password is required",
+      "min": "Password must be at least 8 characters long"
+    },
+    "name": {
+      "required": "Name is required",
+      "min": "Name must be at least 2 characters long"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "submit": "Login",
+      "noAccount": "Don't have an account? Register"
+    },
+    "register": {
+      "title": "Register",
+      "submit": "Register",
+      "haveAccount": "Already have an account? Login"
+    },
+    "history": {
+      "addAccount": "Add Account",
+      "createAccount": "Create a new account"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": {
+      "title": "Appearance",
+      "subtitle": "Switch between light, dark, or system-driven themes whenever you like.",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "title": "Language",
+      "subtitle": "Choose the language used throughout the app.",
+      "en": "English",
+      "vi": "Vietnamese"
+    }
+  },
+  "chats": {
+    "title": "Messages",
+    "empty": {
+      "message": "No chats available, let's start a new conversation!",
+      "cta": "Search users for new chats"
+    },
+    "list": {
+      "noMessages": "Let's start the conversation",
+      "subtitle": {
+        "you": "You: {message} · {time}",
+        "other": "{message} · {time}"
+      }
+    },
+    "detail": {
+      "noMessages": "Send the first message",
+      "receivedAt": "Received {time}",
+      "status": {
+        "sent": "Sent",
+        "delivered": "Delivered",
+        "read": "Read"
+      }
+    },
+    "input": {
+      "placeholder": "Type a message..."
+    }
+  },
+  "search": {
+    "title": "Search",
+    "input": {
+      "hint": "Username or email of user"
+    },
+    "results": {
+      "empty": "No users found"
+    }
+  },
+  "errors": {
+    "general": {
+      "unknown": "An unknown error occurred"
+    },
+    "auth": {
+      "login": "Unable to login",
+      "register": "Unable to register",
+      "fetchCurrentUser": "Unable to fetch current user",
+      "saveCurrentUser": "Unable to persist current user",
+      "clearCurrentUser": "Unable to clear current user",
+      "fetchHistory": "Unable to fetch login history",
+      "updateHistory": "Unable to update login history",
+      "deleteHistory": "Unable to delete login history item"
+    },
+    "chats": {
+      "loadConversations": "Unable to load conversations",
+      "loadConversation": "Unable to load conversation",
+      "createConversation": "Unable to create conversation",
+      "sendMessage": "Unable to send message",
+      "updateStatus": "Unable to update message status",
+      "loadUser": "Unable to load user",
+      "missingIdentifiers": "Either chatId or receiverId must be provided",
+      "missingReceiver": "Receiver id is required to start chat"
+    },
+    "search": {
+      "users": "Unable to search users"
+    },
+    "settings": {
+      "loadTheme": "Unable to load theme preferences",
+      "updateTheme": "Unable to update theme preferences"
+    }
+  }
+}

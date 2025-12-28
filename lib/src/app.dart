@@ -10,6 +10,7 @@ import 'package:chat_app/src/features/setting/presentation/bloc/theme/theme_stat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AppBootstrap extends StatefulWidget {
   const AppBootstrap({super.key});
@@ -81,12 +82,15 @@ class MyApp extends StatelessWidget {
       builder: (context, state) {
         final themeMode = state.mode.materialMode;
         return MaterialApp.router(
-          title: 'Chat App',
+          title: tr('app.title'),
           theme: TAppTheme.lightTheme,
           darkTheme: TAppTheme.darkTheme,
           themeMode: themeMode,
           routerConfig: AppRouter.router,
           debugShowCheckedModeBanner: false,
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
         );
       },
     );

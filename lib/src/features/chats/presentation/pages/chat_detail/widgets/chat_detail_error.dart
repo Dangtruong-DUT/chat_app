@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ChatDetailErrorView extends StatelessWidget {
@@ -25,7 +26,7 @@ class ChatDetailErrorView extends StatelessWidget {
           TextButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.refresh),
-            label: const Text('Thử lại'),
+            label: Text(tr('common.retry')),
           ),
         ],
       ),

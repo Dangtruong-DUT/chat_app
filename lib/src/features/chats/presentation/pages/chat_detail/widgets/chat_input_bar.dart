@@ -1,6 +1,7 @@
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_event.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -58,8 +59,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
                     onSubmitted: (_) {
                       if (canSubmit) _sendMessage(context);
                     },
-                    decoration: const InputDecoration(
-                      hintText: 'Nhập tin nhắn...',
+                    decoration: InputDecoration(
+                      hintText: tr('chats.input.placeholder'),
                       border: InputBorder.none,
                     ),
                   ),

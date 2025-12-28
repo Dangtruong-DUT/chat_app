@@ -3,6 +3,7 @@ import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
 import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/setting/domain/repositories/theme_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class GetThemeModeUseCase extends BaseUseCase<AppThemeMode, NoParams> {
   final ThemeRepository _repository;
@@ -19,7 +20,7 @@ class GetThemeModeUseCase extends BaseUseCase<AppThemeMode, NoParams> {
       return failure(
         ErrorMapper.mapToError(
           error,
-          fallbackMessage: 'Unable to load theme preferences',
+          fallbackMessage: tr('errors.settings.loadTheme'),
         ),
       );
     }

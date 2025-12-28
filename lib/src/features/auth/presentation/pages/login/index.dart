@@ -1,6 +1,7 @@
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/login/widgets/login_form.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
@@ -27,7 +28,7 @@ class LoginScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 100),
                 Text(
-                  'Login',
+                  tr('auth.login.title'),
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -40,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: Theme.of(context).colorScheme.primary,
                   ),
-                  child: const Text('Don\'t have an account? Register'),
+                  child: Text(tr('auth.login.noAccount')),
                 ),
               ],
             ),

@@ -4,6 +4,7 @@ import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.d
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_state.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chats/widgets/chat_error_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +21,7 @@ class ChatListScreen extends StatelessWidget {
     return _buildBlocProvider(
       userId: userId!,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Tin nhắn')),
+        appBar: AppBar(title: Text(tr('chats.title'))),
         body: BlocConsumer<ChatsBloc, ChatsState>(
           listenWhen: (previous, current) =>
               previous.runtimeType != current.runtimeType &&

@@ -1,6 +1,7 @@
 import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class OutgoingTextMessageBubble extends StatelessWidget {
@@ -22,6 +23,7 @@ class OutgoingTextMessageBubble extends StatelessWidget {
     final bubbleColor = isExpanded
         ? colorScheme.surfaceVariant
         : colorScheme.surface;
+    final timestampText = formatTimeAgo(dateTime: message.timestamp);
     final metaStyle = theme.textTheme.bodySmall?.copyWith(
       fontSize: 10,
       color: colorScheme.onSurfaceVariant,
@@ -47,7 +49,7 @@ class OutgoingTextMessageBubble extends StatelessWidget {
           children: [
             Text(message.content),
             const SizedBox(height: 2),
-            Text(formatTimeAgo(dateTime: message.timestamp), style: metaStyle),
+            Text(timestampText, style: metaStyle),
           ],
         ),
       ),
@@ -64,7 +66,7 @@ class OutgoingTextMessageBubble extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 4),
               child: Text(
-                '${_statusLabel(message.status)} · ${formatTimeAgo(dateTime: message.timestamp)}',
+                '${_statusLabel(message.status)} · $timestampText',
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: 11,
                   color: colorScheme.onSurfaceVariant,
@@ -80,11 +82,11 @@ class OutgoingTextMessageBubble extends StatelessWidget {
   String _statusLabel(MessageStatus status) {
     switch (status) {
       case MessageStatus.sent:
-        return 'Đã gửi';
+        return tr('chats.detail.status.sent');
       case MessageStatus.delivered:
-        return 'Đã nhận';
+        return tr('chats.detail.status.delivered');
       case MessageStatus.read:
-        return 'Đã xem';
+        return tr('chats.detail.status.read');
     }
   }
 }

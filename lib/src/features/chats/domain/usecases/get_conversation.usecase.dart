@@ -3,6 +3,7 @@ import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class GetConversationUseCaseParams {
   final String chatId;
@@ -25,7 +26,7 @@ class GetConversationUseCase
       return failure(
         ErrorMapper.mapToError(
           error,
-          fallbackMessage: 'Unable to load conversation',
+          fallbackMessage: tr('errors.chats.loadConversation'),
         ),
       );
     }

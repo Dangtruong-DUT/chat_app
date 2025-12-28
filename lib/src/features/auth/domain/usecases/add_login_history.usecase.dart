@@ -4,6 +4,7 @@ import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class AddLoginHistoryUseCase extends BaseUseCase<List<User>, User> {
   final AuthRepository _repository;
@@ -28,7 +29,7 @@ class AddLoginHistoryUseCase extends BaseUseCase<List<User>, User> {
       return failure(
         ErrorMapper.mapToError(
           error,
-          fallbackMessage: 'Unable to update login history',
+          fallbackMessage: tr('errors.auth.updateHistory'),
         ),
       );
     }

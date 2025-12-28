@@ -12,6 +12,7 @@ import 'package:chat_app/src/features/chats/domain/usecases/update_message_statu
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_event.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
 import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
@@ -62,7 +63,7 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
         state.copyWith(
           status: ChatDetailStatus.failure,
           loadError: ErrorException(
-            message: 'Either chatId or receiverId must be provided',
+            message: tr('errors.chats.missingIdentifiers'),
           ),
         ),
       );
@@ -199,9 +200,7 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
 
     if (event.peerId == null) {
       return Future.value(
-        failure(
-          ErrorException(message: 'Receiver id is required to start chat'),
-        ),
+        failure(ErrorException(message: tr('errors.chats.missingReceiver'))),
       );
     }
 

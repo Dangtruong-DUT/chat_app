@@ -1,6 +1,7 @@
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/incoming_message_bubble.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/outgoing_message_bubble.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class MessageListView extends StatefulWidget {
@@ -68,7 +69,7 @@ class _MessageListViewState extends State<MessageListView> {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Text(
-            'Hãy gửi tin nhắn đầu tiên',
+            tr('chats.detail.noMessages'),
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),

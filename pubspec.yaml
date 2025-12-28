@@ -46,6 +46,7 @@ dependencies:
   stream_transform: ^2.1.1
   dartz: ^0.10.1
   equatable: ^2.0.5
+  easy_localization: ^3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
     - assets/images/common/
     - assets/images/chats/
     - assets/lotties/
+    - assets/translations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

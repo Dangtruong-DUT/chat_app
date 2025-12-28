@@ -1,6 +1,7 @@
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:chat_app/src/features/search/presentation/bloc/search_event.dart';
 import 'package:chat_app/src/features/search/presentation/bloc/search_state.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -69,7 +70,7 @@ class _InputSearchState extends State<InputSearch> {
                 color: theme.colorScheme.onSurface,
               ),
               decoration: InputDecoration(
-                hintText: 'username or email of user',
+                hintText: tr('search.input.hint'),
                 hintStyle: theme.textTheme.labelMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

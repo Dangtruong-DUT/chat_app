@@ -3,6 +3,7 @@ import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class UpdateMessageStatusParams {
   final String messageId;
@@ -35,7 +36,7 @@ class UpdateMessageStatusUseCase
       return failure(
         ErrorMapper.mapToError(
           error,
-          fallbackMessage: 'Unable to update message status',
+          fallbackMessage: tr('errors.chats.updateStatus'),
         ),
       );
     }

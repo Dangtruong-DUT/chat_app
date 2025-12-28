@@ -1,12 +1,13 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:chat_app/src/core/utils/validation/base/email.validation.dart';
 import 'package:chat_app/src/core/utils/validation/base/password.validation.dart';
 
 String? validateName(String? value) {
   if (value == null || value.isEmpty) {
-    return 'Name is required';
+    return tr('validation.name.required');
   }
   if (value.length < 2) {
-    return 'Name must be at least 2 characters long';
+    return tr('validation.name.min');
   }
   return null;
 }

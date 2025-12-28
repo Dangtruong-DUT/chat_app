@@ -1,0 +1,129 @@
+{
+  "app": {
+    "title": "Ứng dụng Chat"
+  },
+  "common": {
+    "retry": "Thử lại",
+    "logout": "Đăng xuất",
+    "loading": "Đang tải..."
+  },
+  "form": {
+    "email": "Email",
+    "password": "Mật khẩu",
+    "name": "Tên",
+    "enterValue": "Nhập thông tin"
+  },
+  "validation": {
+    "email": {
+      "required": "Email là bắt buộc",
+      "invalid": "Email không hợp lệ"
+    },
+    "password": {
+      "required": "Mật khẩu là bắt buộc",
+      "min": "Mật khẩu phải có ít nhất 8 ký tự"
+    },
+    "name": {
+      "required": "Tên là bắt buộc",
+      "min": "Tên phải có ít nhất 2 ký tự"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "submit": "Đăng nhập",
+      "noAccount": "Chưa có tài khoản? Đăng ký"
+    },
+    "register": {
+      "title": "Đăng ký",
+      "submit": "Đăng ký",
+      "haveAccount": "Đã có tài khoản? Đăng nhập"
+    },
+    "history": {
+      "addAccount": "Thêm tài khoản",
+      "createAccount": "Tạo tài khoản mới"
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "appearance": {
+      "title": "Giao diện",
+      "subtitle": "Chuyển đổi giữa chủ đề sáng, tối hoặc theo hệ thống bất cứ khi nào bạn thích.",
+      "system": "Hệ thống",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "language": {
+      "title": "Ngôn ngữ",
+      "subtitle": "Chọn ngôn ngữ sử dụng trong ứng dụng.",
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt"
+    }
+  },
+  "chats": {
+    "title": "Tin nhắn",
+    "empty": {
+      "message": "Chưa có cuộc trò chuyện nào, hãy bắt đầu ngay nhé!",
+      "cta": "Tìm người dùng để bắt đầu chat"
+    },
+    "list": {
+      "noMessages": "Hãy bắt đầu cuộc trò chuyện",
+      "subtitle": {
+        "you": "Bạn: {message} · {time}",
+        "other": "{message} · {time}"
+      }
+    },
+    "detail": {
+      "noMessages": "Hãy gửi tin nhắn đầu tiên",
+      "receivedAt": "Đã nhận {time}",
+      "status": {
+        "sent": "Đã gửi",
+        "delivered": "Đã nhận",
+        "read": "Đã xem"
+      }
+    },
+    "input": {
+      "placeholder": "Nhập tin nhắn..."
+    }
+  },
+  "search": {
+    "title": "Tìm kiếm",
+    "input": {
+      "hint": "Tên người dùng hoặc email"
+    },
+    "results": {
+      "empty": "Không tìm thấy người dùng nào"
+    }
+  },
+  "errors": {
+    "general": {
+      "unknown": "Đã xảy ra lỗi không xác định"
+    },
+    "auth": {
+      "login": "Không thể đăng nhập",
+      "register": "Không thể đăng ký",
+      "fetchCurrentUser": "Không thể lấy thông tin người dùng hiện tại",
+      "saveCurrentUser": "Không thể lưu người dùng hiện tại",
+      "clearCurrentUser": "Không thể xoá người dùng hiện tại",
+      "fetchHistory": "Không thể lấy lịch sử đăng nhập",
+      "updateHistory": "Không thể cập nhật lịch sử đăng nhập",
+      "deleteHistory": "Không thể xoá tài khoản lưu"
+    },
+    "chats": {
+      "loadConversations": "Không thể tải danh sách cuộc trò chuyện",
+      "loadConversation": "Không thể tải cuộc trò chuyện",
+      "createConversation": "Không thể tạo cuộc trò chuyện",
+      "sendMessage": "Không thể gửi tin nhắn",
+      "updateStatus": "Không thể cập nhật trạng thái tin nhắn",
+      "loadUser": "Không thể tải người dùng",
+      "missingIdentifiers": "Cần cung cấp chatId hoặc receiverId",
+      "missingReceiver": "Cần có receiverId để bắt đầu trò chuyện"
+    },
+    "search": {
+      "users": "Không thể tìm kiếm người dùng"
+    },
+    "settings": {
+      "loadTheme": "Không thể tải cài đặt giao diện",
+      "updateTheme": "Không thể cập nhật cài đặt giao diện"
+    }
+  }
+}
