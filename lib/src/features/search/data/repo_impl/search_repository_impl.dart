@@ -1,8 +1,8 @@
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/search/data/datasources/search_local_data_source.dart';
 import 'package:chat_app/src/features/search/domain/repositories/search_repository.dart';
-import 'package:chat_app/src/features/user/data/models/user.model.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/data/models/user.model.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 
 class SearchRepositoryImpl implements SearchRepository {
   final SearchLocalDataSource _localDataSource;

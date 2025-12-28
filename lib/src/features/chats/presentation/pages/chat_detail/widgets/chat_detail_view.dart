@@ -11,7 +11,7 @@ import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widge
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_detail_error.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

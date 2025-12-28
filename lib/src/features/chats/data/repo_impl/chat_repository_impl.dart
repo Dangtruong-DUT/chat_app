@@ -8,7 +8,7 @@ import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:collection/collection.dart';
 
 class ChatRepositoryImpl implements ChatRepository {

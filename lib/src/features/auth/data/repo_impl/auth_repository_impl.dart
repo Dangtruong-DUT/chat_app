@@ -2,8 +2,8 @@ import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:chat_app/src/features/user/data/models/user.model.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/data/models/user.model.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:collection/collection.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

@@ -3,7 +3,7 @@ import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_h
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_state.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth_history/widgets/accountItem.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';

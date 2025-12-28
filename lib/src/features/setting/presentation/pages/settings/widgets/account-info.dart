@@ -1,7 +1,7 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

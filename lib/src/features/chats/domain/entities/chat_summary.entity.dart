@@ -1,5 +1,5 @@
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 
 class ChatSummary {
   final String id;

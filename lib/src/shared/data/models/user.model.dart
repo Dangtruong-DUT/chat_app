@@ -1,5 +1,5 @@
 import 'package:chat_app/src/core/utils/type.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 
 class UserModel extends User {
   const UserModel({

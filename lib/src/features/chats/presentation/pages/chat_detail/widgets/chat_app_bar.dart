@@ -1,4 +1,4 @@
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

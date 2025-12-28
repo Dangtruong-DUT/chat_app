@@ -1,4 +1,4 @@
-import 'package:chat_app/src/features/user/data/models/user.model.dart';
+import 'package:chat_app/src/shared/data/models/user.model.dart';
 
 abstract class AuthLocalDataSource {
   Future<List<UserModel>> getRegisteredUsers();
