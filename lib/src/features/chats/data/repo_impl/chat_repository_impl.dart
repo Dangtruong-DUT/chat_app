@@ -1,21 +1,27 @@
-import 'dart:convert';
-import 'package:chat_app/src/core/utils/constants/shared_references.constant.dart';
 import 'package:chat_app/src/core/utils/id_generator.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
+import 'package:chat_app/src/features/chats/data/datasources/chat_local_data_source.dart';
+import 'package:chat_app/src/features/chats/data/datasources/user_local_data_source.dart';
 import 'package:chat_app/src/features/chats/data/models/chat.model.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
-import 'package:chat_app/src/features/user/data/models/user.model.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:collection/collection.dart';
 
 class ChatRepositoryImpl implements ChatRepository {
+  final ChatLocalDataSource _chatLocalDataSource;
+  final UserLocalDataSource _userLocalDataSource;
   Map<String, Chat>? _chatCache;
   Map<String, User>? _userCache;
+
+  ChatRepositoryImpl({
+    required ChatLocalDataSource chatLocalDataSource,
+    required UserLocalDataSource userLocalDataSource,
+  }) : _chatLocalDataSource = chatLocalDataSource,
+       _userLocalDataSource = userLocalDataSource;
 
   @override
   Future<List<ChatSummary>> getAllConversations({
@@ -183,38 +189,16 @@ class ChatRepositoryImpl implements ChatRepository {
       return Map<String, Chat>.from(_chatCache!);
     }
 
-    final store = await SharedPreferences.getInstance();
-    final raw = store.getString(SharedReferenceConfig.chatConversationsKey);
-
-    if (raw == null) {
-      _chatCache = {};
-      return {};
-    }
-
-    final map = jsonDecode(raw) as Map<String, dynamic>;
-
-    final parsed = map.map(
-      (key, value) =>
-          MapEntry(key, ChatModel.fromJson(value as Map<String, dynamic>)),
-    );
-
+    final storedChats = await _chatLocalDataSource.loadAllChats();
+    final parsed = ChatModel.toEntityMap(storedChats);
     _chatCache = Map<String, Chat>.from(parsed);
 
     return Map<String, Chat>.from(_chatCache!);
   }
 
   Future<void> _saveAllChats(Map<String, Chat> chats) async {
-    final store = await SharedPreferences.getInstance();
-
-    final jsonMap = chats.map(
-      (key, chat) => MapEntry(key, (chat as ChatModel).toJson()),
-    );
-
-    await store.setString(
-      SharedReferenceConfig.chatConversationsKey,
-      jsonEncode(jsonMap),
-    );
-
+    final models = ChatModel.fromEntityMap(chats);
+    await _chatLocalDataSource.saveAllChats(models);
     _chatCache = Map<String, Chat>.from(chats);
   }
 
@@ -224,20 +208,9 @@ class ChatRepositoryImpl implements ChatRepository {
     }
 
     try {
-      final store = await SharedPreferences.getInstance();
-      final raw = store.getString(SharedReferenceConfig.accountListKey);
+      final users = await _userLocalDataSource.getAllUsers();
 
-      if (raw == null) {
-        _userCache = {};
-        return {};
-      }
-
-      final decoded = jsonDecode(raw) as List<dynamic>;
-      final users = decoded
-          .map((json) => UserModel.fromJson(json as Map<String, dynamic>))
-          .toList();
-
-      _userCache = {for (final user in users) user.id: user};
+      _userCache = {for (final user in users) user.id: user.toEntity()};
 
       return Map<String, User>.from(_userCache!);
     } catch (e) {

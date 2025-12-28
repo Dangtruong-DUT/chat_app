@@ -1,7 +1,6 @@
-import 'package:chat_app/src/core/utils/log/logger.dart';
+import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/delete_login_history.usecase.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/get_login_history.usecase.dart';
-import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,45 +14,42 @@ class AuthHistoryBloc extends Bloc<AuthHistoryEvent, AuthHistoryState> {
     required DeleteLoginHistoryUseCase deleteLoginHistoryUseCase,
   }) : _getLoginHistoryUseCase = getLoginHistoryUseCase,
        _deleteLoginHistoryUseCase = deleteLoginHistoryUseCase,
-       super(const AuthHistoryInitial()) {
-    on<AuthHistoryFetchRequested>(_onAuthHistoryFetchRequested);
-    on<AuthHistoryDeleteItemRequested>(_onAuthHistoryDeleteItemRequested);
+       super(AuthHistoryState.initial()) {
+    on<AuthHistoryFetchRequested>(_onFetch);
+    on<AuthHistoryDeleteItemRequested>(_onDelete);
   }
 
-  void _onAuthHistoryFetchRequested(
+  Future<void> _onFetch(
     AuthHistoryFetchRequested event,
     Emitter<AuthHistoryState> emit,
   ) async {
-    try {
-      emit(const AuthHistoryLoading());
-      final history = await _getLoginHistoryUseCase.call(params: null);
+    emit(state.copyWith(status: AuthHistoryStatus.loading));
 
-      emit(AuthHistoryLoaded(history: history));
-    } catch (e) {
-      Logger.error(
-        'AuthHistoryBloc - Fetch Login History Error: ${e.toString()}',
-      );
-      emit(const AuthHistoryLoaded(history: []));
-    }
+    final result = await _getLoginHistoryUseCase.call(const NoParams());
+    result.fold(
+      (error) =>
+          emit(state.copyWith(status: AuthHistoryStatus.failure, error: error)),
+      (history) => emit(
+        state.copyWith(
+          status: AuthHistoryStatus.success,
+          history: history,
+          error: null,
+        ),
+      ),
+    );
   }
 
-  void _onAuthHistoryDeleteItemRequested(
+  Future<void> _onDelete(
     AuthHistoryDeleteItemRequested event,
     Emitter<AuthHistoryState> emit,
   ) async {
-    try {
-      final currentState = state;
-      if (currentState is! AppUnauthenticated) return;
-
-      final updatedHistory = await _deleteLoginHistoryUseCase.call(
-        params: event.id,
-      );
-      emit(AuthHistoryLoaded(history: updatedHistory));
-    } catch (e) {
-      Logger.error(
-        'AuthHistoryBloc - Delete Login History Error: ${e.toString()}',
-      );
-      emit(const AuthHistoryLoaded(history: []));
-    }
+    final result = await _deleteLoginHistoryUseCase.call(event.id);
+    result.fold(
+      (error) =>
+          emit(state.copyWith(status: AuthHistoryStatus.failure, error: error)),
+      (history) => emit(
+        state.copyWith(status: AuthHistoryStatus.success, history: history),
+      ),
+    );
   }
 }

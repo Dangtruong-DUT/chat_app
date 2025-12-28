@@ -52,4 +52,19 @@ class MessageModel extends Message {
     'timestamp': timestamp.toIso8601String(),
     'status': status.name,
   };
+
+  Message toEntity() => Message(
+    id: id,
+    senderId: senderId,
+    receiverId: receiverId,
+    content: content,
+    timestamp: timestamp,
+    status: status,
+  );
+
+  static List<MessageModel> fromEntityList(Iterable<Message> messages) =>
+      messages.map(MessageModel.fromEntity).toList();
+
+  static List<Message> toEntityList(Iterable<MessageModel> models) =>
+      models.map((model) => model.toEntity()).toList();
 }

@@ -101,20 +101,8 @@ class _RegisterFormState extends State<RegisterForm> {
     final name = _nameController.text;
     final password = _passwordController.text;
 
-    // Dispatch register event to RegisterBloc
-    try {
-      context.read<RegisterBloc>().add(
-        RegisterSubmitted(email: email, name: name, password: password),
-      );
-    } catch (_) {
-      // If no bloc is provided, fallback to a snackbar for developer feedback
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Register tapped: $email / $name / ${'*' * password.length}',
-          ),
-        ),
-      );
-    }
+    context.read<RegisterBloc>().add(
+      RegisterSubmitted(email: email, name: name, password: password),
+    );
   }
 }

@@ -1,5 +1,3 @@
-import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
-import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/login.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/login/login_state.dart';
@@ -19,19 +17,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(const LoginLoading());
-    try {
-      final user = LoginUseCaseParams(
-        email: event.email,
-        password: event.password,
-      );
-      final loggedInUser = await _loginUseCase.call(params: user);
-      emit(LoginSuccess(loggedInUser));
-    } on ErrorException catch (e) {
-      Logger.error('LoginBloc + ${e.toString()}');
-      emit(LoginFailure(e));
-    } catch (e) {
-      Logger.error('LoginBloc + ${e.toString()}');
-      emit(LoginFailure(ErrorException(message: "Unexpected error occurred")));
-    }
+    final params = LoginUseCaseParams(
+      email: event.email,
+      password: event.password,
+    );
+
+    final result = await _loginUseCase.call(params);
+    result.fold(
+      (error) => emit(LoginFailure(error)),
+      (user) => emit(LoginSuccess(user)),
+    );
   }
 }

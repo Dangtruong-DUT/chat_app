@@ -16,6 +16,11 @@ class UserModel extends User {
     email: user.email,
   );
 
+  static List<UserModel> fromEntityList(Iterable<User> users) =>
+      users.map(UserModel.fromEntity).toList();
+
+  User toEntity() => User(id: id, name: name, avatar: avatar, email: email);
+
   factory UserModel.fromJson(Json json) => switch (json) {
     {
       'id': String id,
@@ -31,4 +36,7 @@ class UserModel extends User {
 
   static List<UserModel> fromJsonList(JsonList jsonList) =>
       jsonList.map((json) => UserModel.fromJson(json)).toList();
+
+  static List<User> toEntityList(Iterable<UserModel> models) =>
+      models.map((model) => model.toEntity()).toList();
 }

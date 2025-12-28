@@ -21,7 +21,6 @@ class SearchResults extends StatelessWidget {
             ),
           );
         }
-
         if (state is SearchLoaded) {
           return state.results.isNotEmpty
               ? ListView.builder(

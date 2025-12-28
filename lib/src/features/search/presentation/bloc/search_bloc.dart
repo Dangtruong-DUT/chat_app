@@ -22,15 +22,12 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     emit(const SearchLoading());
-    try {
-      final searchUseCaseParams = SearchUserUseCaseParams(query: event.query);
-      final results = await _searchUserUseCase.call(
-        params: searchUseCaseParams,
-      );
-      emit(SearchLoaded(results: results));
-    } catch (e) {
-      emit(const SearchLoaded(results: []));
-    }
+    final searchUseCaseParams = SearchUserUseCaseParams(query: event.query);
+    final result = await _searchUserUseCase.call(searchUseCaseParams);
+    result.fold(
+      (_) => emit(const SearchLoaded(results: [])),
+      (users) => emit(SearchLoaded(results: users)),
+    );
   }
 
   void _onSearchCleared(SearchCleared event, Emitter<SearchState> emit) {

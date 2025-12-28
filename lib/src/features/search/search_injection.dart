@@ -1,22 +1,34 @@
 import 'package:chat_app/src/core/utils/injection_module/base_injection_module.dart';
+import 'package:chat_app/src/features/search/data/datasources/search_local_data_source.dart';
+import 'package:chat_app/src/features/search/data/datasources/search_local_data_source_impl.dart';
 import 'package:chat_app/src/features/search/data/repo_impl/search_repository_impl.dart';
 import 'package:chat_app/src/features/search/domain/repositories/search_repository.dart';
 import 'package:chat_app/src/features/search/domain/usecases/search_users.usecase.dart';
 import 'package:chat_app/src/features/search/presentation/bloc/search_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _getIt = GetIt.instance;
 
 class SearchInjectionModule implements BaseInjectionModule {
   @override
   Future<void> register() async {
+    await _configureDataSourceDependencies();
     await _configureRepositoryDependencies();
     await _configureUseCaseDependencies();
     await _configureBlocDependencies();
   }
 
+  Future<void> _configureDataSourceDependencies() async {
+    _getIt.registerLazySingleton<SearchLocalDataSource>(
+      () => SearchLocalDataSourceImpl(store: _getIt<SharedPreferences>()),
+    );
+  }
+
   Future<void> _configureRepositoryDependencies() async {
-    _getIt.registerSingleton<SearchRepository>(SearchRepositoryImpl());
+    _getIt.registerSingleton<SearchRepository>(
+      SearchRepositoryImpl(localDataSource: _getIt<SearchLocalDataSource>()),
+    );
   }
 
   Future<void> _configureUseCaseDependencies() async {

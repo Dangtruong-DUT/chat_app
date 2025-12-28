@@ -1,9 +1,10 @@
-import 'package:chat_app/src/core/utils/log/logger.dart';
+import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
+import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
-class AddLoginHistoryUseCase implements BaseUseCase<List<User>, User> {
+class AddLoginHistoryUseCase extends BaseUseCase<List<User>, User> {
   final AuthRepository _repository;
   final int maxItems;
 
@@ -13,17 +14,21 @@ class AddLoginHistoryUseCase implements BaseUseCase<List<User>, User> {
   }) : _repository = repository;
 
   @override
-  Future<List<User>> call({required User params}) async {
+  Future<Result<List<User>>> call(User params) async {
     try {
       final current = await _repository.getLoginHistory();
       final filtered = current.where((u) => u.email != params.email).toList();
       filtered.insert(0, params);
       final trimmed = filtered.take(maxItems).toList();
       await _repository.saveLoginHistory(trimmed);
-      return trimmed;
-    } catch (e) {
-      Logger.error('AddLoginHistoryUseCase - error: ${e.toString()}');
-      return [];
+      return success(trimmed);
+    } catch (error) {
+      return failure(
+        ErrorMapper.mapToError(
+          error,
+          fallbackMessage: 'Unable to update login history',
+        ),
+      );
     }
   }
 }

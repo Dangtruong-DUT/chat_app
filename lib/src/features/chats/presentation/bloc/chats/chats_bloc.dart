@@ -1,4 +1,3 @@
-import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
 import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/get_all_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
@@ -18,18 +17,12 @@ class ChatsBloc extends Bloc<ChatsEvent, ChatsState> {
     Emitter<ChatsState> emit,
   ) async {
     emit(const ChatsLoading());
-    try {
-      final params = GetAllConversationUseCaseParams(userId: event.userId);
-      final chats = await getAllConversationUseCase(params: params);
-      emit(ChatsLoaded(chats));
-    } on ErrorException catch (e) {
-      Logger.error('ChatsBloc + ${e.toString()}');
-      emit(ChatsLoadFailure(e));
-    } catch (e) {
-      Logger.error('ChatsBloc + ${e.toString()}');
-      emit(
-        ChatsLoadFailure(ErrorException(message: "Unexpected error occurred")),
-      );
-    }
+    final params = GetAllConversationUseCaseParams(userId: event.userId);
+    final result = await getAllConversationUseCase(params);
+
+    result.fold((error) {
+      Logger.error('ChatsBloc + ${error.toString()}');
+      emit(ChatsLoadFailure(error));
+    }, (chats) => emit(ChatsLoaded(chats)));
   }
 }

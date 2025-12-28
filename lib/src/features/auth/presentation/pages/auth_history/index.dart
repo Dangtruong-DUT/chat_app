@@ -1,5 +1,7 @@
 import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_bloc.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/auth_history/auth_history_state.dart';
 import 'package:chat_app/src/features/auth/presentation/pages/auth_history/widgets/login_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -86,8 +88,22 @@ class AuthScreen extends StatelessWidget {
 
   Widget _buildBlocProvider({required Widget child}) {
     return BlocProvider(
-      create: (_) => GetIt.instance<AuthHistoryBloc>(),
-      child: child,
+      create: (_) =>
+          GetIt.instance<AuthHistoryBloc>()
+            ..add(const AuthHistoryFetchRequested()),
+      child: BlocListener<AuthHistoryBloc, AuthHistoryState>(
+        listenWhen: (previous, current) =>
+            previous.status != current.status &&
+            current.status == AuthHistoryStatus.failure,
+        listener: (context, state) {
+          final message =
+              state.error?.message ?? 'Đã xảy ra lỗi không xác định';
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(message)));
+        },
+        child: child,
+      ),
     );
   }
 

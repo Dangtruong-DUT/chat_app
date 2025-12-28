@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
+import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
 
 sealed class ChatsState {

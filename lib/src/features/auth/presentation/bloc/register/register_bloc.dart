@@ -1,5 +1,3 @@
-import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
-import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/domain/usecases/register.usecase.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_event.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_state.dart';
@@ -19,22 +17,16 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     Emitter<RegisterState> emit,
   ) async {
     emit(const RegisterLoading());
-    try {
-      final body = RegisterUseCaseParams(
-        email: event.email,
-        name: event.name,
-        password: event.password,
-      );
-      final registeredUser = await _registerUseCase.call(params: body);
-      emit(RegisterSuccess(registeredUser));
-    } on ErrorException catch (e) {
-      Logger.error('RegisterBloc + ${e.toString()}');
-      emit(RegisterFailure(e));
-    } catch (e) {
-      Logger.error('RegisterBloc + ${e.toString()}');
-      emit(
-        RegisterFailure(ErrorException(message: "Unexpected error occurred")),
-      );
-    }
+    final params = RegisterUseCaseParams(
+      email: event.email,
+      name: event.name,
+      password: event.password,
+    );
+
+    final result = await _registerUseCase.call(params);
+    result.fold(
+      (error) => emit(RegisterFailure(error)),
+      (user) => emit(RegisterSuccess(user)),
+    );
   }
 }

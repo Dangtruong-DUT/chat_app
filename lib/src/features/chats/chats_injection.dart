@@ -1,4 +1,8 @@
 import 'package:chat_app/src/core/utils/injection_module/base_injection_module.dart';
+import 'package:chat_app/src/features/chats/data/datasources/chat_local_data_source.dart';
+import 'package:chat_app/src/features/chats/data/datasources/chat_local_data_source_impl.dart';
+import 'package:chat_app/src/features/chats/data/datasources/user_local_data_source.dart';
+import 'package:chat_app/src/features/chats/data/datasources/user_local_data_source_impl.dart';
 import 'package:chat_app/src/features/chats/data/repo_impl/chat_repository_impl.dart';
 import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/create_conversation.usecase.dart';
@@ -9,19 +13,36 @@ import 'package:chat_app/src/features/chats/domain/usecases/update_message_statu
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final _getIt = GetIt.instance;
 
 class ChatsInjectionModule implements BaseInjectionModule {
   @override
   Future<void> register() async {
+    await _configureDataSourceDependencies();
     await _configureRepositoryDependencies();
     await _configureUseCaseDependencies();
     await _configureBlocDependencies();
   }
 
+  Future<void> _configureDataSourceDependencies() async {
+    _getIt
+      ..registerLazySingleton<ChatLocalDataSource>(
+        () => ChatLocalDataSourceImpl(store: _getIt<SharedPreferences>()),
+      )
+      ..registerLazySingleton<UserLocalDataSource>(
+        () => UserLocalDataSourceImpl(store: _getIt<SharedPreferences>()),
+      );
+  }
+
   Future<void> _configureRepositoryDependencies() async {
-    _getIt.registerSingleton<ChatRepository>(ChatRepositoryImpl());
+    _getIt.registerSingleton<ChatRepository>(
+      ChatRepositoryImpl(
+        chatLocalDataSource: _getIt<ChatLocalDataSource>(),
+        userLocalDataSource: _getIt<UserLocalDataSource>(),
+      ),
+    );
   }
 
   Future<void> _configureUseCaseDependencies() async {

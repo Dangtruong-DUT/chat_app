@@ -105,6 +105,7 @@ class _LoginFormState extends State<LoginForm> {
     if (!_formKey.currentState!.validate()) return;
     final email = _emailController.text;
     final password = _passwordController.text;
+
     context.read<LoginBloc>().add(
       LoginSubmitted(email: email, password: password),
     );

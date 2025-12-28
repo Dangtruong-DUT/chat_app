@@ -1,4 +1,6 @@
+import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
+import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
@@ -14,17 +16,24 @@ class RegisterUseCaseParams {
   });
 }
 
-class RegisterUseCase extends BaseUseCase<void, RegisterUseCaseParams> {
+class RegisterUseCase extends BaseUseCase<User, RegisterUseCaseParams> {
   final AuthRepository _repository;
   RegisterUseCase({required AuthRepository repository})
     : _repository = repository;
 
   @override
-  Future<User> call({required RegisterUseCaseParams params}) async {
-    return _repository.register(
-      email: params.email,
-      password: params.password,
-      name: params.name,
-    );
+  Future<Result<User>> call(RegisterUseCaseParams params) async {
+    try {
+      final user = await _repository.register(
+        email: params.email,
+        password: params.password,
+        name: params.name,
+      );
+      return success(user);
+    } catch (error) {
+      return failure(
+        ErrorMapper.mapToError(error, fallbackMessage: 'Unable to register'),
+      );
+    }
   }
 }

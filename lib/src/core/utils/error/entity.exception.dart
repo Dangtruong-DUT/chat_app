@@ -1,4 +1,4 @@
-import 'package:chat_app/src/core/utils/exception/base/error.exception.dart';
+import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
 
 class EntityException extends ErrorException {
   final List<EntityError> errors;
