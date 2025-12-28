@@ -30,7 +30,7 @@ class ChatHistoryListItem extends StatelessWidget {
           border: Border.all(color: theme.colorScheme.outline, width: 1),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.shadow.withOpacity(0.04),
+              color: theme.colorScheme.shadow.withValues(alpha: 0.04),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),

@@ -77,7 +77,7 @@ class TAppTheme {
       ),
       chipTheme: ChipThemeData(
         backgroundColor: palette.muted,
-        selectedColor: scheme.primary.withOpacity(0.12),
+        selectedColor: scheme.primary.withValues(alpha: 0.12),
         disabledColor: palette.border,
         labelStyle: textTheme.labelMedium,
         secondaryLabelStyle: textTheme.labelMedium?.copyWith(

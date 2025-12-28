@@ -32,7 +32,7 @@ class TTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText ?? tr('form.enterValue'),
         hintStyle: TextStyle(
-          color: theme.colorScheme.onSurfaceVariant.withOpacity(0.6),
+          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
         ),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
         enabledBorder: OutlineInputBorder(

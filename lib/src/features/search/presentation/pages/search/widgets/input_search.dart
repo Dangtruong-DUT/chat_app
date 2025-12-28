@@ -36,13 +36,10 @@ class _InputSearchState extends State<InputSearch> {
               : theme.colorScheme.outline,
           width: isTextFieldFocus ? 2 : 1.5,
         ),
-        color: isTextFieldFocus
-            ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
-            : theme.colorScheme.surface,
         boxShadow: isTextFieldFocus
             ? [
                 BoxShadow(
-                  color: theme.colorScheme.primary.withOpacity(0.12),
+                  color: theme.colorScheme.primary.withValues(alpha: 0.12),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -56,9 +53,12 @@ class _InputSearchState extends State<InputSearch> {
             "assets/svg/search.svg",
             width: 25,
             height: 25,
-            color: isTextFieldFocus
-                ? theme.colorScheme.primary
-                : theme.colorScheme.onSurfaceVariant,
+            colorFilter: ColorFilter.mode(
+              isTextFieldFocus
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurfaceVariant,
+              BlendMode.srcIn,
+            ),
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -66,9 +66,7 @@ class _InputSearchState extends State<InputSearch> {
               onChanged: _onInputSearchChanged,
               controller: inputSearchController,
               focusNode: focusNode,
-              style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onSurface,
-              ),
+              style: theme.textTheme.labelMedium?.copyWith(),
               decoration: InputDecoration(
                 hintText: tr('search.input.hint'),
                 hintStyle: theme.textTheme.labelMedium?.copyWith(

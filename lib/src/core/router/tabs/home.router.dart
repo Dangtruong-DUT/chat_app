@@ -33,19 +33,15 @@ class HomeRouter {
     routes: [
       GoRoute(
         path: AppRoutesConfig.chats,
-        builder: (_, __) => const ChatListScreen(),
-      ),
-      GoRoute(
-        path: AppRoutesConfig.chats,
-        builder: (_, __) => const ChatListScreen(),
+        builder: (context, state) => const ChatListScreen(),
       ),
       GoRoute(
         path: AppRoutesConfig.search,
-        builder: (_, __) => const SearchScreen(),
+        builder: (context, state) => const SearchScreen(),
       ),
       GoRoute(
         path: AppRoutesConfig.settings,
-        builder: (_, __) => const SettingsScreen(),
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

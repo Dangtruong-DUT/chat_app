@@ -10,16 +10,19 @@ class AuthRouter {
   static List<GoRoute> routes = [
     GoRoute(
       path: AppRoutesConfig.splash,
-      builder: (_, _) => const SplashScreen(),
+      builder: (context, state) => const SplashScreen(),
     ),
-    GoRoute(path: AppRoutesConfig.auth, builder: (_, __) => const AuthScreen()),
+    GoRoute(
+      path: AppRoutesConfig.auth,
+      builder: (context, state) => const AuthScreen(),
+    ),
     GoRoute(
       path: AppRoutesConfig.register,
-      builder: (_, _) => const RegisterScreen(),
+      builder: (context, state) => const RegisterScreen(),
     ),
     GoRoute(
       path: AppRoutesConfig.login,
-      builder: (_, state) {
+      builder: (context, state) {
         final email = state.uri.queryParameters[LoginRouteQueryKeys.email];
         return LoginScreen(prefilledEmail: email);
       },

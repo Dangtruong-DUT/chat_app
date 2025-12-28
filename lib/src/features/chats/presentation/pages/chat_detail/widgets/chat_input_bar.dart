@@ -47,10 +47,7 @@ class _ChatInputBarState extends State<ChatInputBar> {
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceVariant,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
+                  decoration: BoxDecoration(),
                   child: TextField(
                     controller: _controller,
                     textInputAction: TextInputAction.send,

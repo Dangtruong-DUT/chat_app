@@ -79,7 +79,9 @@ class _RegisterFormState extends State<RegisterForm> {
                   constraints: const BoxConstraints(minHeight: 50),
                   decoration: BoxDecoration(
                     color: isSubmitting
-                        ? Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                        ? Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.7)
                         : Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(10),
                   ),

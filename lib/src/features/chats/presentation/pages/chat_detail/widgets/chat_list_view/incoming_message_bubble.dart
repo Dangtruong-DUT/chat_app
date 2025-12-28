@@ -20,7 +20,7 @@ class IncomingTextMessageBubble extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final bubbleColor = isExpanded
-        ? colorScheme.surfaceVariant
+        ? colorScheme.surfaceContainerHighest
         : colorScheme.surface;
     final timestampText = formatTimeAgo(
       dateTime: message.timestamp,
@@ -40,7 +40,7 @@ class IncomingTextMessageBubble extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: colorScheme.shadow.withOpacity(0.04),
+              color: colorScheme.shadow.withValues(alpha: 0.04),
               blurRadius: 8,
               offset: const Offset(0, 3),
             ),

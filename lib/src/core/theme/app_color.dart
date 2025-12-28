@@ -91,8 +91,6 @@ class AppColorPalette {
       brightness: isDark ? Brightness.dark : Brightness.light,
       primary: palette.primary,
       onPrimary: palette.primaryForeground,
-      background: palette.background,
-      onBackground: palette.foreground,
       secondary: palette.secondary,
       onSecondary: palette.secondaryForeground,
       error: palette.destructive,
@@ -105,7 +103,7 @@ class AppColorPalette {
       tertiary: palette.accent,
       onTertiary: palette.accentForeground,
       shadow: palette.ring,
-      scrim: Colors.black.withOpacity(isDark ? 0.6 : 0.35),
+      scrim: Colors.black.withValues(alpha: isDark ? 0.6 : 0.35),
       surfaceTint: palette.primary,
     );
   }

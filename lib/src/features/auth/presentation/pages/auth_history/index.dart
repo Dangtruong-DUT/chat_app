@@ -62,7 +62,7 @@ class AuthScreen extends StatelessWidget {
                                       shape: BoxShape.circle,
                                       color: Theme.of(
                                         context,
-                                      ).colorScheme.surfaceVariant,
+                                      ).colorScheme.surfaceContainerHighest,
                                     ),
                                     child: Icon(
                                       Icons.add,
