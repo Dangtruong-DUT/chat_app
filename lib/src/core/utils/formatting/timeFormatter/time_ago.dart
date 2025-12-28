@@ -1,65 +1,25 @@
+import 'package:chat_app/src/core/i18n/app_locale.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class MyCustomMessages implements timeago.LookupMessages {
-  @override
-  String prefixAgo() => '';
+import 'locale_messages/time_ago_messages_en.dart';
+import 'locale_messages/time_ago_messages_vi.dart';
 
-  @override
-  String prefixFromNow() => '';
-
-  @override
-  String suffixAgo() => '';
-
-  @override
-  String suffixFromNow() => '';
-
-  @override
-  String lessThanOneMinute(int seconds) => 'now';
-
-  @override
-  String aboutAMinute(int minutes) => '${minutes}m';
-
-  @override
-  String minutes(int minutes) => '${minutes}m';
-
-  @override
-  String aboutAnHour(int minutes) => '${minutes}m';
-
-  @override
-  String hours(int hours) => '${hours}h';
-
-  @override
-  String aDay(int hours) => '${hours}h';
-
-  @override
-  String days(int days) => '${days}d';
-
-  @override
-  String aboutAMonth(int days) => '${days}d';
-
-  @override
-  String months(int months) => '${months}mo';
-
-  @override
-  String aboutAYear(int year) => '${year}y';
-
-  @override
-  String years(int years) => '${years}y';
-
-  @override
-  String wordSeparator() => ' ';
-}
-
-const defaultLocale = 'en';
+const defaultLocale = AppLocale.en;
+const _vietnameseLocale = AppLocale.vi;
+const _supportedLocales = <String>{defaultLocale, _vietnameseLocale};
 
 void initCustomTimeMessages() {
+  timeago.setLocaleMessages(defaultLocale, TimeAgoMessagesEn());
+  timeago.setLocaleMessages(_vietnameseLocale, TimeAgoMessagesVi());
   timeago.setDefaultLocale(defaultLocale);
-  timeago.setLocaleMessages(defaultLocale, MyCustomMessages());
 }
 
 String formatTimeAgo({
   required DateTime dateTime,
   String locale = defaultLocale,
 }) {
-  return timeago.format(dateTime, locale: locale);
+  final normalizedLocale = _supportedLocales.contains(locale)
+      ? locale
+      : defaultLocale;
+  return timeago.format(dateTime, locale: normalizedLocale);
 }

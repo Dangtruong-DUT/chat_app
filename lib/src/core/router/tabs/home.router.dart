@@ -2,6 +2,7 @@ import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chats/index.dart';
 import 'package:chat_app/src/features/search/presentation/pages/search/index.dart';
 import 'package:chat_app/src/features/setting/presentation/pages/settings/index.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import './tab.model.dart';
@@ -10,14 +11,18 @@ class HomeRouter {
   HomeRouter._();
 
   static const List<TabModel> _homeTabs = [
-    TabModel(label: 'Chats', icon: Icons.chat, route: AppRoutesConfig.chats),
     TabModel(
-      label: 'Search',
+      labelKey: 'tabs.chats',
+      icon: Icons.chat,
+      route: AppRoutesConfig.chats,
+    ),
+    TabModel(
+      labelKey: 'tabs.search',
       icon: Icons.search,
       route: AppRoutesConfig.search,
     ),
     TabModel(
-      label: 'Settings',
+      labelKey: 'tabs.settings',
       icon: Icons.settings,
       route: AppRoutesConfig.settings,
     ),
@@ -59,7 +64,7 @@ class HomeRouter {
             .map(
               (tab) => BottomNavigationBarItem(
                 icon: Icon(tab.icon),
-                label: tab.label,
+                label: tr(tab.labelKey),
               ),
             )
             .toList(),

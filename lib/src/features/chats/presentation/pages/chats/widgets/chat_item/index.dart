@@ -57,7 +57,7 @@ class ChatHistoryListItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          _buildSubtitle(),
+                          _buildSubtitle(context),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.bodyMedium?.copyWith(
@@ -88,9 +88,12 @@ class ChatHistoryListItem extends StatelessWidget {
     );
   }
 
-  String _buildSubtitle() {
+  String _buildSubtitle(BuildContext context) {
     final message = chat.lastMessage ?? tr('chats.list.noMessages');
-    final time = formatTimeAgo(dateTime: chat.lastUpdated);
+    final time = formatTimeAgo(
+      dateTime: chat.lastUpdated,
+      locale: context.locale.languageCode,
+    );
 
     if (chat.isLastMessageFromCurrentUser) {
       return tr(

@@ -7,6 +7,11 @@
     "logout": "Đăng xuất",
     "loading": "Đang tải..."
   },
+  "tabs": {
+    "chats": "Tin nhắn",
+    "search": "Tìm kiếm",
+    "settings": "Cài đặt"
+  },
   "form": {
     "email": "Email",
     "password": "Mật khẩu",

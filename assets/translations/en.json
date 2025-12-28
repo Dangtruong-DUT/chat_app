@@ -7,6 +7,11 @@
     "logout": "Logout",
     "loading": "Loading..."
   },
+  "tabs": {
+    "chats": "Chats",
+    "search": "Search",
+    "settings": "Settings"
+  },
   "form": {
     "email": "Email",
     "password": "Password",

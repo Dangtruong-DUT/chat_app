@@ -23,7 +23,10 @@ class OutgoingTextMessageBubble extends StatelessWidget {
     final bubbleColor = isExpanded
         ? colorScheme.surfaceVariant
         : colorScheme.surface;
-    final timestampText = formatTimeAgo(dateTime: message.timestamp);
+    final timestampText = formatTimeAgo(
+      dateTime: message.timestamp,
+      locale: context.locale.languageCode,
+    );
     final metaStyle = theme.textTheme.bodySmall?.copyWith(
       fontSize: 10,
       color: colorScheme.onSurfaceVariant,
