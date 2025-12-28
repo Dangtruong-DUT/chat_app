@@ -1,34 +1,70 @@
+import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
+import 'package:intl/intl.dart';
 
 class IncomingTextMessageBubble extends StatelessWidget {
   final Message message;
-  const IncomingTextMessageBubble({required this.message, super.key});
+  final bool isExpanded;
+  final VoidCallback onTap;
+
+  const IncomingTextMessageBubble({
+    required this.message,
+    required this.isExpanded,
+    required this.onTap,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
+    final bubble = GestureDetector(
+      onTap: onTap,
       child: Container(
-        margin: EdgeInsets.symmetric(vertical: 4),
-        padding: EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isExpanded ? Colors.grey.shade100 : Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(message.content),
-            SizedBox(height: 2),
+            const SizedBox(height: 2),
             Text(
               formatTimeAgo(dateTime: message.timestamp),
-              style: TextStyle(fontSize: 10, color: Colors.black54),
+              style: const TextStyle(fontSize: 10, color: Colors.black54),
             ),
           ],
         ),
       ),
     );
+
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          bubble,
+          if (isExpanded)
+            Padding(
+              padding: const EdgeInsets.only(top: 2, left: 4),
+              child: Text(
+                'Đã nhận lúc ${_formatTimestamp(message.timestamp)}',
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: Colors.black54,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  String _formatTimestamp(DateTime time) {
+    return DateFormat('HH:mm').format(time);
   }
 }

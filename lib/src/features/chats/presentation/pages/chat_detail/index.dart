@@ -1,60 +1,37 @@
+import 'package:chat_app/src/core/router/routes.config.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
-import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_app_bar.dart';
-import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
-import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
-import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_detail_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 class ChatDetailScreen extends StatelessWidget {
   final String? chatId;
-  final String? userId;
-  const ChatDetailScreen({super.key, required this.chatId, this.userId});
+  final String? receiverId;
+
+  const ChatDetailScreen({super.key, this.chatId, this.receiverId});
 
   @override
   Widget build(BuildContext context) {
-    return _buildBlocProvider(
-      child: Scaffold(
-        appBar: AppBar(
-          title: ChatAppBar(
-            user: User(
-              id: "111",
-              name: "John Doe",
-              email: "john.doe@example.com",
-            ),
-          ),
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/images/chats/chat_background.png',
-                      ),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: MessageListView(),
-                ),
-              ),
-              ChatInputBar(),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+    final authState = context.watch<AppAuthBloc>().state;
+    final currentUser = authState.user;
 
-  Widget _buildBlocProvider({required Widget child}) {
+    if (currentUser == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        GoRouter.of(context).go(AppRoutesConfig.auth);
+      });
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     return BlocProvider(
       create: (_) => GetIt.instance<ChatDetailBloc>(),
-      child: child,
+      child: ChatDetailView(
+        chatId: chatId,
+        receiverId: receiverId,
+        currentUserId: currentUser.id,
+      ),
     );
   }
 }

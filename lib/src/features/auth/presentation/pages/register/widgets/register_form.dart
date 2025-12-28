@@ -83,7 +83,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
-                    child: false
+                    child: isSubmitting
                         ? SizedBox(
                             width: 24,
                             height: 24,

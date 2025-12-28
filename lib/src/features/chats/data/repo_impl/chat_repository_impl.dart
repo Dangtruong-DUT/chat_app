@@ -14,8 +14,6 @@ import 'package:collection/collection.dart';
 class ChatRepositoryImpl implements ChatRepository {
   final ChatLocalDataSource _chatLocalDataSource;
   final UserLocalDataSource _userLocalDataSource;
-  Map<String, Chat>? _chatCache;
-  Map<String, User>? _userCache;
 
   ChatRepositoryImpl({
     required ChatLocalDataSource chatLocalDataSource,
@@ -43,17 +41,23 @@ class ChatRepositoryImpl implements ChatRepository {
 
             final partner = users[partnerId] ?? _fallbackUser(partnerId);
             final lastMessage = chat.messages.isNotEmpty
-                ? chat.messages.last.content
-                : '';
-            final lastUpdated = chat.messages.isNotEmpty
-                ? chat.messages.last.timestamp
-                : DateTime.fromMillisecondsSinceEpoch(0);
+                ? chat.messages.last
+                : null;
+            final hasUnreadMessages =
+                lastMessage != null &&
+                lastMessage.receiverId == userId &&
+                lastMessage.status != MessageStatus.read;
 
             return ChatSummary(
               id: chat.id,
               user: partner,
-              lastMessage: lastMessage,
-              lastUpdated: lastUpdated,
+              lastMessage: lastMessage?.content,
+              lastUpdated:
+                  lastMessage?.timestamp ??
+                  DateTime.fromMillisecondsSinceEpoch(0),
+              lastMessageStatus: lastMessage?.status,
+              isLastMessageFromCurrentUser: lastMessage?.senderId == userId,
+              hasUnreadMessages: hasUnreadMessages,
             );
           })
           .toList();
@@ -149,6 +153,8 @@ class ChatRepositoryImpl implements ChatRepository {
 
       await _saveAllChats(chats);
 
+      _simulateDeliveryStatus(chatId: chatId, messageId: message.id);
+
       return message;
     } catch (e) {
       Logger.error("sendMessage error: $e");
@@ -184,38 +190,23 @@ class ChatRepositoryImpl implements ChatRepository {
     }
   }
 
-  Future<Map<String, Chat>> _loadAllChats({bool forceRefresh = false}) async {
-    if (!forceRefresh && _chatCache != null) {
-      return Map<String, Chat>.from(_chatCache!);
-    }
-
+  Future<Map<String, Chat>> _loadAllChats() async {
     final storedChats = await _chatLocalDataSource.loadAllChats();
     final parsed = ChatModel.toEntityMap(storedChats);
-    _chatCache = Map<String, Chat>.from(parsed);
-
-    return Map<String, Chat>.from(_chatCache!);
+    return Map<String, Chat>.from(parsed);
   }
 
   Future<void> _saveAllChats(Map<String, Chat> chats) async {
     final models = ChatModel.fromEntityMap(chats);
     await _chatLocalDataSource.saveAllChats(models);
-    _chatCache = Map<String, Chat>.from(chats);
   }
 
-  Future<Map<String, User>> _loadAllUsers({bool forceRefresh = false}) async {
-    if (!forceRefresh && _userCache != null) {
-      return Map<String, User>.from(_userCache!);
-    }
-
+  Future<Map<String, User>> _loadAllUsers() async {
     try {
       final users = await _userLocalDataSource.getAllUsers();
-
-      _userCache = {for (final user in users) user.id: user.toEntity()};
-
-      return Map<String, User>.from(_userCache!);
+      return {for (final user in users) user.id: user.toEntity()};
     } catch (e) {
       Logger.error('Load users error: $e');
-      _userCache = {};
       return {};
     }
   }
@@ -226,5 +217,22 @@ class ChatRepositoryImpl implements ChatRepository {
       name: 'Unknown User',
       email: 'unknown_$userId@chat.app',
     );
+  }
+
+  void _simulateDeliveryStatus({
+    required String chatId,
+    required String messageId,
+  }) {
+    Future.delayed(const Duration(milliseconds: 700), () async {
+      try {
+        await updateMessageStatus(
+          chatId: chatId,
+          messageId: messageId,
+          status: MessageStatus.delivered,
+        );
+      } catch (e) {
+        Logger.error('simulate delivery status error: $e');
+      }
+    });
   }
 }

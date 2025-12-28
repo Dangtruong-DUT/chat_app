@@ -1,6 +1,6 @@
-import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/index.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_state.dart';
+import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -20,7 +20,8 @@ class AppRouter {
         path: AppRoutesConfig.chatDetail,
         builder: (_, state) => ChatDetailScreen(
           chatId: state.uri.queryParameters[ChatDetailRouteQueryKeys.chatId],
-          userId: state.uri.queryParameters[ChatDetailRouteQueryKeys.userId],
+          receiverId:
+              state.uri.queryParameters[ChatDetailRouteQueryKeys.userId],
         ),
       ),
     ],

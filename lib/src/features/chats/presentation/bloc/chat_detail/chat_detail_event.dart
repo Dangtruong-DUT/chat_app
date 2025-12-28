@@ -1,31 +1,39 @@
-sealed class ChatsEvent {
-  const ChatsEvent();
+sealed class ChatDetailEvent {
+  const ChatDetailEvent();
 }
 
-class ChatsLoad extends ChatsEvent {
+class ChatDetailRequested extends ChatDetailEvent {
   final String? chatId;
-  final String userId;
+  final String currentUserId;
   final String? receiverId;
 
-  const ChatsLoad({this.chatId, required this.userId, this.receiverId});
+  const ChatDetailRequested({
+    this.chatId,
+    required this.currentUserId,
+    this.receiverId,
+  });
 }
 
-class ChatSendMessage extends ChatsEvent {
+class ChatDetailMessageSent extends ChatDetailEvent {
   final String chatId;
-  final String userId;
+  final String currentUserId;
   final String receiverId;
   final String content;
 
-  const ChatSendMessage({
+  const ChatDetailMessageSent({
     required this.chatId,
-    required this.userId,
+    required this.currentUserId,
     required this.receiverId,
     required this.content,
   });
 }
 
-class ChatUpdateStatusMessage extends ChatsEvent {
+class ChatDetailMarkMessagesRead extends ChatDetailEvent {
   final String chatId;
+  final String currentUserId;
 
-  const ChatUpdateStatusMessage({required this.chatId});
+  const ChatDetailMarkMessagesRead({
+    required this.chatId,
+    required this.currentUserId,
+  });
 }

@@ -6,21 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-final _getIt = GetIt.instance;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   initCustomTimeMessages();
 
-  _getIt.debugEventsEnabled = true;
+  GetIt.instance.debugEventsEnabled = true;
   await AppInjectionModule().register();
-  await _getIt.allReady();
+  await GetIt.instance.allReady();
 
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider<AppAuthBloc>(create: (_) => _getIt<AppAuthBloc>()),
+        BlocProvider<AppAuthBloc>(create: (_) => GetIt.instance<AppAuthBloc>()),
       ],
       child: const AppBootstrap(),
     ),

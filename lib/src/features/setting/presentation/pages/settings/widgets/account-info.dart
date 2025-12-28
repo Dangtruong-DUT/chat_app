@@ -2,6 +2,7 @@ import 'package:chat_app/src/core/router/routes.config.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/app_auth/app_auth_event.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,14 +22,7 @@ class AccountInfo extends StatelessWidget {
         SizedBox(
           width: 60,
           height: 60,
-          child: CircleAvatar(
-            backgroundImage: user.avatar != null && user.avatar!.isNotEmpty
-                ? NetworkImage(user.avatar!)
-                : const AssetImage(
-                        'assets/images/common/avatar_placeholder.gif',
-                      )
-                      as ImageProvider,
-          ),
+          child: CustomCircleAvatar(imageUrl: user.avatar),
         ),
 
         const SizedBox(width: 16),

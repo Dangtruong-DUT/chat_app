@@ -1,4 +1,5 @@
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 
 class AccountItem extends StatefulWidget {
@@ -84,14 +85,7 @@ class _AccountItemState extends State<AccountItem>
                   clipBehavior: Clip.none,
                   children: [
                     Positioned.fill(
-                      child: CircleAvatar(
-                        backgroundImage: widget.user.avatar != null
-                            ? NetworkImage(widget.user.avatar!)
-                            : const AssetImage(
-                                    'assets/images/common/avatar_placeholder.gif',
-                                  )
-                                  as ImageProvider,
-                      ),
+                      child: CustomCircleAvatar(imageUrl: widget.user.avatar),
                     ),
 
                     if (showDelete)

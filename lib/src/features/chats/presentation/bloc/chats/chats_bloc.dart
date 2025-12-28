@@ -1,4 +1,3 @@
-import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/get_all_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_state.dart';
@@ -21,7 +20,6 @@ class ChatsBloc extends Bloc<ChatsEvent, ChatsState> {
     final result = await getAllConversationUseCase(params);
 
     result.fold((error) {
-      Logger.error('ChatsBloc + ${error.toString()}');
       emit(ChatsLoadFailure(error));
     }, (chats) => emit(ChatsLoaded(chats)));
   }

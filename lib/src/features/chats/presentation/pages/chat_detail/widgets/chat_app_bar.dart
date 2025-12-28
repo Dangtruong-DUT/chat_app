@@ -1,10 +1,11 @@
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
+import 'package:chat_app/src/shared/presentation/widgets/custom_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final User user;
-  const ChatAppBar({required this.user, super.key});
+  final User? user;
+  const ChatAppBar({this.user, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: InkWell(
         onTap: () {
-          GoRouter.of(context).push('/chats/${user.id}');
+          if (user == null) return;
+          GoRouter.of(context).push('/chats/${user!.id}');
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -26,7 +28,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      user.name,
+                      user?.name ?? 'Đang tải...',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium,
@@ -37,7 +39,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                   SizedBox(
                     width: 200,
                     child: Text(
-                      user.email,
+                      user?.email ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(
@@ -53,15 +55,7 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
             SizedBox(
               width: 36,
               height: 36,
-              child: CircleAvatar(
-                radius: 24,
-                backgroundImage: user.avatar != null && user.avatar!.isNotEmpty
-                    ? NetworkImage(user.avatar!)
-                    : const AssetImage(
-                            'assets/images/common/avatar_placeholder.gif',
-                          )
-                          as ImageProvider,
-              ),
+              child: CustomCircleAvatar(imageUrl: user?.avatar),
             ),
           ],
         ),

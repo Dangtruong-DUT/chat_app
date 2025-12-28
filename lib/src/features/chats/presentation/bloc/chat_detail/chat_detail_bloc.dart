@@ -11,7 +11,7 @@ import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_d
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
+class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
   final GetConversationUseCase _getConversationUseCase;
   final SendMessageUseCase _sendMessageUseCase;
   final UpdateMessageStatusUseCase _updateMessageStatusUseCase;
@@ -27,13 +27,13 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
        _updateMessageStatusUseCase = updateMessageStatusUseCase,
        _createConversationUseCase = createConversationUseCase,
        super(const ChatDetailInitial()) {
-    on<ChatsLoad>(_onLoadConversation);
-    on<ChatSendMessage>(_onSendMessage);
-    on<ChatUpdateStatusMessage>(_onUpdateMessageStatus);
+    on<ChatDetailRequested>(_onLoadConversation);
+    on<ChatDetailMessageSent>(_onSendMessage);
+    on<ChatDetailMarkMessagesRead>(_onMarkMessagesRead);
   }
 
   Future<void> _onLoadConversation(
-    ChatsLoad event,
+    ChatDetailRequested event,
     Emitter<ChatDetailState> emit,
   ) async {
     emit(const ChatDetailLoading());
@@ -54,8 +54,16 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
         return _getConversationUseCase.call(params);
       }
 
+      if (event.receiverId == null) {
+        return Future.value(
+          failure(
+            ErrorException(message: 'Receiver id is required to start chat'),
+          ),
+        );
+      }
+
       final params = CreateConversationUseCaseParams(
-        userId: event.userId,
+        userId: event.currentUserId,
         receiverId: event.receiverId!,
       );
       return _createConversationUseCase.call(params);
@@ -63,13 +71,12 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
 
     final result = await load();
     result.fold((error) {
-      Logger.error('ChatDetailBloc._onLoadConversation: ${error.toString()}');
       emit(ChatDetailLoadFailure(error));
     }, (chat) => emit(ChatDetailLoaded(chat)));
   }
 
   Future<void> _onSendMessage(
-    ChatSendMessage event,
+    ChatDetailMessageSent event,
     Emitter<ChatDetailState> emit,
   ) async {
     final currentState = state;
@@ -79,7 +86,7 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
 
     final params = SendMessageParams(
       chatId: event.chatId,
-      userId: event.userId,
+      userId: event.currentUserId,
       receiverId: event.receiverId,
       content: event.content,
     );
@@ -87,7 +94,6 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
     final result = await _sendMessageUseCase.call(params);
     result.fold(
       (error) {
-        Logger.error('ChatDetailBloc._onSendMessage: ${error.toString()}');
         emit(ChatDetailSendFailure(currentState.chat, error));
       },
       (newMessage) {
@@ -100,16 +106,22 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
     );
   }
 
-  Future<void> _onUpdateMessageStatus(
-    ChatUpdateStatusMessage event,
+  Future<void> _onMarkMessagesRead(
+    ChatDetailMarkMessagesRead event,
     Emitter<ChatDetailState> emit,
   ) async {
     final currentState = state;
     if (currentState is! ChatDetailLoaded) return;
 
-    final unreadMessages = currentState.chat.messages.where(
-      (msg) => msg.status != MessageStatus.read,
-    );
+    final unreadMessages = currentState.chat.messages
+        .where(
+          (msg) =>
+              msg.status != MessageStatus.read &&
+              msg.receiverId == event.currentUserId,
+        )
+        .toList();
+
+    if (unreadMessages.isEmpty) return;
 
     for (final message in unreadMessages) {
       final params = UpdateMessageStatusParams(
@@ -132,7 +144,8 @@ class ChatDetailBloc extends Bloc<ChatsEvent, ChatDetailState> {
     }
 
     final updatedMessages = currentState.chat.messages.map((msg) {
-      if (msg.status != MessageStatus.read) {
+      if (msg.status != MessageStatus.read &&
+          msg.receiverId == event.currentUserId) {
         return msg.copyWith(status: MessageStatus.read);
       }
       return msg;
