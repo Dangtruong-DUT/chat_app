@@ -10,7 +10,8 @@ class MessageStatusIcon extends StatelessWidget {
     if (status == null) return const SizedBox.shrink();
 
     IconData icon;
-    Color color = Colors.grey;
+    final colorScheme = Theme.of(context).colorScheme;
+    Color color = colorScheme.onSurfaceVariant;
 
     switch (status) {
       case MessageStatus.sent:
@@ -18,10 +19,11 @@ class MessageStatusIcon extends StatelessWidget {
         break;
       case MessageStatus.delivered:
         icon = Icons.check;
+        color = colorScheme.secondary;
         break;
       case MessageStatus.read:
         icon = Icons.done_all;
-        color = const Color(0xFF1877F2);
+        color = colorScheme.primary;
         break;
       case null:
         icon = Icons.check;

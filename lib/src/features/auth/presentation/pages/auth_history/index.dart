@@ -59,9 +59,17 @@ class AuthScreen extends StatelessWidget {
                                     height: 60,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors.grey.shade300,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.surfaceVariant,
                                     ),
-                                    child: Icon(Icons.add, size: 30),
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 30,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -114,7 +122,10 @@ class AuthScreen extends StatelessWidget {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              SnackBar(content: Text(message), backgroundColor: Colors.red),
+              SnackBar(
+                content: Text(message),
+                backgroundColor: Theme.of(context).colorScheme.error,
+              ),
             );
         },
         child: child,

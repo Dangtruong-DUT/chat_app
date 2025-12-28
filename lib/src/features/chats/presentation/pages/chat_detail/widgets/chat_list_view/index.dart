@@ -60,10 +60,19 @@ class _MessageListViewState extends State<MessageListView> {
   @override
   Widget build(BuildContext context) {
     if (widget.messages.isEmpty) {
-      return const Center(
-        child: Text(
-          'Hãy gửi tin nhắn đầu tiên',
-          style: TextStyle(color: Colors.black54),
+      return Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceVariant,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Text(
+            'Hãy gửi tin nhắn đầu tiên',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+          ),
         ),
       );
     }

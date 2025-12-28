@@ -17,36 +17,73 @@ class ChatHistoryListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: CustomCircleAvatar(imageUrl: chat.user.avatar),
-      title: Text(
-        chat.user.name,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
-      ),
-      subtitle: Row(
-        children: [
-          Expanded(
-            child: Text(
-              _buildSubtitle(),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                fontWeight: _hasUnread ? FontWeight.w700 : FontWeight.w400,
-                color: _hasUnread ? Colors.black87 : Colors.grey[600],
+    return InkWell(
+      onTap: () => _onTapItem(context),
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(color: theme.colorScheme.outline, width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: theme.colorScheme.shadow.withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            CustomCircleAvatar(imageUrl: chat.user.avatar),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    chat.user.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          _buildSubtitle(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: _hasUnread
+                                ? FontWeight.w700
+                                : FontWeight.w400,
+                            color: _hasUnread
+                                ? theme.colorScheme.onSurface
+                                : theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                      if (chat.isLastMessageFromCurrentUser)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: MessageStatusIcon(
+                            status: chat.lastMessageStatus,
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          if (chat.isLastMessageFromCurrentUser)
-            Padding(
-              padding: const EdgeInsets.only(left: 4),
-              child: MessageStatusIcon(status: chat.lastMessageStatus),
-            ),
-        ],
+          ],
+        ),
       ),
-      onTap: () => _onTapItem(context),
     );
   }
 

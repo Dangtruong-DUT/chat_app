@@ -6,4 +6,5 @@ class SharedReferenceConfig {
   //temp
   static const String accountListKey = 'account_list';
   static const String chatConversationsKey = 'chat_conversations';
+  static const String themeModeKey = 'theme_mode';
 }

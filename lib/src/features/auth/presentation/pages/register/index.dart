@@ -67,7 +67,7 @@ class RegisterScreen extends StatelessWidget {
                   ..showSnackBar(
                     SnackBar(
                       content: Text(state.error.message),
-                      backgroundColor: Colors.red,
+                      backgroundColor: Theme.of(context).colorScheme.error,
                     ),
                   );
               }

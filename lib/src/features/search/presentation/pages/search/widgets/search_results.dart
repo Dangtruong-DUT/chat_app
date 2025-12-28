@@ -30,9 +30,21 @@ class SearchResults extends StatelessWidget {
                   },
                 )
               : Center(
-                  child: Text(
-                    "No users found",
-                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 16,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceVariant,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      "No users found",
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
                 );
         }

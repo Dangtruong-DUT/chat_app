@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import 'widgets/account-info.dart';
+import 'widgets/theme_mode_selector.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -37,6 +38,7 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   AccountInfo(user: user),
                   const SizedBox(height: 24),
+                  const ThemeModeSelector(),
                 ],
               ),
             ),

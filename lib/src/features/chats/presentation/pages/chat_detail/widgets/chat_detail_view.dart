@@ -56,16 +56,20 @@ class _ChatDetailViewState extends State<ChatDetailView> {
               return const SizedBox.shrink();
             }
 
+            final theme = Theme.of(context);
+            final backgroundAsset =
+                theme.colorScheme.brightness == Brightness.dark
+                ? 'assets/images/chats/dark_background.png'
+                : 'assets/images/chats/chat_background.png';
+
             return Column(
               children: [
                 Expanded(
                   child: Container(
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/chats/chat_background.png',
-                        ),
+                        image: AssetImage(backgroundAsset),
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -36,17 +36,18 @@ class _ChatInputBarState extends State<ChatInputBar> {
       builder: (context, sendStatus) {
         final isSending = sendStatus == ChatDetailSendStatus.sending;
         final canSubmit = _canSend && !isSending;
+        final theme = Theme.of(context);
 
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          color: Colors.white,
+          color: theme.colorScheme.surface,
           child: Row(
             children: [
               Expanded(
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: theme.colorScheme.surfaceVariant,
                     borderRadius: BorderRadius.circular(25),
                   ),
                   child: TextField(
@@ -69,9 +70,12 @@ class _ChatInputBarState extends State<ChatInputBar> {
                 width: 40,
                 height: 40,
                 child: isSending
-                    ? const Padding(
-                        padding: EdgeInsets.all(8),
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                    ? Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: theme.colorScheme.primary,
+                        ),
                       )
                     : IconButton(
                         onPressed: canSubmit
@@ -80,8 +84,8 @@ class _ChatInputBarState extends State<ChatInputBar> {
                         icon: Icon(
                           Icons.send,
                           color: canSubmit
-                              ? Theme.of(context).colorScheme.primary
-                              : Colors.grey,
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
               ),

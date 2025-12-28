@@ -65,6 +65,7 @@ class _AccountItemState extends State<AccountItem>
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Focus(
       focusNode: _focusNode,
       child: GestureDetector(
@@ -107,14 +108,14 @@ class _AccountItemState extends State<AccountItem>
                             },
                             child: Container(
                               padding: const EdgeInsets.all(2),
-                              decoration: const BoxDecoration(
-                                color: Colors.black,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.error,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.close,
                                 size: 16,
-                                color: Colors.white,
+                                color: theme.colorScheme.onError,
                               ),
                             ),
                           ),

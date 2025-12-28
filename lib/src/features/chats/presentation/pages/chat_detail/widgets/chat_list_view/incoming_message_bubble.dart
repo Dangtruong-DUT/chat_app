@@ -16,24 +16,37 @@ class IncomingTextMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final bubbleColor = isExpanded
+        ? colorScheme.surfaceVariant
+        : colorScheme.surface;
+    final metaStyle = theme.textTheme.bodySmall?.copyWith(
+      fontSize: 10,
+      color: colorScheme.onSurfaceVariant,
+    );
     final bubble = GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isExpanded ? Colors.grey.shade100 : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: bubbleColor,
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.shadow.withOpacity(0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(message.content),
             const SizedBox(height: 2),
-            Text(
-              formatTimeAgo(dateTime: message.timestamp),
-              style: const TextStyle(fontSize: 10, color: Colors.black54),
-            ),
+            Text(formatTimeAgo(dateTime: message.timestamp), style: metaStyle),
           ],
         ),
       ),
@@ -51,9 +64,9 @@ class IncomingTextMessageBubble extends StatelessWidget {
               padding: const EdgeInsets.only(top: 2, left: 4),
               child: Text(
                 'Đã nhận lúc ${formatTimeAgo(dateTime: message.timestamp)}',
-                style: const TextStyle(
+                style: theme.textTheme.bodySmall?.copyWith(
                   fontSize: 11,
-                  color: Colors.black54,
+                  color: colorScheme.onSurfaceVariant,
                   fontStyle: FontStyle.italic,
                 ),
               ),

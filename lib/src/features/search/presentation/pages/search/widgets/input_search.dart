@@ -22,15 +22,31 @@ class _InputSearchState extends State<InputSearch> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeOut,
+      height: 56,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: isTextFieldFocus
-            ? BoxBorder.all(color: theme.colorScheme.primary, width: 2)
-            : BoxBorder.all(color: Colors.black12, width: 2),
-        color: isTextFieldFocus ? Colors.white38 : Colors.transparent,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isTextFieldFocus
+              ? theme.colorScheme.primary
+              : theme.colorScheme.outline,
+          width: isTextFieldFocus ? 2 : 1.5,
+        ),
+        color: isTextFieldFocus
+            ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
+            : theme.colorScheme.surface,
+        boxShadow: isTextFieldFocus
+            ? [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withOpacity(0.12),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,7 +57,7 @@ class _InputSearchState extends State<InputSearch> {
             height: 25,
             color: isTextFieldFocus
                 ? theme.colorScheme.primary
-                : Colors.black54,
+                : theme.colorScheme.onSurfaceVariant,
           ),
           const SizedBox(width: 10),
           Expanded(
@@ -50,12 +66,12 @@ class _InputSearchState extends State<InputSearch> {
               controller: inputSearchController,
               focusNode: focusNode,
               style: theme.textTheme.labelMedium?.copyWith(
-                color: Colors.black87,
+                color: theme.colorScheme.onSurface,
               ),
               decoration: InputDecoration(
                 hintText: 'username or email of user',
                 hintStyle: theme.textTheme.labelMedium?.copyWith(
-                  color: Colors.black54,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
                 border: InputBorder.none,
                 enabledBorder: InputBorder.none,
@@ -74,7 +90,7 @@ class _InputSearchState extends State<InputSearch> {
                   height: 15,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: Colors.black54,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 );
               }
@@ -82,7 +98,11 @@ class _InputSearchState extends State<InputSearch> {
               if (inputSearchController.text.trim().isNotEmpty) {
                 return GestureDetector(
                   onTap: _onClearTextField,
-                  child: Icon(Icons.close, size: 18, color: Colors.black54),
+                  child: Icon(
+                    Icons.close,
+                    size: 18,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 );
               }
 
