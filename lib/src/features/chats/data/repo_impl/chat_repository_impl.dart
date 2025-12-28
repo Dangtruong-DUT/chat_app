@@ -235,4 +235,13 @@ class ChatRepositoryImpl implements ChatRepository {
       }
     });
   }
+
+  @override
+  Future<User> getUserById({required String userId}) async {
+    final users = await _loadAllUsers();
+    if (users.containsKey(userId)) {
+      return users[userId]!;
+    }
+    return _fallbackUser(userId);
+  }
 }

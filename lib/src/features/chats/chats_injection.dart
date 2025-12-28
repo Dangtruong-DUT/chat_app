@@ -8,6 +8,7 @@ import 'package:chat_app/src/features/chats/domain/repositories/chat_repository.
 import 'package:chat_app/src/features/chats/domain/usecases/create_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/get_all_conversation.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/get_conversation.usecase.dart';
+import 'package:chat_app/src/features/chats/domain/usecases/get_user_by_id.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/send_message.usecase.dart';
 import 'package:chat_app/src/features/chats/domain/usecases/update_message_status.usecase.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
@@ -61,6 +62,9 @@ class ChatsInjectionModule implements BaseInjectionModule {
       )
       ..registerSingleton<CreateConversationUseCase>(
         CreateConversationUseCase(chatRepository: _getIt<ChatRepository>()),
+      )
+      ..registerSingleton<GetUserByIdUseCase>(
+        GetUserByIdUseCase(repository: _getIt<ChatRepository>()),
       );
   }
 
@@ -71,12 +75,14 @@ class ChatsInjectionModule implements BaseInjectionModule {
           getAllConversationUseCase: _getIt<GetAllConversationUseCase>(),
         ),
       )
-      ..registerFactory<ChatDetailBloc>(
-        () => ChatDetailBloc(
+      ..registerFactoryParam<ChatDetailBloc, String, void>(
+        (currentUserId, _) => ChatDetailBloc(
+          currentUserId: currentUserId,
           getConversationUseCase: _getIt<GetConversationUseCase>(),
           sendMessageUseCase: _getIt<SendMessageUseCase>(),
           updateMessageStatusUseCase: _getIt<UpdateMessageStatusUseCase>(),
           createConversationUseCase: _getIt<CreateConversationUseCase>(),
+          getUserByIdUseCase: _getIt<GetUserByIdUseCase>(),
         ),
       );
   }

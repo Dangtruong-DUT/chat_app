@@ -1,35 +1,86 @@
 import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
+import 'package:chat_app/src/features/chats/domain/entities/chat_context.entity.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
+import 'package:equatable/equatable.dart';
 
-sealed class ChatDetailState {
-  const ChatDetailState();
-}
+enum ChatDetailStatus { initial, loading, ready, failure }
 
-class ChatDetailInitial extends ChatDetailState {
-  const ChatDetailInitial();
-}
+enum ChatDetailSendStatus { idle, sending, failure }
 
-class ChatDetailLoading extends ChatDetailState {
-  const ChatDetailLoading();
-}
+enum ChatDetailPartnerStatus { idle, loading, ready, failure }
 
-class ChatDetailLoaded extends ChatDetailState {
-  final Chat chat;
-  const ChatDetailLoaded(this.chat);
-}
+class ChatDetailState extends Equatable {
+  final ChatDetailStatus status;
+  final ChatDetailSendStatus sendStatus;
+  final ChatDetailPartnerStatus partnerStatus;
+  final Chat? chat;
+  final ChatContext? context;
+  final User? partner;
+  final ErrorException? partnerError;
+  final ErrorException? loadError;
+  final ErrorException? sendError;
 
-class ChatDetailLoadFailure extends ChatDetailState {
-  final ErrorException error;
-  const ChatDetailLoadFailure(this.error);
-}
+  const ChatDetailState({
+    this.status = ChatDetailStatus.initial,
+    this.sendStatus = ChatDetailSendStatus.idle,
+    this.partnerStatus = ChatDetailPartnerStatus.idle,
+    this.chat,
+    this.context,
+    this.partner,
+    this.partnerError,
+    this.loadError,
+    this.sendError,
+  });
 
-class ChatDetailSending extends ChatDetailState {
-  final Chat chat;
-  const ChatDetailSending(this.chat);
-}
+  static const initial = ChatDetailState();
 
-class ChatDetailSendFailure extends ChatDetailState {
-  final Chat chat;
-  final ErrorException error;
-  const ChatDetailSendFailure(this.chat, this.error);
+  static const _undefined = Object();
+
+  ChatDetailState copyWith({
+    ChatDetailStatus? status,
+    ChatDetailSendStatus? sendStatus,
+    Object? chat = _undefined,
+    Object? context = _undefined,
+    Object? partner = _undefined,
+    ChatDetailPartnerStatus? partnerStatus,
+    Object? partnerError = _undefined,
+    Object? loadError = _undefined,
+    Object? sendError = _undefined,
+  }) {
+    return ChatDetailState(
+      status: status ?? this.status,
+      sendStatus: sendStatus ?? this.sendStatus,
+      chat: identical(chat, _undefined) ? this.chat : chat as Chat?,
+      context: identical(context, _undefined)
+          ? this.context
+          : context as ChatContext?,
+      partner: identical(partner, _undefined) ? this.partner : partner as User?,
+      partnerStatus: partnerStatus ?? this.partnerStatus,
+      partnerError: identical(partnerError, _undefined)
+          ? this.partnerError
+          : partnerError as ErrorException?,
+      loadError: identical(loadError, _undefined)
+          ? this.loadError
+          : loadError as ErrorException?,
+      sendError: identical(sendError, _undefined)
+          ? this.sendError
+          : sendError as ErrorException?,
+    );
+  }
+
+  bool get hasContext => context != null;
+
+  @override
+  List<Object?> get props => [
+    status,
+    sendStatus,
+    chat,
+    context,
+    partner,
+    partnerStatus,
+    partnerError,
+    loadError,
+    sendError,
+  ];
 }

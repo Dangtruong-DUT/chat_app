@@ -1,13 +1,17 @@
 import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
 import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
+import 'package:equatable/equatable.dart';
 
 enum AuthHistoryStatus { initial, loading, success, failure }
 
-class AuthHistoryState {
+class AuthHistoryState extends Equatable {
   final List<User> history;
   final AuthHistoryStatus status;
   final ErrorException? error;
   static const Object _errorSentinel = Object();
+
+  @override
+  List<Object?> get props => [history, status, error];
 
   const AuthHistoryState({
     this.history = const [],

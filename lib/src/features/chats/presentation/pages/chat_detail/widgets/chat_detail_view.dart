@@ -1,4 +1,3 @@
-import 'package:chat_app/src/features/chats/data/datasources/user_local_data_source.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
@@ -6,13 +5,10 @@ import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_d
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
-import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_state.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_app_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_detail_error.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
-import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -34,58 +30,48 @@ class ChatDetailView extends StatefulWidget {
 }
 
 class _ChatDetailViewState extends State<ChatDetailView> {
-  late final TextEditingController _messageController;
-  User? _partnerUser;
-  String? _receiverId;
-  String? _lastMarkedChatId;
-  int _lastMarkedUnread = 0;
-  bool _isFetchingPartner = false;
-
   @override
   void initState() {
     super.initState();
-    _messageController = TextEditingController();
-    _receiverId = widget.receiverId;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       context.read<ChatDetailBloc>().add(
-        ChatDetailRequested(
-          chatId: widget.chatId,
-          currentUserId: widget.currentUserId,
-          receiverId: _receiverId,
-        ),
+        ChatDetailStarted(chatId: widget.chatId, peerId: widget.receiverId),
       );
     });
   }
 
   @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: ChatAppBar(user: _partnerUser)),
+      appBar: AppBar(
+        title: BlocBuilder<ChatDetailBloc, ChatDetailState>(
+          buildWhen: (prev, curr) => prev.partner != curr.partner,
+          builder: (_, state) => ChatAppBar(user: state.partner),
+        ),
+      ),
       body: SafeArea(
         child: BlocConsumer<ChatDetailBloc, ChatDetailState>(
           listenWhen: (previous, current) => previous != current,
           listener: (context, state) => _handleStateChanges(context, state),
           builder: (context, state) {
-            final chat = _extractChat(state);
-            if (state is ChatDetailLoading || chat == null) {
-              if (state is ChatDetailLoadFailure) {
-                return ChatDetailErrorView(
-                  message: state.error.message,
-                  onRetry: () => _retryLoad(context, widget.currentUserId),
-                );
-              }
+            final chat = state.chat;
+            if (state.status == ChatDetailStatus.loading && chat == null) {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final isSending = state is ChatDetailSending;
+            if (state.loadError != null && chat == null) {
+              return ChatDetailErrorView(
+                message: state.loadError!.message,
+                onRetry: () => _retryLoad(context),
+              );
+            }
+
+            if (chat == null) {
+              return const SizedBox.shrink();
+            }
+
             return Column(
               children: [
                 Expanded(
@@ -105,12 +91,7 @@ class _ChatDetailViewState extends State<ChatDetailView> {
                     ),
                   ),
                 ),
-                ChatInputBar(
-                  controller: _messageController,
-                  isSending: isSending,
-                  onSend: () =>
-                      _onSendMessage(context, chat.id, widget.currentUserId),
-                ),
+                const ChatInputBar(),
               ],
             );
           },
@@ -120,43 +101,20 @@ class _ChatDetailViewState extends State<ChatDetailView> {
   }
 
   void _handleStateChanges(BuildContext context, ChatDetailState state) {
-    if (state is ChatDetailLoadFailure) {
-      _showSnackBar(context, state.error.message);
-    } else if (state is ChatDetailSendFailure) {
-      _showSnackBar(context, state.error.message);
+    if (state.loadError != null && state.chat != null) {
+      _showSnackBar(context, state.loadError!.message);
     }
 
-    final chat = _extractChat(state);
+    if (state.sendError != null) {
+      _showSnackBar(context, state.sendError!.message);
+    }
+
+    final chat = state.chat;
     if (chat == null) return;
 
-    _capturePartner(chat, widget.currentUserId);
     _markMessagesReadIfNeeded(context, chat, widget.currentUserId);
 
-    if (state is ChatDetailLoaded) {
-      _syncChatsList(widget.currentUserId);
-    }
-  }
-
-  void _onSendMessage(
-    BuildContext context,
-    String chatId,
-    String currentUserId,
-  ) {
-    final content = _messageController.text.trim();
-    if (content.isEmpty) return;
-    final receiverId = _receiverId ?? _partnerUser?.id;
-    if (receiverId == null) return;
-
-    context.read<ChatDetailBloc>().add(
-      ChatDetailMessageSent(
-        chatId: chatId,
-        currentUserId: currentUserId,
-        receiverId: receiverId,
-        content: content,
-      ),
-    );
-
-    _messageController.clear();
+    _syncChatsList(widget.currentUserId);
   }
 
   void _showSnackBar(BuildContext context, String message) {
@@ -165,78 +123,27 @@ class _ChatDetailViewState extends State<ChatDetailView> {
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Chat? _extractChat(ChatDetailState state) {
-    if (state is ChatDetailLoaded) return state.chat;
-    if (state is ChatDetailSending) return state.chat;
-    if (state is ChatDetailSendFailure) return state.chat;
-    return null;
-  }
-
-  void _capturePartner(Chat chat, String currentUserId) {
-    final partnerId = chat.addedUserIds.firstWhere(
-      (id) => id != currentUserId,
-      orElse: () => _receiverId ?? currentUserId,
-    );
-
-    _receiverId ??= partnerId;
-    final resolvedUser = _findPartnerFromChatsState(chat.id, partnerId);
-
-    if (resolvedUser != null) {
-      if (_partnerUser?.id == resolvedUser.id &&
-          _partnerUser?.name == resolvedUser.name &&
-          _partnerUser?.email == resolvedUser.email &&
-          _partnerUser?.avatar == resolvedUser.avatar) {
-        return;
-      }
-      setState(() => _partnerUser = resolvedUser);
-      return;
-    }
-
-    if (_partnerUser != null && _partnerUser!.id == partnerId) return;
-
-    setState(() {
-      _partnerUser = User(
-        id: partnerId,
-        name: 'Người dùng',
-        email: 'user_$partnerId@chat.app',
-      );
-    });
-
-    _tryLoadPartnerUser(partnerId);
-  }
-
   void _markMessagesReadIfNeeded(
     BuildContext context,
     Chat chat,
     String currentUserId,
   ) {
-    final unreadCount = chat.messages
-        .where(
-          (msg) =>
-              msg.receiverId == currentUserId &&
-              msg.status != MessageStatus.read,
-        )
-        .length;
-
-    if (unreadCount == 0) return;
-    if (_lastMarkedChatId == chat.id && _lastMarkedUnread == unreadCount) {
-      return;
-    }
-
-    _lastMarkedChatId = chat.id;
-    _lastMarkedUnread = unreadCount;
-
-    context.read<ChatDetailBloc>().add(
-      ChatDetailMarkMessagesRead(chatId: chat.id, currentUserId: currentUserId),
+    final hasUnread = chat.messages.any(
+      (msg) =>
+          msg.receiverId == currentUserId && msg.status != MessageStatus.read,
     );
+
+    if (!hasUnread) return;
+
+    context.read<ChatDetailBloc>().add(const ChatDetailMessagesMarkedRead());
   }
 
-  void _retryLoad(BuildContext context, String currentUserId) {
+  void _retryLoad(BuildContext context) {
+    final partnerId = context.read<ChatDetailBloc>().state.partner?.id;
     context.read<ChatDetailBloc>().add(
-      ChatDetailRequested(
+      ChatDetailStarted(
         chatId: widget.chatId,
-        currentUserId: currentUserId,
-        receiverId: _receiverId,
+        peerId: partnerId ?? widget.receiverId,
       ),
     );
   }
@@ -246,38 +153,5 @@ class _ChatDetailViewState extends State<ChatDetailView> {
     final chatsBloc = GetIt.instance<ChatsBloc>();
     if (chatsBloc.isClosed) return;
     chatsBloc.add(ChatsLoad(userId: currentUserId));
-  }
-
-  User? _findPartnerFromChatsState(String chatId, String partnerId) {
-    if (!GetIt.instance.isRegistered<ChatsBloc>()) return null;
-    final chatsBloc = GetIt.instance<ChatsBloc>();
-    final state = chatsBloc.state;
-    if (state is! ChatsLoaded) return null;
-
-    for (final summary in state.chats) {
-      if (summary.id == chatId || summary.user.id == partnerId) {
-        return summary.user;
-      }
-    }
-    return null;
-  }
-
-  Future<void> _tryLoadPartnerUser(String partnerId) async {
-    if (_isFetchingPartner) return;
-    if (!GetIt.instance.isRegistered<UserLocalDataSource>()) return;
-
-    _isFetchingPartner = true;
-    try {
-      final dataSource = GetIt.instance<UserLocalDataSource>();
-      final users = await dataSource.getAllUsers();
-      final match = users.firstWhereOrNull((user) => user.id == partnerId);
-      if (match != null && mounted) {
-        setState(() => _partnerUser = match.toEntity());
-      }
-    } catch (_) {
-      // ignore, fallback stays on screen
-    } finally {
-      _isFetchingPartner = false;
-    }
   }
 }

@@ -1,49 +1,99 @@
+import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
+import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_event.dart';
+import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatInputBar extends StatefulWidget {
-  final TextEditingController controller;
-  final bool isSending;
-  final VoidCallback onSend;
-
-  const ChatInputBar({
-    super.key,
-    required this.controller,
-    required this.isSending,
-    required this.onSend,
-  });
+  const ChatInputBar({super.key});
 
   @override
   State<ChatInputBar> createState() => _ChatInputBarState();
 }
 
 class _ChatInputBarState extends State<ChatInputBar> {
-  late bool _canSend;
+  late final TextEditingController _controller;
+  bool _canSend = false;
 
   @override
   void initState() {
     super.initState();
-    _canSend = widget.controller.text.trim().isNotEmpty;
-    widget.controller.addListener(_handleTextChanged);
-  }
-
-  @override
-  void didUpdateWidget(ChatInputBar oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.controller != widget.controller) {
-      oldWidget.controller.removeListener(_handleTextChanged);
-      widget.controller.addListener(_handleTextChanged);
-      _canSend = widget.controller.text.trim().isNotEmpty;
-    }
+    _controller = TextEditingController();
+    _controller.addListener(_handleTextChanged);
   }
 
   @override
   void dispose() {
-    widget.controller.removeListener(_handleTextChanged);
+    _controller.removeListener(_handleTextChanged);
+    _controller.dispose();
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocSelector<ChatDetailBloc, ChatDetailState, ChatDetailSendStatus>(
+      selector: (state) => state.sendStatus,
+      builder: (context, sendStatus) {
+        final isSending = sendStatus == ChatDetailSendStatus.sending;
+        final canSubmit = _canSend && !isSending;
+
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  child: TextField(
+                    controller: _controller,
+                    textInputAction: TextInputAction.send,
+                    minLines: 1,
+                    maxLines: 5,
+                    onSubmitted: (_) {
+                      if (canSubmit) _sendMessage(context);
+                    },
+                    decoration: const InputDecoration(
+                      hintText: 'Nhập tin nhắn...',
+                      border: InputBorder.none,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: isSending
+                    ? const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : IconButton(
+                        onPressed: canSubmit
+                            ? () => _sendMessage(context)
+                            : null,
+                        icon: Icon(
+                          Icons.send,
+                          color: canSubmit
+                              ? Theme.of(context).colorScheme.primary
+                              : Colors.grey,
+                        ),
+                      ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _handleTextChanged() {
-    final hasText = widget.controller.text.trim().isNotEmpty;
+    final hasText = _controller.text.trim().isNotEmpty;
     if (hasText != _canSend) {
       setState(() {
         _canSend = hasText;
@@ -51,58 +101,16 @@ class _ChatInputBarState extends State<ChatInputBar> {
     }
   }
 
-  bool get _canSubmit => _canSend && !widget.isSending;
+  void _sendMessage(BuildContext context) {
+    if (context.read<ChatDetailBloc>().state.sendStatus ==
+        ChatDetailSendStatus.sending) {
+      return;
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: TextField(
-                controller: widget.controller,
-                textInputAction: TextInputAction.send,
-                minLines: 1,
-                maxLines: 5,
-                onSubmitted: (_) {
-                  if (_canSubmit) widget.onSend();
-                },
-                decoration: const InputDecoration(
-                  hintText: 'Nhập tin nhắn...',
-                  border: InputBorder.none,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          SizedBox(
-            width: 40,
-            height: 40,
-            child: widget.isSending
-                ? const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                : IconButton(
-                    onPressed: _canSubmit ? widget.onSend : null,
-                    icon: Icon(
-                      Icons.send,
-                      color: _canSubmit
-                          ? Theme.of(context).colorScheme.primary
-                          : Colors.grey,
-                    ),
-                  ),
-          ),
-        ],
-      ),
-    );
+    final content = _controller.text.trim();
+    if (content.isEmpty) return;
+
+    context.read<ChatDetailBloc>().add(ChatDetailMessageSent(content));
+    _controller.clear();
   }
 }

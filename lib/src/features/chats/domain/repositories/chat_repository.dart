@@ -2,6 +2,7 @@ import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat_summary.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
+import 'package:chat_app/src/shared/domain/entities/user.entity.dart';
 
 abstract class ChatRepository {
   Future<Chat> getConversationById({required String chatId});
@@ -23,4 +24,6 @@ abstract class ChatRepository {
     required String messageId,
     required MessageStatus status,
   });
+
+  Future<User> getUserById({required String userId});
 }

@@ -45,6 +45,7 @@ dependencies:
   lottie: ^3.3.2
   stream_transform: ^2.1.1
   dartz: ^0.10.1
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:

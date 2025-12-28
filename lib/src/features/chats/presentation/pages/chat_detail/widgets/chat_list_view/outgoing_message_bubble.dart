@@ -2,7 +2,6 @@ import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class OutgoingTextMessageBubble extends StatelessWidget {
   final Message message;
@@ -52,7 +51,7 @@ class OutgoingTextMessageBubble extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 4),
               child: Text(
-                '${_statusLabel(message.status)} · ${_formatTimestamp(message.timestamp)}',
+                '${_statusLabel(message.status)} · ${formatTimeAgo(dateTime: message.timestamp)}',
                 style: const TextStyle(
                   fontSize: 11,
                   color: Colors.black54,
@@ -74,9 +73,5 @@ class OutgoingTextMessageBubble extends StatelessWidget {
       case MessageStatus.read:
         return 'Đã xem';
     }
-  }
-
-  String _formatTimestamp(DateTime time) {
-    return DateFormat('HH:mm').format(time);
   }
 }

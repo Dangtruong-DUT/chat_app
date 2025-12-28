@@ -34,7 +34,7 @@ class _MessageListViewState extends State<MessageListView> {
       _scrollToBottom();
     }
     if (_expandedMessageId != null &&
-        widget.messages.every((msg) => msg.id != _expandedMessageId)) {
+        !widget.messages.any((msg) => msg.id == _expandedMessageId)) {
       _expandedMessageId = null;
     }
   }

@@ -1,7 +1,6 @@
 import 'package:chat_app/src/core/utils/formatting/timeFormatter/time_ago.dart';
 import 'package:chat_app/src/features/chats/domain/entities/message.entity.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class IncomingTextMessageBubble extends StatelessWidget {
   final Message message;
@@ -51,7 +50,7 @@ class IncomingTextMessageBubble extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 2, left: 4),
               child: Text(
-                'Đã nhận lúc ${_formatTimestamp(message.timestamp)}',
+                'Đã nhận lúc ${formatTimeAgo(dateTime: message.timestamp)}',
                 style: const TextStyle(
                   fontSize: 11,
                   color: Colors.black54,
@@ -62,9 +61,5 @@ class IncomingTextMessageBubble extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _formatTimestamp(DateTime time) {
-    return DateFormat('HH:mm').format(time);
   }
 }
