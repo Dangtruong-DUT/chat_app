@@ -28,15 +28,16 @@ class _AppBootstrapState extends State<AppBootstrap> {
 
   Widget _buildBloc({required Widget child}) {
     return BlocListener<AppAuthBloc, AppAuthState>(
-      listenWhen: (_, current) => current is AppAuthFailure,
+      listenWhen: (previous, current) =>
+          previous.error != current.error && current.error != null,
       listener: (context, state) {
-        final failure = state as AppAuthFailure;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(failure.error.message),
-            backgroundColor: Colors.red,
-          ),
-        );
+        final error = state.error;
+        if (error == null) return;
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(
+            SnackBar(content: Text(error.message), backgroundColor: Colors.red),
+          );
       },
       child: child,
     );

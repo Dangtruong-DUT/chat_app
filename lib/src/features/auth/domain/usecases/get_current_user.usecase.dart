@@ -14,6 +14,7 @@ class GetCurrentUserUseCase extends BaseUseCase<User?, NoParams> {
   Future<Result<User?>> call(NoParams params) async {
     try {
       final user = await _repository.getLoginData();
+      throw "Lỗi ở đây nè";
       return success(user);
     } catch (error) {
       return failure(

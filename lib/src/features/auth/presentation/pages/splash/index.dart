@@ -12,12 +12,11 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppAuthBloc, AppAuthState>(
-      listenWhen: (_, current) =>
-          current is AppAuthenticated || current is AppUnauthenticated,
+      listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state is AppAuthenticated) {
+        if (state.status == AppAuthStatus.authenticated) {
           GoRouter.of(context).go(AppRoutesConfig.chats);
-        } else if (state is AppUnauthenticated) {
+        } else if (state.status == AppAuthStatus.unauthenticated) {
           GoRouter.of(context).go(AppRoutesConfig.auth);
         }
       },

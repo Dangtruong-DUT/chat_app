@@ -32,9 +32,12 @@ class AppRouter {
       context,
       listen: false,
     ).state;
-    if (currentAuthState is AppAuthLoading) return AppRoutesConfig.splash;
+    if (currentAuthState.status == AppAuthStatus.initial ||
+        currentAuthState.status == AppAuthStatus.loading) {
+      return AppRoutesConfig.splash;
+    }
 
-    final isAuthenticated = currentAuthState is AppAuthenticated;
+    final isAuthenticated = currentAuthState.isAuthenticated;
     final isProtectedPath = AppRoutesConfig.protected.any(
       (path) => state.fullPath!.startsWith(path),
     );

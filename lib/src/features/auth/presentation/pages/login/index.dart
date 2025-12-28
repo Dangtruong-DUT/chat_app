@@ -56,11 +56,15 @@ class LoginScreen extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           BlocListener<LoginBloc, LoginState>(
+            listenWhen: (prev, current) =>
+                prev.runtimeType != current.runtimeType &&
+                    current is LoginFailure ||
+                current is LoginSuccess,
             listener: (context, state) {
               if (state is LoginFailure) {
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text(state.error.message)));
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text(state.error.message)));
               }
 
               if (state is LoginSuccess) {
@@ -71,8 +75,11 @@ class LoginScreen extends StatelessWidget {
             },
           ),
           BlocListener<AppAuthBloc, AppAuthState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == AppAuthStatus.authenticated,
             listener: (context, state) {
-              if (state is AppAuthenticated) {
+              if (state.isAuthenticated) {
                 context.go(AppRoutesConfig.chats);
               }
             },

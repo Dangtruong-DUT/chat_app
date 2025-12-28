@@ -88,6 +88,7 @@ class AuthInjectionModule implements BaseInjectionModule {
           getCurrentUserUseCase: _getIt<GetCurrentUserUseCase>(),
           clearCurrentUserUseCase: _getIt<ClearCurrentUserUseCase>(),
           saveCurrentUserUseCase: _getIt<SaveCurrentUserUseCase>(),
+          addLoginHistoryUseCase: _getIt<AddLoginHistoryUseCase>(),
         ),
       );
   }

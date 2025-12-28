@@ -35,7 +35,20 @@ class AuthScreen extends StatelessWidget {
                           alignment: WrapAlignment.start,
                           runAlignment: WrapAlignment.start,
                           children: [
-                            const LoginHistoryList(),
+                            BlocBuilder<AuthHistoryBloc, AuthHistoryState>(
+                              buildWhen: (previous, current) =>
+                                  previous.status != current.status ||
+                                  previous.history != current.history,
+                              builder: (context, state) {
+                                final isLoading =
+                                    state.status == AuthHistoryStatus.loading &&
+                                    state.history.isEmpty;
+                                if (isLoading) {
+                                  return const _LoginHistoryLoadingIndicator();
+                                }
+                                return const LoginHistoryList();
+                              },
+                            ),
 
                             Column(
                               children: [
@@ -100,7 +113,9 @@ class AuthScreen extends StatelessWidget {
               state.error?.message ?? 'Đã xảy ra lỗi không xác định';
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(message)));
+            ..showSnackBar(
+              SnackBar(content: Text(message), backgroundColor: Colors.red),
+            );
         },
         child: child,
       ),
@@ -113,5 +128,25 @@ class AuthScreen extends StatelessWidget {
 
   void _onAddAccountTap(BuildContext context) {
     GoRouter.of(context).push(AppRoutesConfig.login);
+  }
+}
+
+class _LoginHistoryLoadingIndicator extends StatelessWidget {
+  const _LoginHistoryLoadingIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 100,
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          SizedBox(width: 36, height: 36, child: CircularProgressIndicator()),
+          SizedBox(height: 12),
+          Text('Đang tải...'),
+        ],
+      ),
+    );
   }
 }

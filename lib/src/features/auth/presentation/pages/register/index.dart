@@ -56,16 +56,20 @@ class RegisterScreen extends StatelessWidget {
       child: MultiBlocListener(
         listeners: [
           BlocListener<RegisterBloc, RegisterState>(
-            listenWhen: (_, current) =>
-                current is RegisterFailure || current is RegisterSuccess,
+            listenWhen: (prev, current) =>
+                prev.runtimeType != current.runtimeType &&
+                    current is RegisterFailure ||
+                current is RegisterSuccess,
             listener: (context, state) {
               if (state is RegisterFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.error.message),
-                    backgroundColor: Colors.red,
-                  ),
-                );
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(state.error.message),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
               }
               if (state is RegisterSuccess) {
                 context.read<AppAuthBloc>().add(
@@ -75,8 +79,11 @@ class RegisterScreen extends StatelessWidget {
             },
           ),
           BlocListener<AppAuthBloc, AppAuthState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status &&
+                current.status == AppAuthStatus.authenticated,
             listener: (context, state) {
-              if (state is AppAuthenticated) {
+              if (state.isAuthenticated) {
                 context.go(AppRoutesConfig.chats);
               }
             },

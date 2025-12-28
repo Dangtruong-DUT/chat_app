@@ -4,6 +4,7 @@ import 'package:chat_app/src/shared/presentation/widgets/text-field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_bloc.dart';
 import 'package:chat_app/src/features/auth/presentation/bloc/register/register_event.dart';
+import 'package:chat_app/src/features/auth/presentation/bloc/register/register_state.dart';
 
 class RegisterForm extends StatefulWidget {
   final String? prefilledEmail;
@@ -61,26 +62,48 @@ class _RegisterFormState extends State<RegisterForm> {
 
           const SizedBox(height: 16),
 
-          GestureDetector(
-            onTap: _onSubmit,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              constraints: const BoxConstraints(minHeight: 50),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+          BlocBuilder<RegisterBloc, RegisterState>(
+            buildWhen: (previous, current) =>
+                current is RegisterLoading || current is! RegisterLoading,
+            builder: (context, state) {
+              final isSubmitting = state is RegisterLoading;
+
+              return GestureDetector(
+                onTap: isSubmitting ? null : _onSubmit,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
+                  ),
+                  constraints: const BoxConstraints(minHeight: 50),
+                  decoration: BoxDecoration(
+                    color: isSubmitting
+                        ? Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                        : Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: false
+                        ? SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          )
+                        : Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ),

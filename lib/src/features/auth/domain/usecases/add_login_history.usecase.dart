@@ -1,3 +1,4 @@
+import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
 import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
@@ -21,6 +22,7 @@ class AddLoginHistoryUseCase extends BaseUseCase<List<User>, User> {
       filtered.insert(0, params);
       final trimmed = filtered.take(maxItems).toList();
       await _repository.saveLoginHistory(trimmed);
+      Logger.debug('Updated login history: ${trimmed.length} items');
       return success(trimmed);
     } catch (error) {
       return failure(

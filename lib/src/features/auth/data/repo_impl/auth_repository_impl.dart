@@ -1,4 +1,5 @@
 import 'package:chat_app/src/core/utils/id_generator.dart';
+import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/features/auth/data/datasources/auth_local_data_source.dart';
 import 'package:chat_app/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:chat_app/src/features/user/data/models/user.model.dart';
@@ -63,6 +64,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> saveLoginHistory(List<User> users) {
+    Logger.debug('Saving login history with ${users.length} items');
     final userModels = UserModel.fromEntityList(users);
     return localDataSource.saveLoginHistory(userModels);
   }

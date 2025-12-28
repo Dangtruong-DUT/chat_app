@@ -1,3 +1,4 @@
+import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/mapper/error.mapper.dart';
 import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/core/utils/usecases/base_usecase.dart';
@@ -14,6 +15,7 @@ class GetLoginHistoryUseCase extends BaseUseCase<List<User>, NoParams> {
   Future<Result<List<User>>> call(NoParams params) async {
     try {
       final history = await _repository.getLoginHistory();
+      Logger.debug('Fetched login history: $history');
       return success(history);
     } catch (error) {
       return failure(

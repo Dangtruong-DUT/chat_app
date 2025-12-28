@@ -10,24 +10,12 @@ class Logger {
         '${now.second.toString().padLeft(2, '0')}';
   }
 
-  static String _caller() {
-    try {
-      final trace = StackTrace.current.toString().split('\n')[2];
-      final regex = RegExp(r'(\w+\.dart):(\d+)');
-      final match = regex.firstMatch(trace);
-      if (match != null) {
-        return '${match.group(1)}:${match.group(2)}';
-      }
-    } catch (_) {}
-    return 'unknown';
-  }
-
   static void _log(String level, String message, String color) {
     if (!kDebugMode) return;
 
     final lines = message.split('\n');
     for (var line in lines) {
-      print('$color[${_timestamp()}][$level][${_caller()}] $line\x1B[0m');
+      print('$color[${_timestamp()}][$level] $line\x1B[0m');
     }
   }
 

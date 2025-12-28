@@ -12,27 +12,36 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = (context.read<AppAuthBloc>().state as AppAuthenticated).user;
     return BlocListener<AppAuthBloc, AppAuthState>(
+      listenWhen: (previous, current) =>
+          previous.status != current.status &&
+          current.status == AppAuthStatus.unauthenticated,
       listener: (context, state) {
-        if (state is AppUnauthenticated) {
-          GoRouter.of(context).go(AppRoutesConfig.auth);
-        }
+        GoRouter.of(context).go(AppRoutesConfig.auth);
       },
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text("Settings", textAlign: TextAlign.center),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              AccountInfo(user: user),
-              const SizedBox(height: 24),
-            ],
-          ),
-        ),
+      child: BlocBuilder<AppAuthBloc, AppAuthState>(
+        builder: (context, state) {
+          final user = state.user;
+          if (user == null) {
+            return const SizedBox.shrink();
+          }
+
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("Settings", textAlign: TextAlign.center),
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AccountInfo(user: user),
+                  const SizedBox(height: 24),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -6,10 +6,9 @@ class ErrorMapper {
   static ErrorException mapToError(Object error, {String? fallbackMessage}) {
     if (error is ErrorException) return error;
 
-    final rawMessage = fallbackMessage ?? error.toString();
-    final normalized = rawMessage.trim().isEmpty
-        ? 'Unexpected error occurred'
-        : rawMessage;
+    final normalized = error.toString().isEmpty
+        ? fallbackMessage ?? 'Unexpected error occurred'
+        : error.toString();
 
     return ErrorException(message: normalized);
   }

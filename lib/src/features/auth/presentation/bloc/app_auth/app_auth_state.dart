@@ -1,24 +1,39 @@
 import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
 import 'package:chat_app/src/features/user/domain/entities/user.entity.dart';
 
-sealed class AppAuthState {
-  const AppAuthState();
-}
+enum AppAuthStatus { initial, loading, authenticated, unauthenticated }
 
-class AppAuthenticated extends AppAuthState {
-  final User user;
-  const AppAuthenticated(this.user);
-}
+class AppAuthState {
+  final AppAuthStatus status;
+  final User? user;
+  final ErrorException? error;
 
-class AppUnauthenticated extends AppAuthState {
-  const AppUnauthenticated();
-}
+  const AppAuthState({required this.status, this.user, this.error});
 
-class AppAuthLoading extends AppAuthState {
-  const AppAuthLoading();
-}
+  const AppAuthState.initial() : this(status: AppAuthStatus.initial);
 
-class AppAuthFailure extends AppAuthState {
-  final ErrorException error;
-  const AppAuthFailure({required this.error});
+  const AppAuthState.loading() : this(status: AppAuthStatus.loading);
+
+  const AppAuthState.authenticated(User user)
+    : this(status: AppAuthStatus.authenticated, user: user);
+
+  const AppAuthState.unauthenticated()
+    : this(status: AppAuthStatus.unauthenticated);
+
+  AppAuthState copyWith({
+    AppAuthStatus? status,
+    User? user,
+    ErrorException? error,
+    bool clearUser = false,
+    bool clearError = false,
+  }) {
+    return AppAuthState(
+      status: status ?? this.status,
+      user: clearUser ? null : user ?? this.user,
+      error: clearError ? null : error ?? this.error,
+    );
+  }
+
+  bool get isAuthenticated =>
+      status == AppAuthStatus.authenticated && user != null;
 }
