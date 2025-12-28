@@ -3,15 +3,12 @@ import 'package:chat_app/src/features/chats/domain/entities/message_status.enum.
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_bloc.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_event.dart';
 import 'package:chat_app/src/features/chats/presentation/bloc/chat_detail/chat_detail_state.dart';
-import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_bloc.dart';
-import 'package:chat_app/src/features/chats/presentation/bloc/chats/chats_event.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_app_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_detail_error.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_input_bar.dart';
 import 'package:chat_app/src/features/chats/presentation/pages/chat_detail/widgets/chat_list_view/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 class ChatDetailView extends StatefulWidget {
   final String? chatId;
@@ -31,18 +28,6 @@ class ChatDetailView extends StatefulWidget {
 
 class _ChatDetailViewState extends State<ChatDetailView> {
   @override
-  void initState() {
-    super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      context.read<ChatDetailBloc>().add(
-        ChatDetailStarted(chatId: widget.chatId, peerId: widget.receiverId),
-      );
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +38,6 @@ class _ChatDetailViewState extends State<ChatDetailView> {
       ),
       body: SafeArea(
         child: BlocConsumer<ChatDetailBloc, ChatDetailState>(
-          listenWhen: (previous, current) => previous != current,
           listener: (context, state) => _handleStateChanges(context, state),
           builder: (context, state) {
             final chat = state.chat;
@@ -113,8 +97,6 @@ class _ChatDetailViewState extends State<ChatDetailView> {
     if (chat == null) return;
 
     _markMessagesReadIfNeeded(context, chat, widget.currentUserId);
-
-    _syncChatsList(widget.currentUserId);
   }
 
   void _showSnackBar(BuildContext context, String message) {
@@ -130,7 +112,9 @@ class _ChatDetailViewState extends State<ChatDetailView> {
   ) {
     final hasUnread = chat.messages.any(
       (msg) =>
-          msg.receiverId == currentUserId && msg.status != MessageStatus.read,
+          msg.receiverId == currentUserId &&
+          msg.status != MessageStatus.read &&
+          msg.senderId != currentUserId,
     );
 
     if (!hasUnread) return;
@@ -146,12 +130,5 @@ class _ChatDetailViewState extends State<ChatDetailView> {
         peerId: partnerId ?? widget.receiverId,
       ),
     );
-  }
-
-  void _syncChatsList(String currentUserId) {
-    if (!GetIt.instance.isRegistered<ChatsBloc>()) return;
-    final chatsBloc = GetIt.instance<ChatsBloc>();
-    if (chatsBloc.isClosed) return;
-    chatsBloc.add(ChatsLoad(userId: currentUserId));
   }
 }

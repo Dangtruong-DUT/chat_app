@@ -1,4 +1,5 @@
 import 'package:chat_app/src/core/utils/error/base/error.exception.dart';
+import 'package:chat_app/src/core/utils/log/logger.dart';
 import 'package:chat_app/src/core/utils/result/result.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat.entity.dart';
 import 'package:chat_app/src/features/chats/domain/entities/chat_context.entity.dart';
@@ -67,10 +68,12 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
       );
       return;
     }
-
+    Logger.debug(
+      'Loading conversation for chatId: ${event.chatId}, peerId: ${event.peerId}',
+    );
     final result = await _loadConversation(event);
-    result.fold(
-      (error) => emit(
+    await result.fold<Future<void>>(
+      (error) async => emit(
         state.copyWith(status: ChatDetailStatus.failure, loadError: error),
       ),
       (chat) async {
@@ -157,7 +160,8 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
         .where(
           (msg) =>
               msg.status != MessageStatus.read &&
-              msg.receiverId == context.currentUserId,
+              msg.receiverId == context.currentUserId &&
+              msg.senderId != context.currentUserId,
         )
         .toList();
 
@@ -177,7 +181,8 @@ class ChatDetailBloc extends Bloc<ChatDetailEvent, ChatDetailState> {
 
     final updatedMessages = chat.messages.map((msg) {
       if (msg.status != MessageStatus.read &&
-          msg.receiverId == context.currentUserId) {
+          msg.receiverId == context.currentUserId &&
+          msg.senderId != context.currentUserId) {
         return msg.copyWith(status: MessageStatus.read);
       }
       return msg;

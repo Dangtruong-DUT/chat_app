@@ -70,7 +70,7 @@ class ChatsInjectionModule implements BaseInjectionModule {
 
   Future<void> _configureBlocDependencies() async {
     _getIt
-      ..registerFactory<ChatsBloc>(
+      ..registerLazySingleton<ChatsBloc>(
         () => ChatsBloc(
           getAllConversationUseCase: _getIt<GetAllConversationUseCase>(),
         ),

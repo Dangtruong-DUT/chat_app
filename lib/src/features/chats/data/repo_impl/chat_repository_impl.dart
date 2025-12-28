@@ -29,6 +29,11 @@ class ChatRepositoryImpl implements ChatRepository {
       final chats = await _loadAllChats();
       if (chats.isEmpty) return [];
 
+      final hasDeliveryUpdates = _markMessagesDeliveredForUser(chats, userId);
+      if (hasDeliveryUpdates) {
+        await _saveAllChats(chats);
+      }
+
       final users = await _loadAllUsers();
 
       final summaries = chats.values
@@ -153,8 +158,6 @@ class ChatRepositoryImpl implements ChatRepository {
 
       await _saveAllChats(chats);
 
-      _simulateDeliveryStatus(chatId: chatId, messageId: message.id);
-
       return message;
     } catch (e) {
       Logger.error("sendMessage error: $e");
@@ -219,21 +222,27 @@ class ChatRepositoryImpl implements ChatRepository {
     );
   }
 
-  void _simulateDeliveryStatus({
-    required String chatId,
-    required String messageId,
-  }) {
-    Future.delayed(const Duration(milliseconds: 700), () async {
-      try {
-        await updateMessageStatus(
-          chatId: chatId,
-          messageId: messageId,
-          status: MessageStatus.delivered,
-        );
-      } catch (e) {
-        Logger.error('simulate delivery status error: $e');
-      }
+  bool _markMessagesDeliveredForUser(Map<String, Chat> chats, String userId) {
+    var hasUpdates = false;
+
+    chats.updateAll((chatId, chat) {
+      bool updatedChat = false;
+      final updatedMessages = chat.messages.map((message) {
+        final isPendingDelivery =
+            message.receiverId == userId &&
+            message.status == MessageStatus.sent;
+        if (isPendingDelivery) {
+          updatedChat = true;
+          hasUpdates = true;
+          return message.copyWith(status: MessageStatus.delivered);
+        }
+        return message;
+      }).toList();
+
+      return updatedChat ? chat.copyWith(messages: updatedMessages) : chat;
     });
+
+    return hasUpdates;
   }
 
   @override
