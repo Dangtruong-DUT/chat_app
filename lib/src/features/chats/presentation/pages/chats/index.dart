@@ -18,8 +18,14 @@ class ChatListScreen extends StatelessWidget {
     final authState = context.watch<AppAuthBloc>().state;
     final userId = authState.user?.id;
 
+    if (userId == null) {
+      return Scaffold(
+        appBar: AppBar(title: Text(tr('chats.title'))),
+        body: Center(child: Text("Not authenticated")),
+      );
+    }
     return _buildBlocProvider(
-      userId: userId!,
+      userId: userId,
       child: Scaffold(
         appBar: AppBar(title: Text(tr('chats.title'))),
         body: BlocConsumer<ChatsBloc, ChatsState>(

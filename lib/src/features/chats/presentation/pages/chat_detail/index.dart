@@ -32,7 +32,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = context.watch<AppAuthBloc>().state;
-    final currentUser = authState.user!;
+    final currentUser = authState.user;
+
+    if (currentUser == null) {
+      return Center(child: Text("Not authenticated"));
+    }
+
     _currentUserId = currentUser.id;
 
     return BlocProvider(
